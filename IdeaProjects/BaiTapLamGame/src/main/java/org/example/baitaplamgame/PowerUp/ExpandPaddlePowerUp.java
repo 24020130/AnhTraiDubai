@@ -17,12 +17,14 @@ public class ExpandPaddlePowerUp extends PowerUp {
 
     @Override
     public void applyEffect(Paddle paddle) {
-        double newWidth = paddle.getWidth() * 1.5; // tăng 50%
+        double newWidth = paddle.getWidth() * 1.5;
         paddle.setWidth(newWidth);
         collected = true;
         System.out.println("✅ Paddle đã được mở rộng!");
 
-        // Sau 10 giây thì tự thu nhỏ lại
+        /**
+         * sau 10 giay thu nho lai.
+         */
         new Thread(() -> {
             try {
                 Thread.sleep(10000); // 10 giây
@@ -36,7 +38,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
 
     @Override
     public void removeEffect(Paddle paddle) {
-        double originalWidth = paddle.getWidth() / 1.5; // thu nhỏ lại như cũ
+        double originalWidth = paddle.getWidth() / 1.5;
         paddle.setWidth(originalWidth);
         System.out.println("⏳ Paddle trở lại kích thước ban đầu!");
     }

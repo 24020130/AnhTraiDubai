@@ -20,7 +20,7 @@ public class Ball extends MovableObject {
         super(x, y, size, size);
         this.speed = speed;
 
-        // 🔹 Khởi đầu đi chéo lên trên bên phải
+        // Khởi đầu đi chéo lên trên bên phải
         double angle = Math.toRadians(-45);
         this.velocityX = speed * Math.cos(angle);
         this.velocityY = speed * Math.sin(angle);

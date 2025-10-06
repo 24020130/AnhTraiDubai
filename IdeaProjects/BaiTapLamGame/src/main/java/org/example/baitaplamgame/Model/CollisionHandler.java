@@ -7,13 +7,26 @@ import java.util.Iterator;
 import java.util.List;
 
 public class CollisionHandler {
-
+    /**
+     * check va cham 2 doi tuong
+     * @param a
+     * @param b
+     * @return
+     */
     public static boolean checkCollision(GameObject a, GameObject b) {
         if (a == null || b == null) return false;
         if (a.getBounds() == null || b.getBounds() == null) return false;
         return a.getBounds().intersects(b.getBounds());
     }
 
+    /**
+     * check va cham bong voi tuong.
+     * @param ball
+     * @param brick
+     * @param powerUps
+     * @param root
+     * @return
+     */
     public static boolean handleBallBrickCollision(Ball ball, Brick brick, List<PowerUp> powerUps, Pane root) {
         if (checkCollision(ball, brick)) {
             brick.takeHit();
@@ -35,6 +48,11 @@ public class CollisionHandler {
         return false;
     }
 
+    /**
+     * check va cham bong voi nguoi choi.
+     * @param ball
+     * @param paddle
+     */
     public static void handleBallPaddleCollision(Ball ball, Paddle paddle) {
         if (!checkCollision(ball, paddle)) return;
 
@@ -51,6 +69,12 @@ public class CollisionHandler {
         ball.setVelocity(newVx, newVy);
     }
 
+    /**
+     * check va cham item voi nguoi choi
+     * @param powerUps
+     * @param paddle
+     * @param root
+     */
     public static void handlePowerUpCollision(List<PowerUp> powerUps, Paddle paddle, Pane root) {
         Iterator<PowerUp> iterator = powerUps.iterator();
 
