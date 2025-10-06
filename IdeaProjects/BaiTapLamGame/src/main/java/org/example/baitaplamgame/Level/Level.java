@@ -3,7 +3,7 @@ package org.example.baitaplamgame.Level;
 import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.Model.Brick;
 import org.example.baitaplamgame.Model.NormalBrick;
-import org.example.baitaplamgame.Model.StrongBrick;
+import org.example.baitaplamgame.Model.GreenBrick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class Level {
             for (int col = 0; col < 10; col++) {
                 Brick brick = (row % 2 == 0)
                         ? new NormalBrick(60 + col * 70, 50 + row * 35, 60, 25)
-                        : new StrongBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        : new GreenBrick(60 + col * 70, 50 + row * 35, 60, 25);
                 bricks.add(brick);
                 root.getChildren().add(brick.getView());
             }

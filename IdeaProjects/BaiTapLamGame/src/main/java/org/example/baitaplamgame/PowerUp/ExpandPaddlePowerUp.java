@@ -20,7 +20,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
         double newWidth = paddle.getWidth() * 1.5;
         paddle.setWidth(newWidth);
         collected = true;
-        System.out.println("✅ Paddle đã được mở rộng!");
+        System.out.println("Paddle đã được mở rộng!");
 
         /**
          * sau 10 giay thu nho lai.
