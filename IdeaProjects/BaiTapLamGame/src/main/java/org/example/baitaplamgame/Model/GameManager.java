@@ -53,14 +53,12 @@ public class GameManager {
         timer.start();
     }
     public void update() {
-
         if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
 
         ball.update();
         ball.checkCollisionWithWalls(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
         CollisionHandler.handleBallPaddleCollision(ball, paddle);
-
 
         List<PowerUp> newPowerUps = new ArrayList<>();
 
@@ -79,31 +77,13 @@ public class GameManager {
             }
         }
 
+        CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
 
 
-        Iterator<PowerUp> powerUpIterator = powerUps.iterator();
-        while (powerUpIterator.hasNext()) {
-            PowerUp p = powerUpIterator.next();
-            p.update();
-
-
-            if (CollisionHandler.checkCollision(p, paddle) && !p.isCollected()) {
-                p.applyEffect(paddle);
-                p.setCollected(true);
-                root.getChildren().remove(p.getView());
-                powerUpIterator.remove();
-            }
-        }
-
-
-        if (level.getBricks().isEmpty()) {
-            nextLevel();
-        }
-
-        if (ball.getY() > Config.WINDOW_HEIGHT) {
-            restartLevel();
-        }
+        if (level.getBricks().isEmpty()) nextLevel();
+        if (ball.getY() > Config.WINDOW_HEIGHT) restartLevel();
     }
+
 
     private void nextLevel() {
         currentLevel++;

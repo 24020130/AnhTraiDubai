@@ -1,17 +1,18 @@
 package org.example.baitaplamgame.Model;
 
 import javafx.scene.layout.Pane;
+import org.example.baitaplamgame.PowerUp.ExpandPaddlePowerUp;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class CollisionHandler {
+
     public static boolean checkCollision(GameObject a, GameObject b) {
         if (a == null || b == null) return false;
         if (a.getBounds() == null || b.getBounds() == null) return false;
         return a.getBounds().intersects(b.getBounds());
     }
-
-
 
     public static boolean handleBallBrickCollision(Ball ball, Brick brick, List<PowerUp> powerUps, Pane root) {
         if (checkCollision(ball, brick)) {
@@ -21,13 +22,14 @@ public class CollisionHandler {
             if (brick.isDestroyed()) {
                 root.getChildren().remove(brick.getView());
 
-                    PowerUp p = new ExpandPowerUp(brick.getX(), brick.getY());
-                    powerUps.add(p);
-                    if (!root.getChildren().contains(p.getView())) {
-                        root.getChildren().add(p.getView());
-                    }
+                PowerUp p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
+                powerUps.add(p);
 
-                return true; //
+                if (!root.getChildren().contains(p.getView())) {
+                    root.getChildren().add(p.getView());
+                }
+
+                return true;
             }
         }
         return false;
@@ -49,5 +51,25 @@ public class CollisionHandler {
         ball.setVelocity(newVx, newVy);
     }
 
+    public static void handlePowerUpCollision(List<PowerUp> powerUps, Paddle paddle, Pane root) {
+        Iterator<PowerUp> iterator = powerUps.iterator();
+
+        while (iterator.hasNext()) {
+            PowerUp p = iterator.next();
+
+            p.update();
+
+            if (checkCollision(p, paddle) && !p.isCollected()) {
+                p.applyEffect(paddle);
+                p.setCollected(true);
+                root.getChildren().remove(p.getView());
+                iterator.remove();
+            }
+            else if (p.getY() > root.getHeight()) {
+                root.getChildren().remove(p.getView());
+                iterator.remove();
+            }
+        }
+    }
 
 }

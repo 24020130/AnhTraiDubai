@@ -20,12 +20,6 @@ public abstract class PowerUp extends GameObject {
         view.setFitHeight(30);
         view.setX(x);
         view.setY(y);
-
-        // Hiệu ứng rơi xuống
-        TranslateTransition fall = new TranslateTransition(Duration.seconds(5), view);
-        fall.setByY(500);
-        fall.setCycleCount(1);
-        fall.play();
     }
 
     @Override

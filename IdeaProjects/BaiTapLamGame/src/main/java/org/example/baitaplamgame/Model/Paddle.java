@@ -14,7 +14,7 @@ public class Paddle extends MovableObject {
         super(x, y, width, height);
         this.speed = speed;
 
-        // Nếu bạn có ảnh paddle thì dùng ImageLoader.PADDLE_IMAGE, nếu không có thì có thể tạo Rectangle trong View
+
         view = new ImageView(ImageLoader.PADDLE_IMAGE);
         view.setFitWidth(width);
         view.setFitHeight(height);
@@ -24,7 +24,6 @@ public class Paddle extends MovableObject {
 
     @Override
     public void update() {
-        // nếu bạn dùng move() để cập nhật x,y thì gọi move() ở GameManager hoặc ở đây
         updateView();
     }
 
@@ -50,8 +49,6 @@ public class Paddle extends MovableObject {
         view.setFitWidth(width);
         view.setFitHeight(height);
     }
-
-    // --- getters / setters cho width/height để PowerUp dùng được ---
     @Override
     public double getX() { return x; }
     @Override
@@ -62,12 +59,9 @@ public class Paddle extends MovableObject {
     }
 
     public void setWidth(double newWidth) {
-        // giữ trung tâm paddle khi thay đổi kích thước
         double center = x + width / 2.0;
         this.width = newWidth;
         this.x = center - newWidth / 2.0;
-
-        // giới hạn vào trong màn hình
         if (x < 0) x = 0;
         if (x + width > Config.WINDOW_WIDTH) x = Config.WINDOW_WIDTH - width;
 
@@ -87,7 +81,6 @@ public class Paddle extends MovableObject {
         return view;
     }
 
-    // nếu GameObject đã có getBounds(), có thể dùng lại; nhưng bạn có thể override nếu cần
     public Bounds getBounds() {
         return view.getBoundsInParent();
     }

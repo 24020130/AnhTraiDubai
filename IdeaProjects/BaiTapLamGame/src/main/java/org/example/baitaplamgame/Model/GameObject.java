@@ -1,5 +1,6 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import java.awt.Graphics;
@@ -19,9 +20,7 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
 
     public Bounds getBounds() {
-        if (view != null)
-            return view.getBoundsInParent();
-        return null;
+        return new BoundingBox(x, y, width, height);
     }
 
     public void setX(double x) {
