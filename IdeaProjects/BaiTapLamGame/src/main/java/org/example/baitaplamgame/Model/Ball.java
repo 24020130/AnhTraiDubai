@@ -96,7 +96,7 @@ public class Ball extends MovableObject {
         return view;
     }
 
-    // 🔹 Bật lại khi chạm tường
+    // Bật lại khi chạm tường
     public void checkCollisionWithWalls(double sceneWidth, double sceneHeight) {
         if (x <= 0 || x + width >= sceneWidth) {
             velocityX *= -1;
@@ -129,7 +129,7 @@ public class Ball extends MovableObject {
         createRainbowExplosion(ballCenterX, ballCenterY);
     }
 
-    // 🔹 Cho phép chỉnh vận tốc theo góc paddle
+    // Cho phép chỉnh vận tốc theo góc paddle
     public void setVelocity(double vx, double vy) {
         this.velocityX = vx;
         this.velocityY = vy;

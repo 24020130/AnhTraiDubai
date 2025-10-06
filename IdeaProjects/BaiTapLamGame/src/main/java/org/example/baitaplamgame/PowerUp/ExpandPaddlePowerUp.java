@@ -40,7 +40,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
     public void removeEffect(Paddle paddle) {
         double originalWidth = paddle.getWidth() / 1.5;
         paddle.setWidth(originalWidth);
-        System.out.println("⏳ Paddle trở lại kích thước ban đầu!");
+        System.out.println("Paddle trở lại kích thước ban đầu!");
     }
 
 }
