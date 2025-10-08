@@ -17,6 +17,9 @@ public abstract class Brick extends GameObject {
         } else if(type.equalsIgnoreCase("green")){
             view = new ImageView(ImageLoader.BRICK_GREEN_IMAGE);
         }
+        else if(type.equalsIgnoreCase("fast")){
+            view = new ImageView(ImageLoader.BRICK_FAST_IMAGE);
+        }
         view.setFitWidth(width);
         view.setFitHeight(height);
         view.setX(x);

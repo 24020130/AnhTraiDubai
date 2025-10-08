@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.Level.Level;
+import org.example.baitaplamgame.Level.Level1;
+import org.example.baitaplamgame.Level.Level2;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
@@ -26,10 +28,23 @@ public class GameManager {
     }
 
     public void startGame() {
+        currentLevel = 1;
+        startLevel1();
+    }
+
+    private void startLevel1() {
+        startLevel(new Level1(1), "/levels/level1.txt");
+    }
+
+    private void startLevel2() {
+        startLevel(new Level2(2), "/levels/level2.txt");
+    }
+
+    private void startLevel(Level levelObj, String filePath) {
         root.getChildren().clear();
         powerUps.clear();
 
-        javafx.scene.image.ImageView bgView = new javafx.scene.image.ImageView(ImageLoader.BACKGROUND_IMAGE);
+        var bgView = new javafx.scene.image.ImageView(ImageLoader.BACKGROUND_IMAGE);
         bgView.setFitWidth(Config.WINDOW_WIDTH);
         bgView.setFitHeight(Config.WINDOW_HEIGHT);
         bgView.setPreserveRatio(false);
@@ -38,8 +53,8 @@ public class GameManager {
         paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
 
-        level = new Level(currentLevel);
-        level.generateLevel(currentLevel, root);
+        this.level = levelObj;
+        level.generateLevelFromFile(filePath, root);
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
 
@@ -52,6 +67,7 @@ public class GameManager {
         };
         timer.start();
     }
+
     public void update() {
         if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
@@ -76,23 +92,29 @@ public class GameManager {
                 root.getChildren().add(p.getView());
             }
         }
-
+        
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
-
 
         if (level.getBricks().isEmpty()) nextLevel();
         if (ball.getY() > Config.WINDOW_HEIGHT) restartLevel();
     }
 
-
     private void nextLevel() {
         currentLevel++;
-        startGame();
+        if (currentLevel == 2) {
+            startLevel2();
+        } else {
+            System.out.println("Bạn đã hoàn thành tất cả level!");
+            timer.stop();
+        }
     }
 
     private void restartLevel() {
         System.out.println("Bóng rơi! Reset lại level " + currentLevel);
-        startGame();
+        if (currentLevel == 1)
+            startLevel1();
+        else if (currentLevel == 2)
+            startLevel2();
     }
 
     public void setupInput(Scene scene) {

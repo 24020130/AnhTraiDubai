@@ -27,6 +27,7 @@ public class CollisionHandler {
      * @param root
      * @return
      */
+
     public static boolean handleBallBrickCollision(Ball ball, Brick brick, List<PowerUp> powerUps, Pane root) {
         if (checkCollision(ball, brick)) {
             brick.takeHit();
@@ -34,12 +35,13 @@ public class CollisionHandler {
 
             if (brick.isDestroyed()) {
                 root.getChildren().remove(brick.getView());
+                if (brick instanceof GreenBrick) {
+                    PowerUp p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
+                    powerUps.add(p);
 
-                PowerUp p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
-                powerUps.add(p);
-
-                if (!root.getChildren().contains(p.getView())) {
-                    root.getChildren().add(p.getView());
+                    if (!root.getChildren().contains(p.getView())) {
+                        root.getChildren().add(p.getView());
+                    }
                 }
 
                 return true;

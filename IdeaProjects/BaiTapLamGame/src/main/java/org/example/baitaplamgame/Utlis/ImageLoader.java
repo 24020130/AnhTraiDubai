@@ -10,6 +10,7 @@ public class ImageLoader {
     public static final Image BRICK_IMAGE = new Image("file:C:/Users/Lenovo LOQ/Videos/ProjectGame/brick.png");
     public static final Image ITEM_IMAGE = new Image("file:C:/Users/Lenovo LOQ/Videos/ProjectGame/item.png");
     public static final Image BRICK_GREEN_IMAGE = new Image("file:C:/Users/Lenovo LOQ/Videos/ProjectGame/brickGreen.png");
+    public static final Image BRICK_FAST_IMAGE = new Image("file:C:/Users/Lenovo LOQ/Videos/ProjectGame/FastBrick.png");
     public static final Image BACKGROUND_IMAGE = new Image("file:C:/Users/Lenovo LOQ/Videos/ProjectGame/img.png");
 }
 

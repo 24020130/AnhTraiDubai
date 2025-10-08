@@ -28,7 +28,6 @@ public class Main extends Application {
         double height = Config.WINDOW_HEIGHT;
 
         Pane root = new Pane();
-
         GameManager gameManager = new GameManager(root, width, height);
         gameManager.startGame();
 
