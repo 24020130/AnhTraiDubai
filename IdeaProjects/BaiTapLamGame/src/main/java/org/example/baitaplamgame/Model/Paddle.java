@@ -9,6 +9,7 @@ public class Paddle extends MovableObject {
     private double speed;
     private PowerUp currentPowerUp;
     private final ImageView view;
+    private Ball ball;
 
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height);
@@ -37,12 +38,6 @@ public class Paddle extends MovableObject {
         updateView();
     }
 
-    public void applyPowerUp(PowerUp p) {
-        if (currentPowerUp != null) currentPowerUp.removeEffect(this); // nếu cần hủy effect cũ
-        currentPowerUp = p;
-        p.applyEffect(this);
-    }
-
     private void updateView() {
         view.setX(x);
         view.setY(y);
@@ -64,7 +59,6 @@ public class Paddle extends MovableObject {
         this.x = center - newWidth / 2.0;
         if (x < 0) x = 0;
         if (x + width > Config.WINDOW_WIDTH) x = Config.WINDOW_WIDTH - width;
-
         updateView();
     }
 
@@ -84,5 +78,17 @@ public class Paddle extends MovableObject {
     public Bounds getBounds() {
         return view.getBoundsInParent();
     }
+
+    public Ball getBall(){
+        return this.ball;
+    }
+
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+
+
 
 }

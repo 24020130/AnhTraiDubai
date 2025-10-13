@@ -1,7 +1,13 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
 import org.example.baitaplamgame.Utlis.ImageLoader;
+
+import javafx.util.Duration;
 
 public abstract class Brick extends GameObject {
     protected int hitPoints;
@@ -31,6 +37,26 @@ public abstract class Brick extends GameObject {
         if (isDestroyed()) {
             view.setVisible(false);
         }
+    }
+    private void playShakeEffect() {
+        double originalX = view.getX();
+        Timeline shake = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(view.xProperty(), originalX)),
+                new KeyFrame(Duration.millis(50), new KeyValue(view.xProperty(), originalX - 5)),
+                new KeyFrame(Duration.millis(100), new KeyValue(view.xProperty(), originalX + 5)),
+                new KeyFrame(Duration.millis(150), new KeyValue(view.xProperty(), originalX - 3)),
+                new KeyFrame(Duration.millis(200), new KeyValue(view.xProperty(), originalX + 3)),
+                new KeyFrame(Duration.millis(250), new KeyValue(view.xProperty(), originalX))
+        );
+
+        FadeTransition fade = new FadeTransition(Duration.millis(300), view);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+
+        shake.setOnFinished(e -> fade.play());
+        fade.setOnFinished(e -> view.setVisible(false));
+
+        shake.play();
     }
 
     public boolean isDestroyed() {

@@ -52,7 +52,7 @@ public class GameManager {
 
         paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
-
+        paddle.setBall(ball);
         this.level = levelObj;
         level.generateLevelFromFile(filePath, root);
 
@@ -77,7 +77,6 @@ public class GameManager {
         CollisionHandler.handleBallPaddleCollision(ball, paddle);
 
         List<PowerUp> newPowerUps = new ArrayList<>();
-
         Iterator<Brick> iterator = level.getBricks().iterator();
         while (iterator.hasNext()) {
             Brick b = iterator.next();
@@ -85,29 +84,56 @@ public class GameManager {
                 iterator.remove();
             }
         }
-
         for (PowerUp p : newPowerUps) {
             powerUps.add(p);
             if (!root.getChildren().contains(p.getView())) {
                 root.getChildren().add(p.getView());
             }
         }
-        
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
-
         if (level.getBricks().isEmpty()) nextLevel();
         if (ball.getY() > Config.WINDOW_HEIGHT) restartLevel();
     }
 
     private void nextLevel() {
         currentLevel++;
-        if (currentLevel == 2) {
-            startLevel2();
-        } else {
-            System.out.println("Bạn đã hoàn thành tất cả level!");
-            timer.stop();
-        }
+        timer.stop();
+
+        String imagePath = "C:\\Users\\Lenovo LOQ\\Videos\\ProjectGame\\next.png"; // hoặc "C:/GameProject/assets/next_level.png"
+        javafx.scene.image.ImageView nextLevelImage = new javafx.scene.image.ImageView(new javafx.scene.image.Image("file:" + imagePath));
+
+        nextLevelImage.setFitWidth(500);
+        nextLevelImage.setPreserveRatio(true);
+        nextLevelImage.setLayoutX(Config.WINDOW_WIDTH / 2 - 250);
+        nextLevelImage.setLayoutY(Config.WINDOW_HEIGHT / 2 - 150);
+        nextLevelImage.setOpacity(0);
+        root.getChildren().add(nextLevelImage);
+
+        // Hiệu ứng
+        javafx.animation.FadeTransition fadeIn = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(0.8), nextLevelImage);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1.5));
+
+        javafx.animation.FadeTransition fadeOut = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.2), nextLevelImage);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        javafx.animation.SequentialTransition seq = new javafx.animation.SequentialTransition(fadeIn, pause, fadeOut);
+        seq.setOnFinished(e -> {
+            root.getChildren().remove(nextLevelImage);
+            if (currentLevel == 2) {
+                startLevel2();
+            } else {
+                System.out.println("Hoàn thành toàn bộ level!");
+            }
+        });
+
+        seq.play();
     }
+
+
 
     private void restartLevel() {
         System.out.println("Bóng rơi! Reset lại level " + currentLevel);

@@ -146,4 +146,11 @@ public class Ball extends MovableObject {
     public double getVelocityY() {
         return velocityY;
     }
+    public void setSpeed(double newSpeed) {
+        double angle = Math.atan2(velocityY, velocityX); // Giữ nguyên hướng
+        this.speed = newSpeed;
+        this.velocityX = newSpeed * Math.cos(angle);
+        this.velocityY = newSpeed * Math.sin(angle);
+    }
+
 }

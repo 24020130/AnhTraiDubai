@@ -2,6 +2,7 @@ package org.example.baitaplamgame.Model;
 
 import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.PowerUp.ExpandPaddlePowerUp;
+import org.example.baitaplamgame.PowerUp.FastBallPower;
 
 import java.util.Iterator;
 import java.util.List;
@@ -32,20 +33,20 @@ public class CollisionHandler {
         if (checkCollision(ball, brick)) {
             brick.takeHit();
             ball.bounceOff(brick);
-
             if (brick.isDestroyed()) {
                 root.getChildren().remove(brick.getView());
+                PowerUp p = null;
                 if (brick instanceof GreenBrick) {
-                    PowerUp p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
-                    powerUps.add(p);
-
-                    if (!root.getChildren().contains(p.getView())) {
-                        root.getChildren().add(p.getView());
-                    }
+                    p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
+                } else if (brick instanceof FastBrick) {
+                    p = new FastBallPower(brick.getX(), brick.getY());
                 }
-
-                return true;
+                if(p != null){
+                    powerUps.add(p);
+                    root.getChildren().add(p.getView());
+                }
             }
+            return true;
         }
         return false;
     }
@@ -79,12 +80,9 @@ public class CollisionHandler {
      */
     public static void handlePowerUpCollision(List<PowerUp> powerUps, Paddle paddle, Pane root) {
         Iterator<PowerUp> iterator = powerUps.iterator();
-
         while (iterator.hasNext()) {
             PowerUp p = iterator.next();
-
             p.update();
-
             if (checkCollision(p, paddle) && !p.isCollected()) {
                 p.applyEffect(paddle);
                 p.setCollected(true);
