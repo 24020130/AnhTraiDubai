@@ -22,9 +22,12 @@ public abstract class Brick extends GameObject {
             view = new ImageView(ImageLoader.BRICK_IMAGE);
         } else if(type.equalsIgnoreCase("green")){
             view = new ImageView(ImageLoader.BRICK_GREEN_IMAGE);
-        }
-        else if(type.equalsIgnoreCase("fast")){
+        } else if(type.equalsIgnoreCase("fast")){
             view = new ImageView(ImageLoader.BRICK_FAST_IMAGE);
+        } else if (type.equalsIgnoreCase("multibrick")) {
+            view = new ImageView(ImageLoader.MULTI_BALL_BRICK);
+        } else if(type.equalsIgnoreCase("shirkpaddle")) {
+            view = new ImageView(ImageLoader.BRICK_SHIRK_PADDLE);
         }
         view.setFitWidth(width);
         view.setFitHeight(height);

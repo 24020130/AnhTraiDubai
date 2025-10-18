@@ -10,7 +10,7 @@ public class Paddle extends MovableObject {
     private PowerUp currentPowerUp;
     private final ImageView view;
     private Ball ball;
-
+    private GameManager gameManager;
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height);
         this.speed = speed;
@@ -22,6 +22,11 @@ public class Paddle extends MovableObject {
         view.setX(x);
         view.setY(y);
     }
+    public Paddle(double x, double y, double width, double height, double speed, GameManager gameManager) {
+        this(x, y, width, height, speed);
+        this.gameManager = gameManager;
+    }
+
 
     @Override
     public void update() {
@@ -86,6 +91,13 @@ public class Paddle extends MovableObject {
 
     public void setBall(Ball ball) {
         this.ball = ball;
+    }
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
 

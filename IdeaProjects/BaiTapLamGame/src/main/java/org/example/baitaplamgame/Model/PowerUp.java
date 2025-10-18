@@ -7,7 +7,7 @@ import org.example.baitaplamgame.Utlis.ImageLoader;
 
 public abstract class PowerUp extends GameObject {
     protected String type;
-    protected double speed = 2;
+    protected double speed = 1  ;
     protected ImageView view;
     protected boolean collected = false;
 

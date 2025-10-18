@@ -1,10 +1,7 @@
 package org.example.baitaplamgame.Level;
 
 import javafx.scene.layout.Pane;
-import org.example.baitaplamgame.Model.Brick;
-import org.example.baitaplamgame.Model.FastBrick;
-import org.example.baitaplamgame.Model.GreenBrick;
-import org.example.baitaplamgame.Model.NormalBrick;
+import org.example.baitaplamgame.Model.*;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -49,6 +46,14 @@ public class Level1 extends Level{
                     }
                     else if(c == '3'){
                         Brick brick = new FastBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        bricks.add(brick);
+                        root.getChildren().add(brick.getView());
+                    } else if ( c == '4') {
+                        Brick brickes = new MultiBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        bricks.add(brickes); //4 là MultiBrick thêm 3 Ball
+                        root.getChildren().add(brickes.getView());
+                    } else if (c =='5') {
+                        Brick brick = new ShrinkPaddle(60 +col * 70, 50 + row * 35,60,25);
                         bricks.add(brick);
                         root.getChildren().add(brick.getView());
                     }

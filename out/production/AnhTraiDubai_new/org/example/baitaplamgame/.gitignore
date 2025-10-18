@@ -1,0 +1,12 @@
+src/main/java/org/example/baitaplamgame/
+
+# IntelliJ IDEA / JetBrains files
+.idea/
+*.iml
+out/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
+
