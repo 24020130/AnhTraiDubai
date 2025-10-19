@@ -25,6 +25,11 @@ public abstract class Brick extends GameObject {
         }
         else if(type.equalsIgnoreCase("fast")){
             view = new ImageView(ImageLoader.BRICK_FAST_IMAGE);
+        } else if (type.equalsIgnoreCase("multibrick")) {
+            view = new ImageView(ImageLoader.MULTI_BALL_BRICK);
+        }
+        else if (type.equalsIgnoreCase("hard")) { // ✅ thêm dòng này
+            view = new ImageView(ImageLoader.HARD_BRICK_IMAGE);
         }
         view.setFitWidth(width);
         view.setFitHeight(height);
@@ -34,11 +39,12 @@ public abstract class Brick extends GameObject {
 
     public void takeHit() {
         hitPoints--;
+        playShakeEffect();
         if (isDestroyed()) {
             view.setVisible(false);
         }
     }
-    private void playShakeEffect() {
+    protected void playShakeEffect() {
         double originalX = view.getX();
         Timeline shake = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(view.xProperty(), originalX)),

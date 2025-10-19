@@ -3,6 +3,7 @@ package org.example.baitaplamgame.Model;
 import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.PowerUp.ExpandPaddlePowerUp;
 import org.example.baitaplamgame.PowerUp.FastBallPower;
+import org.example.baitaplamgame.PowerUp.MultiBallPower;
 
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +41,8 @@ public class CollisionHandler {
                     p = new ExpandPaddlePowerUp(brick.getX(), brick.getY());
                 } else if (brick instanceof FastBrick) {
                     p = new FastBallPower(brick.getX(), brick.getY());
+                } else if (brick instanceof MultiBrick) {
+                    p = new MultiBallPower(brick.getX(), brick.getY());
                 }
                 if(p != null){
                     powerUps.add(p);
@@ -62,7 +65,7 @@ public class CollisionHandler {
         double paddleCenter = paddle.getX() + paddle.getWidth() / 2;
         double ballCenter = ball.getX() + ball.getWidth() / 2;
         double offset = (ballCenter - paddleCenter) / (paddle.getWidth() / 2);
-        double maxBounceAngle = Math.toRadians(75);
+        double maxBounceAngle = Math.toRadians(45);
         double angle = offset * maxBounceAngle;
 
         double speed = ball.getSpeed();

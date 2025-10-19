@@ -3,13 +3,12 @@ package org.example.baitaplamgame.Model;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import org.example.baitaplamgame.Level.Level;
-import org.example.baitaplamgame.Level.Level1;
-import org.example.baitaplamgame.Level.Level2;
+import org.example.baitaplamgame.Level.*;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +17,7 @@ public class GameManager {
     private final Pane root;
     private Paddle paddle;
     private Ball ball;
+    private List<Ball> balls = new ArrayList<>();
     private Level level;
     private final List<PowerUp> powerUps = new ArrayList<>();
     private AnimationTimer timer;
@@ -40,6 +40,14 @@ public class GameManager {
         startLevel(new Level2(2), "/levels/level2.txt");
     }
 
+    private void startLevel3() {
+        startLevel(new Level3(3), "/levels/level3.txt");
+    }
+
+    private void startLevel4() {
+        startLevel(new Level4(4), "/levels/level4.txt");
+    }
+
     private void startLevel(Level levelObj, String filePath) {
         root.getChildren().clear();
         powerUps.clear();
@@ -50,7 +58,7 @@ public class GameManager {
         bgView.setPreserveRatio(false);
         root.getChildren().add(bgView);
 
-        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED);
+        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED,this);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
         paddle.setBall(ball);
         this.level = levelObj;
@@ -69,30 +77,76 @@ public class GameManager {
     }
 
     public void update() {
+        // Di chuyển paddle
         if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
 
-        ball.update();
-        ball.checkCollisionWithWalls(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
-        CollisionHandler.handleBallPaddleCollision(ball, paddle);
+        // Gom tất cả bóng: bóng gốc + bóng được sinh thêm
+        List<Ball> allBalls = new ArrayList<>();
+        allBalls.add(ball);
+        allBalls.addAll(balls);
 
+        // Danh sách PowerUp mới sinh ra khi đập gạch
         List<PowerUp> newPowerUps = new ArrayList<>();
-        Iterator<Brick> iterator = level.getBricks().iterator();
-        while (iterator.hasNext()) {
-            Brick b = iterator.next();
-            if (CollisionHandler.handleBallBrickCollision(ball, b, newPowerUps, root)) {
-                iterator.remove();
+
+        // Duyệt qua tất cả bóng
+        for (Ball b : allBalls) {
+            b.update();
+            b.checkCollisionWithWalls(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+            CollisionHandler.handleBallPaddleCollision(b, paddle);
+
+            // Va chạm bóng với gạch
+            Iterator<Brick> iterator = level.getBricks().iterator();
+            while (iterator.hasNext()) {
+                Brick brick = iterator.next();
+                if (CollisionHandler.handleBallBrickCollision(ball, brick, newPowerUps, root)) {
+                    iterator.remove();
+                }
             }
         }
+
+        // Thêm các power-up mới vào danh sách và scene
         for (PowerUp p : newPowerUps) {
             powerUps.add(p);
             if (!root.getChildren().contains(p.getView())) {
                 root.getChildren().add(p.getView());
             }
         }
+
+        // Xử lý va chạm giữa paddle và power-up
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
+
+        // Dọn các bóng rơi khỏi màn hình (rơi xuống dưới)
+        balls.removeIf(b -> {
+            if (b.getY() > Config.WINDOW_HEIGHT) {
+                root.getChildren().remove(b.getView());
+                return true;
+            }
+            return false;
+        });
+
+        // Kiểm tra qua màn / thua
         if (level.getBricks().isEmpty()) nextLevel();
-        if (ball.getY() > Config.WINDOW_HEIGHT) restartLevel();
+        if (ball.getY() > Config.WINDOW_HEIGHT && balls.isEmpty()) restartLevel();
+    }
+
+    public void spawnExtraBalls(Ball sourceBall, int count) {
+        for (int i = 0; i < count; i++) {
+            Ball newBall = new Ball(
+                    sourceBall.getX(),
+                    sourceBall.getY(),
+                    sourceBall.getView().getFitWidth(),
+                    sourceBall.getSpeed()
+            );
+
+            // Cho hướng ngẫu nhiên một chút
+            double vx = sourceBall.getVelocityX() + (Math.random() - 0.5) * 4;
+            double vy = -Math.abs(sourceBall.getVelocityY());
+            newBall.setVelocity(vx, vy);
+
+            balls.add(newBall);
+            root.getChildren().add(newBall.getView());
+        }
     }
 
     private void nextLevel() {
@@ -125,7 +179,11 @@ public class GameManager {
             root.getChildren().remove(nextLevelImage);
             if (currentLevel == 2) {
                 startLevel2();
-            } else {
+            }
+            else if(currentLevel == 3){
+                startLevel3();
+            }
+            else {
                 System.out.println("Hoàn thành toàn bộ level!");
             }
         });
@@ -141,10 +199,21 @@ public class GameManager {
             startLevel1();
         else if (currentLevel == 2)
             startLevel2();
+        else if (currentLevel == 3){
+            startLevel3();
+        }
     }
 
     public void setupInput(Scene scene) {
         scene.setOnKeyPressed(e -> InputKeys.setKeyPressed(e.getCode().toString()));
         scene.setOnKeyReleased(e -> InputKeys.setKeyReleased(e.getCode().toString()));
     }
+    public void addPowerUp(PowerUp powerUp) {
+        powerUps.add(powerUp);
+        if (!root.getChildren().contains(powerUp.getView())) {
+            root.getChildren().add(powerUp.getView());
+        }
+    }
+
 }
+
