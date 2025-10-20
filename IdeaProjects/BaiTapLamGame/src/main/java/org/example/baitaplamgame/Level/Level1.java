@@ -39,16 +39,16 @@ public class Level1 extends Level{
                 for (int col = 0; col < line.length(); col++) {
                     char c = line.charAt(col);
                     if (c == '1') {
-                        Brick brick = new NormalBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        Brick brick = new NormalBrick(60 + col * 50, 70 + row * 50, 40, 40);
                         bricks.add(brick);
                         root.getChildren().add(brick.getView());
                     } else if (c == '2') {
-                        Brick brick = new GreenBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        Brick brick = new GreenBrick(60 + col * 50, 70 + row * 50, 40, 40);
                         bricks.add(brick);
                         root.getChildren().add(brick.getView());
                     }
                     else if(c == '3'){
-                        Brick brick = new FastBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        Brick brick = new FastBrick(60 + col * 50, 70 + row * 50, 40, 40);
                         bricks.add(brick);
                         root.getChildren().add(brick.getView());
                     }

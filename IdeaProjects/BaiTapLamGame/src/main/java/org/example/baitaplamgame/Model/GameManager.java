@@ -22,6 +22,10 @@ public class GameManager {
     private final List<PowerUp> powerUps = new ArrayList<>();
     private AnimationTimer timer;
     private int currentLevel = 1;
+    private int playerScore = 0;
+    private int playerLives = 4;
+    private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
+
 
     public GameManager(Pane root, double width, double height) {
         this.root = root;
@@ -45,7 +49,7 @@ public class GameManager {
         powerUps.clear();
 
         var bgView = new javafx.scene.image.ImageView(ImageLoader.BACKGROUND_IMAGE);
-        bgView.setFitWidth(Config.WINDOW_WIDTH);
+        bgView.setFitWidth(Config.WINDOW_WIDTH - 220);
         bgView.setFitHeight(Config.WINDOW_HEIGHT);
         bgView.setPreserveRatio(false);
         root.getChildren().add(bgView);
@@ -57,6 +61,10 @@ public class GameManager {
         level.generateLevelFromFile(filePath, root);
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
+        hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        root.getChildren().add(hudPanel);
+        hudPanel.slideIn();
+
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
@@ -73,7 +81,7 @@ public class GameManager {
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
 
         ball.update();
-        ball.checkCollisionWithWalls(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        ball.checkCollisionWithWalls(Config.WINDOW_WIDTH - 220, Config.WINDOW_HEIGHT);
         CollisionHandler.handleBallPaddleCollision(ball, paddle);
 
         List<PowerUp> newPowerUps = new ArrayList<>();
@@ -81,7 +89,10 @@ public class GameManager {
         while (iterator.hasNext()) {
             Brick b = iterator.next();
             if (CollisionHandler.handleBallBrickCollision(ball, b, newPowerUps, root)) {
-                iterator.remove();
+                if(b.isDestroyed()) {
+                    iterator.remove();
+                    playerScore += 10;
+                }
             }
         }
         for (PowerUp p : newPowerUps) {
@@ -92,7 +103,17 @@ public class GameManager {
         }
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
         if (level.getBricks().isEmpty()) nextLevel();
-        if (ball.getY() > Config.WINDOW_HEIGHT) restartLevel();
+        if (ball.getY() > Config.WINDOW_HEIGHT) {
+            if(playerLives > 0) {
+                playerLives--;
+            }
+            else {
+                org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore("player1", playerScore, currentLevel);
+                restartLevel();
+            }
+        }
+        hudPanel.updateHUD(currentLevel, playerScore, playerLives);
+
     }
 
     private void nextLevel() {
@@ -129,7 +150,6 @@ public class GameManager {
                 System.out.println("Hoàn thành toàn bộ level!");
             }
         });
-
         seq.play();
     }
 
@@ -147,4 +167,46 @@ public class GameManager {
         scene.setOnKeyPressed(e -> InputKeys.setKeyPressed(e.getCode().toString()));
         scene.setOnKeyReleased(e -> InputKeys.setKeyReleased(e.getCode().toString()));
     }
+
+//    private void showGameOverScreen() {
+//        timer.stop();
+//        root.getChildren().clear();
+//
+//        javafx.scene.image.ImageView bg = new javafx.scene.image.ImageView(ImageLoader.BACKGROUND_IMAGE);
+//        bg.setFitWidth(Config.WINDOW_WIDTH);
+//        bg.setFitHeight(Config.WINDOW_HEIGHT);
+//        root.getChildren().add(bg);
+//
+//        javafx.scene.control.Label gameOverLabel = new javafx.scene.control.Label("GAME OVER");
+//        gameOverLabel.setStyle("-fx-font-size: 72px; -fx-text-fill: red; -fx-font-weight: bold;");
+//        gameOverLabel.setLayoutX(Config.WINDOW_WIDTH / 2 - 200);
+//        gameOverLabel.setLayoutY(Config.WINDOW_HEIGHT / 2 - 150);
+//        gameOverLabel.setOpacity(0);
+//
+//        javafx.animation.FadeTransition fadeIn = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1), gameOverLabel);
+//        fadeIn.setFromValue(0);
+//        fadeIn.setToValue(1);
+//        fadeIn.play();
+//
+//        javafx.scene.control.Button restartButton = new javafx.scene.control.Button("Restart");
+//        restartButton.setStyle("-fx-font-size: 24px; -fx-background-color: #0f0; -fx-text-fill: black;");
+//        restartButton.setLayoutX(Config.WINDOW_WIDTH / 2 - 80);
+//        restartButton.setLayoutY(Config.WINDOW_HEIGHT / 2 + 50);
+//        // Hiệu ứng phóng to nhẹ khi hiện nút Restart
+//        javafx.animation.ScaleTransition scale = new javafx.animation.ScaleTransition(javafx.util.Duration.seconds(0.8), restartButton);
+//        scale.setFromX(0);
+//        scale.setFromY(0);
+//        scale.setToX(1);
+//        scale.setToY(1);
+//        scale.play();
+//
+//        restartButton.setOnAction(e -> {
+//            playerLives = 3;
+//            playerScore = 0;
+//            currentLevel = 1;
+//            startLevel1();
+//        });
+//
+//        root.getChildren().addAll(gameOverLabel, restartButton);
+//    }
 }

@@ -62,7 +62,7 @@ public class CollisionHandler {
         double paddleCenter = paddle.getX() + paddle.getWidth() / 2;
         double ballCenter = ball.getX() + ball.getWidth() / 2;
         double offset = (ballCenter - paddleCenter) / (paddle.getWidth() / 2);
-        double maxBounceAngle = Math.toRadians(75);
+        double maxBounceAngle = Math.toRadians(45);
         double angle = offset * maxBounceAngle;
 
         double speed = ball.getSpeed();

@@ -20,8 +20,7 @@ public class Ball extends MovableObject {
         super(x, y, size, size);
         this.speed = speed;
 
-        // Khởi đầu đi chéo lên trên bên phải
-        double angle = Math.toRadians(-45);
+        double angle = Math.toRadians(-60);
         this.velocityX = speed * Math.cos(angle);
         this.velocityY = speed * Math.sin(angle);
 
@@ -96,19 +95,24 @@ public class Ball extends MovableObject {
         return view;
     }
 
-    // Bật lại khi chạm tường
     public void checkCollisionWithWalls(double sceneWidth, double sceneHeight) {
-        if (x <= 0 || x + width >= sceneWidth) {
+        if (x <= 0) {
+            x = 0;
             velocityX *= -1;
             createRainbowExplosion(x + width / 2, y + height / 2);
         }
+        if (x + width > sceneWidth) {
+           x = sceneWidth - width;
+           velocityX *= -1;
+           createRainbowExplosion(x + width / 2, y + height / 2);
+        }
         if (y <= 0) {
+            y = 0;
             velocityY *= -1;
             createRainbowExplosion(x + width / 2, y + height / 2);
         }
     }
 
-    // Bật lại khi va chạm với vật thể (Player / Brick)
     public void bounceOff(GameObject obj) {
         Bounds ballBounds = this.getBounds();
         Bounds objBounds = obj.getBounds();
@@ -129,7 +133,6 @@ public class Ball extends MovableObject {
         createRainbowExplosion(ballCenterX, ballCenterY);
     }
 
-    // Cho phép chỉnh vận tốc theo góc paddle
     public void setVelocity(double vx, double vy) {
         this.velocityX = vx;
         this.velocityY = vy;

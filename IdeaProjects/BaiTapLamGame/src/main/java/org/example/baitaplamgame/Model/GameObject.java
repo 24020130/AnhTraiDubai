@@ -20,6 +20,7 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
 
     public Bounds getBounds() {
+//        return new BoundingBox(x, y, width, height);
         return new BoundingBox(x, y, width, height);
     }
 

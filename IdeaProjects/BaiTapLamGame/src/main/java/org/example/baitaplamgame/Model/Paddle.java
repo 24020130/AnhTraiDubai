@@ -1,7 +1,12 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.Config;
 
@@ -26,6 +31,7 @@ public class Paddle extends MovableObject {
     @Override
     public void update() {
         updateView();
+        createTrail();
     }
 
     public void moveLeft() {
@@ -60,6 +66,22 @@ public class Paddle extends MovableObject {
         if (x < 0) x = 0;
         if (x + width > Config.WINDOW_WIDTH) x = Config.WINDOW_WIDTH - width;
         updateView();
+    }
+
+    private void createTrail() {
+        Pane parent = (Pane) view.getParent();
+        if (parent == null) return;
+
+        Circle trail = new Circle(x + width / 2, y + height / 2, 6);
+        double hue = Math.random() * 360;
+        trail.setFill(Color.hsb(hue, 1.0, 1.0, 0.4));
+        parent.getChildren().add(trail);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(400), trail);
+        fade.setFromValue(0.8);
+        fade.setToValue(0.0);
+        fade.setOnFinished(e -> parent.getChildren().remove(trail));
+        fade.play();
     }
 
     public double getHeight() {
