@@ -1,72 +1,49 @@
 package org.example.baitaplamgame.Ui;
 
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
-public class HUDPanel extends VBox {
+public class HUDPanel extends Pane {
 
-    private final Text levelText;
-    private final Text scoreText;
-    private final Text livesText;
-    private final double panelWidth = 220;
+    private Text scoreText;
+    private Text livesText;
+    private Text levelText;
 
-    public HUDPanel(double windowWidth, double windowHeight) {
-        setPrefWidth(panelWidth);
-        setPrefHeight(windowHeight);
-        setLayoutX(windowWidth - panelWidth);
-        setLayoutY(0);
+    private int score = 0;
+    private int lives = 3;
+    private int level = 1;
 
-        setSpacing(35);
-        setAlignment(Pos.TOP_CENTER);
-        setPadding(new Insets(100, 0, 0, 0));
+    public HUDPanel(double width, double height) {
+        setPrefSize(width, height);
+        setPickOnBounds(false); // Không chặn click của các phần dưới
+        setMouseTransparent(true); // Cho phép GamePanel nhận input
 
-        setStyle("""
-            -fx-background-color: linear-gradient(to bottom right, #2A0900, #4A0E00, #7B1B00);
-            -fx-background-radius: 15;
-            -fx-border-radius: 15;
-            -fx-border-color: linear-gradient(to right, #FF8000, #FF3300);
-            -fx-border-width: 2;
-            -fx-effect: dropshadow(three-pass-box, rgba(255,100,0,0.5), 20, 0.3, 0, 0);
-            """);
+        scoreText = new Text(20, 30, "Score: " + score);
+        livesText = new Text(width / 2 - 30, 30, "Lives: " + lives);
+        levelText = new Text(width - 100, 30, "Level: " + level);
 
-        Text title = new Text("PLAYER STATUS");
-        title.setFont(Font.font("Consolas", FontWeight.BOLD, 22));
-        title.setFill(Color.web("#FFA500"));
-        title.setEffect(new DropShadow(15, Color.web("#FF3300")));
+        for (Text t : new Text[]{scoreText, livesText, levelText}) {
+            t.setFont(Font.font(20));
+            t.setFill(Color.WHITE);
+        }
 
-        levelText = createText("Level: 1");
-        scoreText = createText("Score: 0");
-        livesText = createText("Lives: 3");
-
-        getChildren().addAll(title, levelText, scoreText, livesText);
+        getChildren().addAll(scoreText, livesText, levelText);
     }
 
-    private Text createText(String s) {
-        Text t = new Text(s);
-        t.setFont(Font.font("Consolas", FontWeight.BOLD, 18));
-        t.setFill(Color.web("#FFF5E6")); // trắng vàng ấm
-        t.setEffect(new DropShadow(5, Color.web("#FF6600")));
-        return t;
-    }
-
-    public void updateHUD(int level, int score, int lives) {
-        levelText.setText("Level: " + level);
+    public void updateScore(int s) {
+        score = s;
         scoreText.setText("Score: " + score);
+    }
+
+    public void updateLives(int l) {
+        lives = l;
         livesText.setText("Lives: " + lives);
     }
 
-    public void slideIn() {
-        TranslateTransition tt = new TranslateTransition(Duration.seconds(1), this);
-        setTranslateX(panelWidth);
-        tt.setToX(0);
-        tt.play();
+    public void updateLevel(int l) {
+        level = l;
+        levelText.setText("Level: " + level);
     }
 }
