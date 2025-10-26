@@ -2,6 +2,7 @@ package org.example.baitaplamgame.Model;
 
 import javafx.animation.FadeTransition;
 import javafx.geometry.Bounds;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,7 +21,6 @@ public class Paddle extends MovableObject {
         super(x, y, width, height);
         this.speed = speed;
 
-
         view = new ImageView(ImageLoader.PADDLE_IMAGE);
         view.setFitWidth(width);
         view.setFitHeight(height);
@@ -31,7 +31,6 @@ public class Paddle extends MovableObject {
         this(x, y, width, height, speed);
         this.gameManager = gameManager;
     }
-
 
     @Override
     public void update() {
@@ -45,7 +44,7 @@ public class Paddle extends MovableObject {
     }
 
     public void moveRight() {
-        x = Math.min(Config.WINDOW_WIDTH - width, x + speed);
+        x = Math.min(Config.WINDOW_WIDTH - width -220, x + speed);
         updateView();
     }
 

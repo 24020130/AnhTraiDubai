@@ -20,6 +20,7 @@ import java.util.List;
 public class GameManager {
     private final Pane root;
     private Paddle paddle;
+    private SupportPaddle supportPaddle;
     private Ball ball;
     private List<Ball> balls = new ArrayList<>();
     private Level level;
@@ -70,34 +71,97 @@ public class GameManager {
         root.getChildren().add(bgView);
 
 
-        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED, this);
+        paddle = new Paddle(350, 625, 100, 20, Config.PADDLE_SPEED, this);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
         paddle.setBall(ball);
         this.level = levelObj;
         level.generateLevelFromFile(filePath, root);
 
-        root.getChildren().addAll(paddle.getView(), ball.getView());
+        root.getChildren().add(paddle.getView());
+        root.getChildren().add(ball.getView());
+        if (currentLevel == 2) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20);
+            root.getChildren().add(supportPaddle.getView());
+
+        }
+
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
         root.getChildren().add(hudPanel);
         hudPanel.slideIn();
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+            private static final long FRAME_INTERVAL = 10_000_000; // ~100 FPS
+
             @Override
             public void handle(long now) {
-                update();
+                if (now - lastUpdate >= FRAME_INTERVAL) {
+                    update();
+                    lastUpdate = now;
+                }
             }
         };
+
         timer.start();
     }
 
     public void update() {
         if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
+        if (supportPaddle != null) {
+            supportPaddle.update();
+            // cập nhật Laze
+            for (Laze l : supportPaddle.getLazeList()) {
+                if (!root.getChildren().contains(l.getView())) {
+                    root.getChildren().add(l.getView());
+                }
+            }
+
+            // xử lý va chạm và xóa Laze khi ra khỏi màn hình
+            Iterator<Laze> lazeIterator = supportPaddle.getLazeList().iterator();
+            while (lazeIterator.hasNext()) {
+                Laze l = lazeIterator.next();
+                Iterator<Brick> brickIterator = level.getBricks().iterator();
+                while (brickIterator.hasNext()) {
+                    Brick brick = brickIterator.next();
+                    if (!brick.isDestroyed() && CollisionHandler.checkCollision(l, brick)) {
+                        brick.takeHit();
+
+                        // Xóa brick ra khỏi danh sách và khỏi màn hình
+                        // Hiệu ứng nhấp nháy trước khi biến mất
+                        javafx.animation.Timeline flash = new javafx.animation.Timeline(
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(50),
+                                        e -> brick.getView().setOpacity(0.3)),
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),
+                                        e -> brick.getView().setOpacity(1.0))
+                        );
+                        flash.setCycleCount(4); // nhấp nháy 4 lần
+                        flash.setAutoReverse(true);
+
+                        flash.setOnFinished(e -> {
+                            root.getChildren().remove(brick.getView());
+                        });
+
+
+                        brickIterator.remove();
+                        flash.play();
+
+                        // Xóa Laze
+                        lazeIterator.remove();
+                        root.getChildren().remove(l.getView());
+                        break;
+                    }
+                }
+            }
+
+        }
+
 
         List<Ball> allBalls = new ArrayList<>();
         allBalls.add(ball);
         allBalls.addAll(balls);
+
 
         List<PowerUp> newPowerUps = new ArrayList<>();
         for (Ball b : allBalls) {

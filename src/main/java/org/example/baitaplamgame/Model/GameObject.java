@@ -7,7 +7,9 @@ import java.awt.Graphics;
 
 public abstract class GameObject {
     protected double x, y, width, height;
+    protected  double x_sp,y_sp,width_sp,height_sp;
     protected ImageView view;
+    protected ImageView spamLaze;
 
     public GameObject(double x, double y, double width, double height) {
         this.x = x;
@@ -35,6 +37,23 @@ public abstract class GameObject {
     }
 
     public double getX() { return x; }
+
+    public double getX_sp() {
+        return x_sp;
+    }
+
+    public double getY_sp() {
+        return y_sp;
+    }
+
+    public double getWidth_sp() {
+        return width_sp;
+    }
+
+    public double getHeight_sp() {
+        return height_sp;
+    }
+
     public double getY() { return y; }
     public ImageView getView() { return view; }
 
