@@ -35,6 +35,6 @@ public class Laze extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        // Không cần vẽ gì thêm, vì đã có view trong JavaFX
+
     }
 }
