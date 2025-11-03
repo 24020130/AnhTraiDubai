@@ -4,7 +4,343 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d699015-4561-470b-ac9b-d0880f31c1d7" name="Changes" comment="intial commit" />
+    <list default="true" id="6d699015-4561-470b-ac9b-d0880f31c1d7" name="Changes" comment="intial commit">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/baitaplamgame/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/Level.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/Level1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/Level2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/Level3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/Level4.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Level/level1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/Ball.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/Brick.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/CollisionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/FastBrick.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/GameManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/GameObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/GreenBrick.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/MovableObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/MultiBallBrick.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/NormalBrick.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/Paddle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Model/PowerUp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/PowerUp/ExpandPaddlePowerUp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/PowerUp/FastBallPower.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/PowerUp/MultiBallPower.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/brickGreen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/item.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/ProjectGame1/player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Ui/GameFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Ui/GamePanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Ui/HUDPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Ui/MenuPanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Utlis/Config.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Utlis/ImageLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Utlis/InputKeys.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Utlis/ScoreFileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/Utlis/SoundManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/levels/level1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/levels/level111.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects/BaiTapLamGame/src/main/java/org/example/baitaplamgame/levels/level2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BaiTapLamGame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiTapLamGame.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Blue_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Blue_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/FastBrick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/FastBrick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/FastBrick1.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/FastBrick1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/095229728fe083c3.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/1608-e55008a35d113345.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/1668-2141420171228411.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/1821-139b99b67b8fcab4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/1958-e9e7b2e985778a09.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/2063-8e9c73b4c7240b5e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/2074.baca4f8db7c4ce81.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/2196.6aa9e278a0b483a5.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/23.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/2552-c2da6b7b12e223d9.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/2969-c83f664b11002085.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/3148-b16a70d9e67b1a34.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/3377-014bfb7ec8c5c7e4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/3635-8f8431166d4906a3.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/3d-voxel-mountain-landscape-illustration-background-design-perspective-terrain-view-panorama-3d-voxel-mountain-landscape-ai-generated_87720-22146.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/4574-94115835fda5012f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/4581-5bee53876430943b.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/4f4959459e937465.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/544f3dd743d08959.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/5454-ed68fa59aaec3b5d.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/5554-10750366e49cfc17.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/5817-17e4c5d502e42a3a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/582-fe1d1ae2a7889083.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/7092-cec4d35b5d99711b.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/710b68f56e956bb2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/7329-b4b238b156541290.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/7482-2085a335267f5f10.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/7757-5a50976001d7b0e5.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/7797-3c8ed61b16e93ca8.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8058-9660667b49205d83.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8147-af238b5723acfb5a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8674-73574b0557abc298.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8780.7bc79c2e0abab4a7.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/88b572f1f6aab020.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8984-c80d44287771415f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/8a03ecfe0ecf678e.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/9856-07e481816b24669f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/[...param]-a5d7b4364c541173.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/_app-86e3b68d978eb379.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/_buildManifest.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/_ssgManifest.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/a560a8b2abac9e48.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/a62fc6a3d7a32447.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/a964026ac21a79c7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/adventure-cartoon-with-lava-unstable-bridge-magma-river-rocky-walls-concept-adventure-cartoon-lava-unstable-bridge-magma-river_918839-380592.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/alien-planet-cartoon-space-landscape-with-pink-meteor-rock-desert-ground-vector-background-with-outer-cosmic-scenery-fantasy-star-landing-mars-explode-horizon-fantastic-night-backdrop_107791-21364.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/alien-planet-landscape-with-explosion-sky_107791-14461.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/alien-planet-landscape_107791-26809.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/alien-space-planet-landscape-background-brook-crack-mars-desert-vector-game-illustration-martian-ground-surface-terrain-blue-stream-fantasy-outer-orange-universe-scene-dust-environment_107791-24521.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/ancient-stone-arena-game-battle-space_107791-18904.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/arcade-game-progress-map-fantasy-forest-background-vector-cartoon-illustration-floating-stone-platforms-with-golden-stars-lock-icons-giant-mushrooms-green-land-stars-night-sky_107791-22618.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/arcade-game-progress-map-space-background-vector-cartoon-illustration-alien-aircraft-traveling-floating-islands-collect-bonus-points-golden-stars-lock-icons-stone-platforms_107791-22225.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/b3a68a157ae3bfa6.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/b5684b5452d8a284.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/b8e302d41b271438.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/background-design-with-planet-stars_1308-69641.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-alien-space-planet-surface-fantastic-mars_8071-68183.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-forest-landscape-endless-nature-background-computer-games-nature-tree-outdoor-plant-green-natural-environment-wood_1284-41524.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-illustration-bridge-with-bird-flying-it_1086760-96305.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-illustration-landscape-with-planets-planets_1086760-29196.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-landscape-with-green-field-words-future_1086760-138349.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-nature-landscape-summer-2d-background_107791-14518.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/cartoon-style-game-interface_23-2149245087.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/celestial-alien-landscape_1410957-76734.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/celestial-spectacle-alien-planet-space-art_1410957-43613.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/clear-plain-shiny-soft-vintage-bokeh-cloudy-wave-like-geometric-brown-background-texture_1260074-104879.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/client" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/colorful-gradient-space-with-rocket-background_974629-48816.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/ef46db3751d8e999.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/fantasy-evening-landscape-with-castle-hill_226137-861.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/fantasy-forest-nature-landscape_33070-5425.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/fantasy-space-cartoon-game-concept-background_887552-42159.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/floating-islands-game-background-level-design_107791-8722.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/framework-235d946df266af2e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/freepikcompany.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/futuristic-neon-landscape-with-glowing-mountains-starry-sky_451997-5620.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727648.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727650.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727652.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727654.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727657.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727692(1).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/galaxy-planets-digital-art_23-2151727692.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/game-template-forest-scene_1639-27105.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/game-template-forest-scene_1639-27655.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/grey-land-game-design_1284-34895.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/hand-drawn-video-game-background_23-2150305035.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/image-is-beautiful-landscape-alien-planet-planet-is-covered-strange-wonderful-plants-creatures_1187703-114400.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/island-floating-sky-fantasy-game-background-magic-landscape-with-flying-land-environment-ui-videogame-design-heaven-dream-paradise-scenery-with-lawn-platform-level-fight-grass-arena_107791-21760.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/magic-portal-alien-planet-space-landscape_107791-6249.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/magic-portal-mountain-alien-planet-surface_107791-12960.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/magic-portal-mountain-top-alien-planet-surface-futuristic-landscape-background-with-glowing-entrance-rock-starry-sky-fantasy-book-computer-game-scene-cartoon-vector-illustration_107791-4566.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/magic-portal-stone-frame-desert-landscape-night_107791-5307.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/main-7593cafa0229388e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/mars-rover-blue-planet-surface-explore-space_107791-7643.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/mars-rover-red-planet-surface-explore-alien-landscape_107791-3985.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/mystical-moonlit-path-through-rocky-mountains_992999-14394.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/otBannerSdk.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/otSDKStub.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/pink-forest-game-background-floating-platforms_107791-28257.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/pixel-art-landscape-battle-arena-game-background-with-vintage-animation-scene-8-bit-arcade-games-retro-pixelated-playing-view-vector-illustration-environment-video-game-banner-promotion_473751-11257.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/polyfills-42372ed130431b0a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/powered_by_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/purple-alien-landscape-with-planet-rocky-surface_107791-25457.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/rail-underground-mine-cave-cartoon-game-vector-purple-crystal-diamond-treasure-indoor-old-tunnel-construction-with-metal-railway-mysterious-sunlight-ray-inside-from-hole-through-stalagmite_107791-24.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/saved_resource(1).html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/saved_resource.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/search-3b1cc02dcef66832.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/space-game-level-banner-with-platforms-flying-spaceship_107791-6347.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/style" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/sunny-day-with-yellow-smiley-face-green-grass-field-with-blue-sky-clouds_1318093-5296.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/there-is-digital-painting-desert-with-circular-structure_955884-116149.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/there-is-large-bed-room-with-large-window-generative-ai_958078-20173.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/tree-sky-with-clouds-tree_1086760-106203.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/video-game-background-deisgn_23-2150257542.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/virtual-reality-cave-exploration-ai-generate_250484-11939.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/webpack-5bf67653d5cc50d4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/whale-swims-deep-space-illustration_33099-2027.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/winter-ice-alien-planet-landscape-game-background-night-fantasy-frozen-world-vector-cosmic-environment-rpg-extraterrestrial-wallpaper-with-floating-island-starry-sky-scene-illustration_107791-22092.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Galaxy planets digital art _ AI-generated image_files/wizard-walk-magic-portal-stone-frame-mountain-landscape_107791-6266.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Green_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Green_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ItemShirk.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/ItemShirk.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Item_star.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Item_star.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Jade_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Jade_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Multiballbrick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Multiballbrick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Orange_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Orange_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Purple_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Purple_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ShirkPaddle.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/ShirkPaddle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/095229728fe083c3.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/13115374-220407115921.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/1608-e55008a35d113345.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/1668-2141420171228411.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/1821-139b99b67b8fcab4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/1958-e9e7b2e985778a09.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/2063-8e9c73b4c7240b5e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/2074.baca4f8db7c4ce81.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/2196.6aa9e278a0b483a5.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/2552-c2da6b7b12e223d9.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/2969-c83f664b11002085.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/3148-b16a70d9e67b1a34.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/3377-014bfb7ec8c5c7e4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/3635-8f8431166d4906a3.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/3d-fantasy-scene_23-2151127938.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/3d-futuristic-hexagon-landscape-technology-big-data-concept_926199-666823.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/4574-94115835fda5012f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/4581-5bee53876430943b.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/4f4959459e937465.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/544f3dd743d08959.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/5454-ed68fa59aaec3b5d.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/5554-10750366e49cfc17.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/5817-17e4c5d502e42a3a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/582-fe1d1ae2a7889083.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/7092-cec4d35b5d99711b.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/710b68f56e956bb2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/7329-b4b238b156541290.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/7482-2085a335267f5f10.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/7757-5a50976001d7b0e5.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/7797-3c8ed61b16e93ca8.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8058-9660667b49205d83.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8147-af238b5723acfb5a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8674-73574b0557abc298.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8780.7bc79c2e0abab4a7.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/88b572f1f6aab020.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8984-c80d44287771415f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/8a03ecfe0ecf678e.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/9856-07e481816b24669f.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/[...param]-a5d7b4364c541173.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/_app-86e3b68d978eb379.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/_buildManifest.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/_ssgManifest.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/a560a8b2abac9e48.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/a62fc6a3d7a32447.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/a964026ac21a79c7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/abstract-backgound-with-purple-orange-light-rays-god-rays-light-burst-with-bokeh-generated-ai_116953-7546.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-night-planet-landscape-space-game-background_107791-12914.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-planet-landscape-night-space-game_107791-2399.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-planet-landscape-space-game-background_107791-1847(1).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-planet-landscape-space-game-background_107791-1847.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-planet-landscape-with-ice-flying-islands_107791-12853.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/alien-space-planet-cartoon-landscape-background-mars-desert-game-cartoon-vector-illustration-with-rock-purple-ground-moon-sky-futuristic-martian-surface-outer-cosmos-scene-with-glow-sce.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/b3a68a157ae3bfa6.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/b5684b5452d8a284.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/b8e302d41b271438.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/background-design-with-planet-stars_1308-38521.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/big-stone-golem-sleeping-alien-planet-surface_107791-10011.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-alien-planet-surface-with-stones_107791-19832(1).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-alien-planet-surface-with-stones_107791-19832.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-forest-landscape-endless-nature-background-computer-games-nature-tree-outdoor-plant-green-natural-environment-wood_1284-41524.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-game-interface-with-rocks_23-2149721195.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-illustration-rocky-area-with-lot-rocks-generative-ai_1034581-2313.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/cartoon-landscape-with-tree-bridge_670382-361545.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/client" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/close-up-cartoon-scene-rocky-area-with-rocks-glowing-lights-generative-ai_1034581-20834.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/close-up-stone-walkway-game-with-sky-background-generative-ai_1034973-55291.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/close-up-video-game-scene-with-circular-area-generative-ai_1034973-55426.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/crystal-cave-illustration-background_1031776-35819.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/dangerous-alien-planet-surface-with-rocky-surface_107791-17538.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/digital-painting-desert-scene-with-mountains-river_667286-6262.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/ef46db3751d8e999.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/ethereal-landscape-featuring-glowing-platform-surrounded-by-vibrant-clouds-beams-light_687463-18768.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/fantasy-alien-planet-landscape-space-game-vector_107791-13259.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/framework-235d946df266af2e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/freepikcompany.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/galaxy-planets-digital-art_23-2151727655.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/galaxy-space-neon-background_87720-102108.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/gradient-grid-background_23-2150610361.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/green-blurred-background-with-lights_1029473-134331.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/large-stones-grass-trees-path-cartoon-game-background-bright-blue-sky-game-level-illustration-landscape-design-nature-environment-scenic-view_543062-11299.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/main-7593cafa0229388e.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/mars-landscape-alien-planet-background-red-desert_107791-13075.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/mars-landscape-alien-planet-martian-background_107791-1781.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/meteor-shower-alien-planet-with-red-desert-rocks-vector-cartoon-illustration-mars-surface-landscape-falling-fireballs-flying-meteorites-with-fire-from-cosmos_107791-9378.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/mountain-landscape-with-snow-stars-sunrise-vector-illustration_861724-22452.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/mystical-space-landscape-alien-planet-with-moons-stars-scifi-background_898634-1340.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/nature-background-people-animal-game-architecture-logo-mockup_1086760-37566.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/neon-grid-background_53876-91657.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/otBannerSdk.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/otSDKStub.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/polyfills-42372ed130431b0a.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/powered_by_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/purple-alien-space-planet-game-cartoon-background_107791-19696.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/saved_resource(1).html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/saved_resource.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/screenshot-landscape-with-mountains-clouds_1086760-139844.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/search-3b1cc02dcef66832.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-adventure-game-map-with-floating-platforms_107791-26003.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-adventure-game-platforms-with-coins_107791-18123.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-background-with-landscape-alien-planet-with-mountains-green-glow-from-cracks-ground_107791-6604.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-background-with-landscape-alien-planet_107791-1082.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-background-with-landscape-alien-planet_107791-1125.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-game-background-with-landscape-planet_107791-1700(1).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-game-background-with-landscape-planet_107791-1700.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-game-level-background-with-rocky-platforms_107791-14455.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-game-mobile-arcade-with-flying-platforms_107791-14462.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/space-illustration-night-alien-fantasy-landscape_33099-1873.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/style" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/there-is-cartoon-style-illustration-mountain-scene_1034470-113460.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/vector-game-space-background-floating-platform-ui_107791-18668.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/vertical-nature-scene-landscape-countryside-with-forest-view-yellow-sunset-sky-view_1639-16739.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/vibrant-space-planet-terrain-illustration-with-cosmos-theme_1120558-7693.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/webpack-5bf67653d5cc50d4.js.download" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Space game background with landscape of planet _ Free Vector_files/with-galaxy-theme-green-color_1308-37644.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Yellow_Brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/Yellow_Brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ball.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/ball.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ball15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ball2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/be.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/be.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg1.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/bg1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg2.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/bg2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg3.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/bg3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg4.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/bg4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brick.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/brick.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brick4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brickGreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/brickGreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brickGreen1.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/brickGreen1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/img1 (2).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/img1.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/img1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/item.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/item.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/item1.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/item1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/nex.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/next.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/next.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/player.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/player.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/player5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/levels/level1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level11.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/levels/level2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Ball.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Ball.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Brick.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Brick.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Paddle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Paddle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ImageLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ImageLoader.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,45 +373,50 @@
     &quot;accountId&quot;: &quot;9bc8ac61-cb63-4400-b6d5-e35850aebf69&quot;
   }
 }</component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="33eW5YWzpuG3jHHZX4pvvJcO9pj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "kotlin-language-version-configured": "true",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hieuphan&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo LOQ/IdeaProjects/BaiTapLamGame&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="23" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="org.example.baitaplamgame.Main" />
       <module name="BaiTapLamGame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.baitaplamgame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="BaiTapLamGame" />
-      <option name="filePath" />
-      <method v="2" />
     </configuration>
   </component>
   <component name="TaskManager">
