@@ -1,0 +1,186 @@
+package org.example.baitaplamgame.Model;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Bounds;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
+import org.example.baitaplamgame.Utlis.ImageLoader;
+
+public class Ball extends MovableObject {
+    private double speed;
+    private double velocityX, velocityY;
+    private final ImageView view;
+
+    public Ball(double x, double y, double size, double speed) {
+        super(x, y, size, size);
+        this.speed = speed;
+
+        double angle = Math.toRadians(-60);
+        this.velocityX = speed * Math.cos(angle);
+        this.velocityY = speed * Math.sin(angle);
+
+        view = new ImageView(ImageLoader.BALL_IMAGE);
+        view.setFitWidth(size);
+        view.setFitHeight(size);
+        view.setX(x);
+        view.setY(y);
+    }
+
+    @Override
+    public void update() {
+        x += velocityX;
+        y += velocityY;
+        updateView();
+        createTrail();
+    }
+
+    private void updateView() {
+        view.setX(x);
+        view.setY(y);
+    }
+
+    private void createTrail() {
+        Pane parent = (Pane) view.getParent();
+        if (parent == null) return;
+
+        Circle trail = new Circle(x + width / 2, y + height / 2, 6);
+        double hue = Math.random() * 360;
+        trail.setFill(Color.hsb(hue, 1.0, 1.0, 0.4));
+        parent.getChildren().add(trail);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(400), trail);
+        fade.setFromValue(0.8);
+        fade.setToValue(0.0);
+        fade.setOnFinished(e -> parent.getChildren().remove(trail));
+        fade.play();
+    }
+
+    public void createRainbowExplosion(double centerX, double centerY) {
+        Pane parent = (Pane) view.getParent();
+        if (parent == null) return;
+
+        for (int i = 0; i < 10; i++) {
+            Circle spark = new Circle(centerX, centerY, 4);
+            double hue = Math.random() * 360;
+            spark.setFill(Color.hsb(hue, 1.0, 1.0, 0.8));
+            parent.getChildren().add(spark);
+
+            double dx = (Math.random() - 0.5) * 8;
+            double dy = (Math.random() - 0.5) * 8;
+
+            TranslateTransition move = new TranslateTransition(Duration.millis(500), spark);
+            move.setByX(dx * 15);
+            move.setByY(dy * 15);
+
+            FadeTransition fade = new FadeTransition(Duration.millis(500), spark);
+            fade.setFromValue(1.0);
+            fade.setToValue(0.0);
+
+            ParallelTransition combo = new ParallelTransition(move, fade);
+            combo.setOnFinished(e -> parent.getChildren().remove(spark));
+            combo.play();
+        }
+    }
+
+    public Bounds getBounds() {
+        return view.getBoundsInParent();
+    }
+
+    public ImageView getView() {
+        return view;
+    }
+
+    public void checkCollisionWithWalls(double sceneWidth, double sceneHeight) {
+        if (x <= 0) {
+            x = 0;
+            velocityX *= -1;
+            createRainbowExplosion(x + width / 2, y + height / 2);
+        }
+        if (x + width > sceneWidth) {
+           x = sceneWidth - width;
+           velocityX *= -1;
+           createRainbowExplosion(x + width / 2, y + height / 2);
+        }
+        if (y <= 0) {
+            y = 0;
+            velocityY *= -1;
+            createRainbowExplosion(x + width / 2, y + height / 2);
+        }
+    }
+
+    public void bounceOff(GameObject obj) {
+        Bounds ballBounds = this.getBounds();
+        Bounds objBounds = obj.getBounds();
+
+        if (ballBounds == null || objBounds == null) return;
+
+        double ballCenterX = ballBounds.getMinX() + ballBounds.getWidth() / 2;
+        double ballCenterY = ballBounds.getMinY() + ballBounds.getHeight() / 2;
+        double objCenterX = objBounds.getMinX() + objBounds.getWidth() / 2;
+        double objCenterY = objBounds.getMinY() + objBounds.getHeight() / 2;
+
+        double dx = ballCenterX - objCenterX;
+        double dy = ballCenterY - objCenterY;
+
+        double overlapX = (ballBounds.getWidth() / 2 + objBounds.getWidth() / 2) - Math.abs(dx);
+        double overlapY = (ballBounds.getHeight() / 2 + objBounds.getHeight() / 2) - Math.abs(dy);
+
+        if (overlapX < overlapY) {
+            if (dx > 0) {
+                x += overlapX + 0.1;
+            } else {
+                x -= overlapX + 0.1;
+            }
+            velocityX *= -1;
+        } else {
+            if (dy > 0) {
+                y += overlapY + 0.1;
+            } else {
+                y -= overlapY + 0.1;
+            }
+            velocityY *= -1;
+        }
+
+        updateView();
+        createRainbowExplosion(ballCenterX, ballCenterY);
+    }
+
+
+    public void setVelocity(double vx, double vy) {
+        this.velocityX = vx;
+        this.velocityY = vy;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+    public void setSpeed(double newSpeed) {
+        double angle = Math.atan2(velocityY, velocityX); // Giữ nguyên hướng
+        this.speed = newSpeed;
+        this.velocityX = newSpeed * Math.cos(angle);
+        this.velocityY = newSpeed * Math.sin(angle);
+    }
+    private boolean hasCollidedWithPaddle = false;
+
+    public boolean hasCollidedWithPaddle() {
+        return hasCollidedWithPaddle;
+    }
+
+    public void setHasCollidedWithPaddle(boolean value) {
+        this.hasCollidedWithPaddle = value;
+    }
+
+}
