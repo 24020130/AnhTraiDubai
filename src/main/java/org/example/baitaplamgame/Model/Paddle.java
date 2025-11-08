@@ -45,7 +45,7 @@ public class Paddle extends MovableObject {
     }
 
     public void moveRight() {
-        x = Math.min(Config.WINDOW_WIDTH - width, x + speed);
+        x = Math.min(Config.WINDOW_WIDTH - width - 220, x + speed);
         updateView();
     }
 
@@ -121,8 +121,4 @@ public class Paddle extends MovableObject {
     public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
     }
-
-
-
-
 }

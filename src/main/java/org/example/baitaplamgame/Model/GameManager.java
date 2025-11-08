@@ -6,13 +6,13 @@ import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.Level.Level;
 import org.example.baitaplamgame.Level.Level1;
 import org.example.baitaplamgame.Level.Level2;
+import org.example.baitaplamgame.Level.Level5;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
+import org.example.baitaplamgame.PowerUp.BossBullet;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,18 +25,21 @@ public class GameManager {
     private Level level;
     private final List<PowerUp> powerUps = new ArrayList<>();
     private AnimationTimer timer;
+    private SupportPaddle supportPaddle;
     private int currentLevel = 1;
     private int playerScore = 0;
     private int playerLives = 4;
-    private Image bgImage;
+    private boolean gameOver = false;
     private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
 
     public GameManager(Pane root, double width, double height) {
         this.root = root;
     }
-
     public void startGame() {
         currentLevel = 1;
+        playerLives = 4;
+        playerScore = 0;
+        gameOver = false;
         startLevel1();
     }
 
@@ -48,27 +51,34 @@ public class GameManager {
         startLevel(new Level2(2), "/levels/level2.txt");
     }
 
+    private void startLevel5() {
+        startLevel(new Level5(5), "/levels/level5.txt");
+    }
+
     private void startLevel(Level levelObj, String filePath) {
+        gameOver = false;
+
+        if (supportPaddle != null) {
+            root.getChildren().remove(supportPaddle.getView());
+            supportPaddle = null;
+        }
         root.getChildren().clear();
         powerUps.clear();
         balls.clear();
 
-
-
-        switch (currentLevel) {
-            case 1: bgImage = ImageLoader.BACKGROUND_LEVEL1; break;
-            case 2: bgImage = ImageLoader.BACKGROUND_LEVEL2; break;
-            case 3: bgImage = ImageLoader.BACKGROUND_LEVEL3; break;
-            case 4: bgImage = ImageLoader.BACKGROUND_LEVEL4; break;
-            default: bgImage = ImageLoader.BACKGROUND_LEVEL1; break;
-        }
+        var bgImage = switch (currentLevel) {
+            case 1 -> ImageLoader.BACKGROUND_LEVEL1;
+            case 2 -> ImageLoader.BACKGROUND_LEVEL2;
+            case 3 -> ImageLoader.BACKGROUND_LEVEL3;
+            case 4 -> ImageLoader.BACKGROUND_LEVEL4;
+            default -> ImageLoader.BACKGROUND_LEVEL1;
+        };
 
         var bgView = new ImageView(bgImage);
         bgView.setFitWidth(Config.WINDOW_WIDTH - 220);
         bgView.setFitHeight(Config.WINDOW_HEIGHT);
         bgView.setPreserveRatio(false);
         root.getChildren().add(bgView);
-
 
         paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED, this);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
@@ -77,21 +87,33 @@ public class GameManager {
         level.generateLevelFromFile(filePath, root);
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
+        if (currentLevel == 2) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20);
+            root.getChildren().add(supportPaddle.getView());
+
+        }
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
         root.getChildren().add(hudPanel);
         hudPanel.slideIn();
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+            private static final long FRAME_INTERVAL = 10_000_000; // ~100 FPS
+
             @Override
             public void handle(long now) {
-                update();
+                if (now - lastUpdate >= FRAME_INTERVAL) {
+                    update();
+                    lastUpdate = now;
+                }
             }
-        };
-        timer.start();
+        }; timer.start();
     }
 
     public void update() {
+        if (gameOver) return;
+
         if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
         if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
 
@@ -99,6 +121,54 @@ public class GameManager {
         allBalls.add(ball);
         allBalls.addAll(balls);
 
+        if (supportPaddle != null) {
+            supportPaddle.update();
+            // cập nhật Laze
+            for (Laze l : supportPaddle.getLazeList()) {
+                if (!root.getChildren().contains(l.getView())) {
+                    root.getChildren().add(l.getView());
+                }
+            }
+
+            // xử lý va chạm và xóa Laze khi ra khỏi màn hình
+            Iterator<Laze> lazeIterator = supportPaddle.getLazeList().iterator();
+            while (lazeIterator.hasNext()) {
+                Laze l = lazeIterator.next();
+                Iterator<Brick> brickIterator = level.getBricks().iterator();
+                while (brickIterator.hasNext()) {
+                    Brick brick = brickIterator.next();
+                    if (!brick.isDestroyed() && CollisionHandler.checkCollision(l, brick)) {
+                        playerScore += 5;
+                        brick.takeHit();
+
+                        // Xóa brick ra khỏi danh sách và khỏi màn hình
+                        // Hiệu ứng nhấp nháy trước khi biến mất
+                        javafx.animation.Timeline flash = new javafx.animation.Timeline(
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(50),
+                                        e -> brick.getView().setOpacity(0.3)),
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),
+                                        e -> brick.getView().setOpacity(1.0))
+                        );
+                        flash.setCycleCount(4); // nhấp nháy 4 lần
+                        flash.setAutoReverse(true);
+
+                        flash.setOnFinished(e -> {
+                            root.getChildren().remove(brick.getView());
+                        });
+
+
+                        brickIterator.remove();
+                        flash.play();
+
+                        // Xóa Laze
+                        lazeIterator.remove();
+                        root.getChildren().remove(l.getView());
+                        break;
+                    }
+                }
+            }
+
+        }
         List<PowerUp> newPowerUps = new ArrayList<>();
         for (Ball b : allBalls) {
             b.update();
@@ -120,8 +190,6 @@ public class GameManager {
         for (PowerUp p : newPowerUps) {
             addPowerUp(p);
         }
-
-
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
 
         balls.removeIf(b -> {
@@ -132,21 +200,81 @@ public class GameManager {
             return false;
         });
 
+        if (level instanceof Level5 lvl5) {
+            var boss = lvl5.getBoss();
+            if (boss != null) {
+                boss.update();
+
+                for (Ball b : allBalls) {
+                    if (b.getView().getBoundsInParent().intersects(boss.getView().getBoundsInParent())) {
+                        if (!boss.isDestroyed()) {
+                            boss.takeDamage();
+                            b.reverseY();
+                            playerScore += 5;
+                        }
+                    }
+                }
+
+                var bullets = boss.getBullets();
+                Iterator<BossBullet> bulletIter = bullets.iterator();
+                while (bulletIter.hasNext()) {
+                    var bullet = bulletIter.next();
+                    bullet.update();
+                    if (bullet.collidesWith(paddle)) {
+                        root.getChildren().remove(bullet.getView());
+                        bulletIter.remove();
+
+                        if (!gameOver && playerLives > 0) {
+                            playerLives--;
+                            if (playerLives <= 0) {
+                                handleGameOver();
+                                return;
+                            }
+                        }
+                    }
+
+                }
+
+                if (boss.isDestroyed()) {
+                    nextLevel();
+                    return;
+                }
+            }
+        }
 
         if (level.getBricks().isEmpty()) nextLevel();
 
         if (ball.getY() > Config.WINDOW_HEIGHT && balls.isEmpty()) {
-            if (playerLives > 0) {
+            if (!gameOver && playerLives > 0) { // ✅ thêm điều kiện kiểm tra
                 playerLives--;
-                restartLevel();
-            } else {
-                org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore("player1", playerScore, currentLevel);
-                restartLevel();
+                if (playerLives <= 0) {
+                    handleGameOver();
+                    return;
+                } else {
+                    restartLevel();
+                }
             }
         }
 
+
         hudPanel.updateHUD(currentLevel, playerScore, playerLives);
     }
+
+    private void handleGameOver() {
+        playerLives = 0;
+        if (gameOver) return;
+        gameOver = true;
+
+        System.out.println("💀 GAME OVER!");
+        org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
+                Config.PLAYER_NAME,
+                playerScore,
+                currentLevel
+        );
+        if (timer != null) timer.stop();
+        restartLevel();
+    }
+
 
     public void spawnExtraBalls(Ball sourceBall, int count) {
         for (int i = 0; i < count; i++) {
@@ -165,49 +293,50 @@ public class GameManager {
     }
 
     private void nextLevel() {
-        currentLevel++;
         timer.stop();
+        currentLevel++;
 
-        javafx.scene.image.Image nextLevelImageSource = new javafx.scene.image.Image(getClass().getResourceAsStream("/images/next.png"));
-        javafx.scene.image.ImageView nextLevelImage = new javafx.scene.image.ImageView(nextLevelImageSource);
+        var nextLevelImageSource = new javafx.scene.image.Image(getClass().getResourceAsStream("/images/next.png"));
+        var nextLevelImage = new ImageView(nextLevelImageSource);
 
         nextLevelImage.setFitWidth(500);
         nextLevelImage.setFitHeight(200);
-        nextLevelImage.setPreserveRatio(false);
-        nextLevelImage.setLayoutX((Config.WINDOW_WIDTH  - 220 - nextLevelImage.getFitWidth()) / 2);
+        nextLevelImage.setLayoutX((Config.WINDOW_WIDTH - 220 - nextLevelImage.getFitWidth()) / 2);
         nextLevelImage.setLayoutY((Config.WINDOW_HEIGHT - nextLevelImage.getFitHeight()) / 2);
-
         nextLevelImage.setOpacity(0);
         root.getChildren().add(nextLevelImage);
 
-        javafx.animation.FadeTransition fadeIn = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(0.8), nextLevelImage);
+        var fadeIn = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(0.8), nextLevelImage);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
 
-        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1.5));
-
-        javafx.animation.FadeTransition fadeOut = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.2), nextLevelImage);
+        var pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1.5));
+        var fadeOut = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.2), nextLevelImage);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
 
-        javafx.animation.SequentialTransition seq = new javafx.animation.SequentialTransition(fadeIn, pause, fadeOut);
+        var seq = new javafx.animation.SequentialTransition(fadeIn, pause, fadeOut);
         seq.setOnFinished(e -> {
             root.getChildren().remove(nextLevelImage);
-            if (currentLevel == 2) {
-                startLevel2();
-            } else {
-                System.out.println("Hoàn thành toàn bộ level!");
+            switch (currentLevel) {
+                case 2 -> startLevel2();
+                case 3, 4, 5 -> startLevel5();
+                default -> System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
             }
         });
+
         seq.play();
     }
 
     private void restartLevel() {
-        System.out.println("Bóng rơi! Reset lại level " + currentLevel);
+        System.out.println("🔄 Reset lại level " + currentLevel);
+        gameOver = false;
         if (currentLevel == 1)
             startLevel1();
         else if (currentLevel == 2)
             startLevel2();
+        else
+            startLevel5();
     }
 
     public void setupInput(Scene scene) {

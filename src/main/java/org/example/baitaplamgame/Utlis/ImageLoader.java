@@ -7,7 +7,6 @@ public class ImageLoader {
     private static Image loadImage(String path) {
         var stream = ImageLoader.class.getResourceAsStream(path);
         if (stream == null) {
-            System.err.println("⚠️ Không tìm thấy ảnh: " + path);
             return null;
         }
         return new Image(stream);
@@ -37,4 +36,7 @@ public class ImageLoader {
     public static final Image BACKGROUND_LEVEL2 = loadImage("/images/bg2.png");
     public static final Image BACKGROUND_LEVEL3 = loadImage("/images/bg3.png");
     public static final Image BACKGROUND_LEVEL4 = loadImage("/images/bg4.png");
+    public static final Image BOSS_IMAGE = loadImage("/images/boss.png");
+    public static final Image SUPPORT_RIGHT = loadImage("/images/Laser_sp.png");
+    public static final Image LAZE_SP = loadImage("/images/laze.png");
 }

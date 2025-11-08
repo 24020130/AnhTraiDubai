@@ -1,7 +1,0 @@
-# 0 = không có gạch
-# 1 = NormalBrick
-# 2 = GreenBrick
-
-
-
-

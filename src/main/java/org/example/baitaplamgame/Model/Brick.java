@@ -17,6 +17,10 @@ public abstract class Brick extends GameObject {
         super(x, y, width, height);
         this.hitPoints = hitPoints;
         this.type = type;
+        if (type == null || type.equalsIgnoreCase("boss") || type.equalsIgnoreCase("dummy")) {
+            this.view = null;
+            return;
+        }
 
         if (type.equalsIgnoreCase("red")) {
             view = new ImageView(ImageLoader.BRICK_IMAGE);
@@ -30,20 +34,20 @@ public abstract class Brick extends GameObject {
             view = new ImageView(ImageLoader.BRICK_SHIRK_PADDLE);
         }
 
-        view.setFitWidth(width);
-        view.setFitHeight(height);
-        view.setX(x);
-        view.setY(y);
+        if (view != null) {
+            view.setFitWidth(width);
+            view.setFitHeight(height);
+            view.setX(x);
+            view.setY(y);
+        }
     }
 
     public void takeHit() {
         long now = System.currentTimeMillis();
-        if (now - lastHitTime < 100) return; // tránh bị trừ 2 lần trong 100ms
+        if (now - lastHitTime < 100) return;
         lastHitTime = now;
 
         hitPoints--;
-
-        // Chạy hiệu ứng khi sắp vỡ
         if (hitPoints <= 0) {
             playShakeEffect();
         }
@@ -63,10 +67,8 @@ public abstract class Brick extends GameObject {
         FadeTransition fade = new FadeTransition(Duration.millis(300), view);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
-
         shake.setOnFinished(e -> fade.play());
         fade.setOnFinished(e -> view.setVisible(false));
-
         shake.play();
     }
 

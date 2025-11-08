@@ -173,5 +173,9 @@ public class Ball extends MovableObject {
         this.velocityX = newSpeed * Math.cos(angle);
         this.velocityY = newSpeed * Math.sin(angle);
     }
+    public void reverseY() {
+        this.velocityY = -this.velocityY;
+    }
+
 
 }
