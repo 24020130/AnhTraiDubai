@@ -30,7 +30,6 @@ public class GamePanel extends Pane {
     }
 
     public GamePanel() {
-        // Nền chính
         VBox container = new VBox(25);
         container.setAlignment(Pos.CENTER);
         container.setPadding(new Insets(40));
@@ -65,13 +64,12 @@ public class GamePanel extends Pane {
 
         // Các nút
         Button btnStart = createButton("START GAME");
-        Button btnLevel = createButton("LEVELS");
         Button btnSettings = createButton("SETTINGS");
         Button btnExit = createButton("EXIT");
         Button btnTable = createButton("BẢNG XẾP HẠNG");
         Button btnMultiplayer = createButton("MULTIPLAYER");
 
-        container.getChildren().addAll(titleText, btnStart, btnLevel, btnSettings, btnExit, btnTable, btnMultiplayer);
+        container.getChildren().addAll(titleText, btnStart, btnSettings, btnExit, btnTable, btnMultiplayer);
         getChildren().add(container);
         btnMultiplayer.setOnAction(e -> openMultiplayerMenu(container));
         btnStart.setOnAction(e -> {
@@ -275,9 +273,7 @@ public class GamePanel extends Pane {
         TextField txtIp = new TextField();
         txtIp.setPromptText("VD: 192.168.1.10");
         txtIp.setMaxWidth(200);
-
         Button btnConnect = createButton("KẾT NỐI");
-
         ipBox.getChildren().addAll(lblIp, txtIp, btnConnect);
         StackPane.setAlignment(ipBox, Pos.CENTER);
         getChildren().add(ipBox);
@@ -290,7 +286,7 @@ public class GamePanel extends Pane {
                 client.connect(ip, 5000);
                 getChildren().remove(ipBox);
             } else {
-                txtIp.setPromptText("⚠ Vui lòng nhập IP!");
+                txtIp.setPromptText("Vui lòng nhập IP!");
             }
         });
     }

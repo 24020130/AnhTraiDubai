@@ -7,6 +7,7 @@ import org.example.baitaplamgame.Level.Level;
 import org.example.baitaplamgame.Level.Level1;
 import org.example.baitaplamgame.Level.Level2;
 import org.example.baitaplamgame.Level.Level5;
+import org.example.baitaplamgame.PowerUp.BossFireBall;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
@@ -24,12 +25,26 @@ public class GameManager {
     private List<Ball> balls = new ArrayList<>();
     private Level level;
     private final List<PowerUp> powerUps = new ArrayList<>();
+    private final List<BossFireBall> bossFireBalls = new ArrayList<>();
+    private long lastFireballTime = 0;
     private AnimationTimer timer;
     private int currentLevel = 1;
     private int playerScore = 0;
     private int playerLives = 4;
     private boolean gameOver = false;
+    private Runnable onExitToMenu;
     private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
+    private java.io.BufferedWriter writer;
+    public void setWriter(java.io.BufferedWriter w) { this.writer = w; }
+    public void setOnExitToMenu(Runnable callback) {
+        this.onExitToMenu = callback;
+    }
+//    public void startGame(int level) {
+//        this.currentLevel = level; // nếu bạn có biến currentLevel
+//        startGame(); // gọi lại hàm gốc
+//    }
+
+
 
     public GameManager(Pane root, double width, double height) {
         this.root = root;
@@ -39,7 +54,13 @@ public class GameManager {
         playerLives = 4;
         playerScore = 0;
         gameOver = false;
-        startLevel1();
+
+        switch (currentLevel) {
+            case 1 -> startLevel1();
+            case 2 -> startLevel2();
+            case 3, 4, 5 -> startLevel5();
+            default -> startLevel1();
+        }
     }
 
     private void startLevel1() {
@@ -75,7 +96,7 @@ public class GameManager {
         bgView.setPreserveRatio(false);
         root.getChildren().add(bgView);
 
-        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED, this);
+        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
         paddle.setBall(ball);
         this.level = levelObj;
@@ -83,8 +104,23 @@ public class GameManager {
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+
+        hudPanel.setOnSave(() -> {
+            org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
+                    Config.PLAYER_NAME, playerScore, currentLevel
+            );
+        });
+
+        hudPanel.setOnExit(() -> {
+            if (timer != null) timer.stop();
+            if (onExitToMenu != null) {
+                onExitToMenu.run();
+            }
+        });
+
         root.getChildren().add(hudPanel);
         hudPanel.slideIn();
+
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
@@ -141,15 +177,32 @@ public class GameManager {
             var boss = lvl5.getBoss();
             if (boss != null) {
                 boss.update();
+                long nowTime = System.currentTimeMillis();
+                if ((nowTime - lastFireballTime > 3000) || boss.getHealth() <= boss.getMaxHealth() / 2) {
+                    lastFireballTime = nowTime;
+                    double bx = boss.getView().getLayoutX() + boss.getView().getFitWidth() / 2;
+                    double by = boss.getView().getLayoutY() + boss.getView().getFitHeight();
+                    BossFireBall left = new BossFireBall(bx, by, 60, root);
+                    BossFireBall mid = new BossFireBall(bx, by, 90, root);
+                    BossFireBall right = new BossFireBall(bx, by, 120, root);
+                    left.setOnHitListener(() -> handlePlayerHit());
+                    mid.setOnHitListener(() -> handlePlayerHit());
+                    right.setOnHitListener(() -> handlePlayerHit());
+                    bossFireBalls.add(left);
+                    bossFireBalls.add(mid);
+                    bossFireBalls.add(right);
+                }
+
 
                 for (Ball b : allBalls) {
                     if (b.getView().getBoundsInParent().intersects(boss.getView().getBoundsInParent())) {
                         if (!boss.isDestroyed()) {
                             boss.takeDamage();
-                            b.reverseY();
+                            b.bounceOff(boss);
                             playerScore += 5;
                         }
                     }
+
                 }
 
                 var bullets = boss.getBullets();
@@ -171,6 +224,15 @@ public class GameManager {
                     }
 
                 }
+                Iterator<BossFireBall> fireBallIterator = bossFireBalls.iterator();
+                while (fireBallIterator.hasNext()) {
+                    BossFireBall fb = fireBallIterator.next();
+                    fb.update();
+                    if (fb.collidesWith(paddle)) {
+                        fireBallIterator.remove();
+                    }
+                }
+
 
                 if (boss.isDestroyed()) {
                     nextLevel();
@@ -202,14 +264,33 @@ public class GameManager {
         if (gameOver) return;
         gameOver = true;
 
+        // Ghi trạng thái vào writer nếu có
+        if (writer != null) {
+            try {
+                writer.write("PLAYER_DEAD\n");
+                writer.flush();
+            } catch (Exception ignored) {}
+        }
+
         System.out.println("💀 GAME OVER!");
+
+        // Lưu điểm số
         org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
                 Config.PLAYER_NAME,
                 playerScore,
                 currentLevel
         );
+
+        // Dừng timer game
         if (timer != null) timer.stop();
-        restartLevel();
+
+        // Hiển thị hiệu ứng Game Over
+        showGameOver("GAME OVER");
+
+        // Trì hoãn reset level để người chơi nhìn thấy hiệu ứng
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2.5));
+        pause.setOnFinished(e -> restartLevel());
+        pause.play();
     }
 
 
@@ -258,7 +339,16 @@ public class GameManager {
             switch (currentLevel) {
                 case 2 -> startLevel2();
                 case 3, 4, 5 -> startLevel5();
-                default -> System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
+                default -> {
+                    System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
+                    if (writer != null) {
+                        try {
+                            writer.write("PLAYER_SCORE_WIN\n");
+                            writer.flush();
+                        } catch (Exception ignored) {}
+                    }
+                }
+
             }
         });
 
@@ -287,4 +377,114 @@ public class GameManager {
             root.getChildren().add(powerUp.getView());
         }
     }
+    public void showGameOver(String msg) {
+        javafx.scene.text.Text text = new javafx.scene.text.Text(msg);
+        text.setStyle("-fx-font-size: 80px; -fx-font-weight: bold;");
+        text.setFill(javafx.scene.paint.Color.RED);
+        text.setStroke(javafx.scene.paint.Color.BLACK);
+        text.setStrokeWidth(3);
+
+        text.setX((Config.WINDOW_WIDTH - 220) / 2 - 200);
+        text.setY(Config.WINDOW_HEIGHT / 2);
+
+        root.getChildren().add(text);
+
+        // Gradient chuyển động
+        javafx.scene.paint.LinearGradient gradient = new javafx.scene.paint.LinearGradient(
+                0, 0, 1, 0, true, javafx.scene.paint.CycleMethod.REPEAT,
+                new javafx.scene.paint.Stop[]{
+                        new javafx.scene.paint.Stop(0, javafx.scene.paint.Color.RED),
+                        new javafx.scene.paint.Stop(0.5, javafx.scene.paint.Color.ORANGE),
+                        new javafx.scene.paint.Stop(1, javafx.scene.paint.Color.YELLOW)
+                });
+        text.setFill(gradient);
+
+        // Scale + Fade
+        javafx.animation.ScaleTransition scale = new javafx.animation.ScaleTransition(javafx.util.Duration.seconds(1.5), text);
+        scale.setFromX(0.5); scale.setFromY(0.5);
+        scale.setToX(1.5); scale.setToY(1.5);
+
+        javafx.animation.FadeTransition fade = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.5), text);
+        fade.setFromValue(0); fade.setToValue(1);
+
+        javafx.animation.ParallelTransition pt = new javafx.animation.ParallelTransition(scale, fade);
+        pt.play();
+
+        // Particle explosion nhiều màu
+        for (int i = 0; i < 60; i++) {
+            javafx.scene.shape.Circle p = new javafx.scene.shape.Circle(4 + Math.random() * 6,
+                    javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
+            p.setLayoutX(text.getX() + 200);
+            p.setLayoutY(text.getY() - 50);
+            root.getChildren().add(p);
+
+            double angle = Math.random() * 2 * Math.PI;
+            double distance = 100 + Math.random() * 100;
+
+            javafx.animation.TranslateTransition tt = new javafx.animation.TranslateTransition(javafx.util.Duration.seconds(1 + Math.random()), p);
+            tt.setByX(Math.cos(angle) * distance);
+            tt.setByY(Math.sin(angle) * distance + Math.random() * 50);
+            tt.setOnFinished(e -> root.getChildren().remove(p));
+            tt.play();
+        }
+
+        // Shake effect toàn màn hình
+        javafx.animation.TranslateTransition shake = new javafx.animation.TranslateTransition(javafx.util.Duration.seconds(0.05), root);
+        shake.setByX(10);
+        shake.setCycleCount(6);
+        shake.setAutoReverse(true);
+        shake.play();
+
+        // Trì hoãn và quay về màn hình chính
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(3));
+        pause.setOnFinished(e -> {
+            if (onExitToMenu != null) {
+                onExitToMenu.run();  // quay về menu chính
+            }
+        });
+        pause.play();
+    }
+
+
+
+    public void showWinnerEffect() {
+        System.out.println("=== WINNER EFFECT ===");
+
+        javafx.scene.control.Label l = new javafx.scene.control.Label("YOU WIN!");
+        l.setStyle("-fx-font-size: 48px; -fx-text-fill: yellow; -fx-font-weight: bold;");
+        l.setLayoutX((Config.WINDOW_WIDTH - 220)/2 - 150);
+        l.setLayoutY(Config.WINDOW_HEIGHT/2 - 100);
+
+        root.getChildren().add(l);
+    }
+
+    public void handlePlayerHit() {
+        if (gameOver) return;
+
+        playerLives--;
+        System.out.println("🔥 Paddle bị Boss tấn công! Máu còn lại: " + playerLives);
+
+        // Hiển thị hiệu ứng trúng đạn
+        javafx.scene.shape.Circle hitEffect = new javafx.scene.shape.Circle(
+                paddle.getX() + paddle.getWidth() / 2,
+                paddle.getY() + paddle.getHeight() / 2,
+                40,
+                javafx.scene.paint.Color.RED
+        );
+        hitEffect.setOpacity(0.5);
+        root.getChildren().add(hitEffect);
+
+        var fade = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(0.5), hitEffect);
+        fade.setFromValue(0.7);
+        fade.setToValue(0.0);
+        fade.setOnFinished(e -> root.getChildren().remove(hitEffect));
+        fade.play();
+
+        hudPanel.updateHUD(currentLevel, playerScore, playerLives);
+
+        if (playerLives <= 0) {
+            handleGameOver();
+        }
+    }
+
 }

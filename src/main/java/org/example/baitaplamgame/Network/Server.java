@@ -16,6 +16,8 @@ public class Server {
     private BufferedReader in;
     private PrintWriter out;
     private OnMessageListener listener;
+    private GameManager gm;
+
 
     public interface OnMessageListener {
         void onMessage(String msg);
@@ -40,29 +42,33 @@ public class Server {
 
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-                // Khi client đã kết nối -> mở game
                 Platform.runLater(() -> {
                     Pane pane = new Pane();
-                    GameManager gm = new GameManager(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+                    gm = new GameManager(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT); // <-- gán vào field
                     gm.startGame();
-
                     Stage stage = new Stage();
                     stage.setTitle("🏠 Host - Multiplayer Game");
                     Scene scene = new Scene(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
                     stage.setScene(scene);
-
-                    gm.setupInput(scene); // ✅ Cho phép di chuyển paddle
+                    gm.setupInput(scene);
                     stage.show();
-
-                    send("START_GAME"); // Báo cho client bắt đầu
+                    send("START_GAME");
                 });
 
-                // Lắng nghe tin nhắn từ client
                 String line;
                 while ((line = in.readLine()) != null) {
                     System.out.println("Client: " + line);
                     if (listener != null) listener.onMessage("Client: " + line);
+
+                    if (line.equals("PLAYER_DEAD")) {
+                        Platform.runLater(() -> gm.showWinnerEffect());
+                    }
+                    if (line.equals("ENEMY_DEAD")) {
+                        Platform.runLater(() -> gm.showGameOver("Bạn thua!"));
+                    }
+                    if (line.equals("PLAYER_SCORE_WIN")) {
+                        Platform.runLater(() -> gm.showWinnerEffect());
+                    }
                 }
 
             } catch (IOException e) {

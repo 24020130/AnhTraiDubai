@@ -37,4 +37,7 @@ public class ImageLoader {
     public static final Image BACKGROUND_LEVEL3 = loadImage("/images/bg3.png");
     public static final Image BACKGROUND_LEVEL4 = loadImage("/images/bg4.png");
     public static final Image BOSS_IMAGE = loadImage("/images/boss.png");
+    public static final Image SKIN_DEFAULT = loadImage("/skins/default.png");
+    public static final Image SKIN_BLUE = loadImage("/skins/blue.png");
+    public static final Image SKIN_GREEN = loadImage("/skins/green.png");
 }

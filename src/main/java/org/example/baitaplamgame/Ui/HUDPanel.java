@@ -3,8 +3,9 @@ package org.example.baitaplamgame.Ui;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -17,6 +18,8 @@ public class HUDPanel extends VBox {
     private final Text scoreText;
     private final Text livesText;
     private final double panelWidth = 220;
+
+    private Runnable onSave, onExit;
 
     public HUDPanel(double windowWidth, double windowHeight) {
         setPrefWidth(panelWidth);
@@ -46,15 +49,46 @@ public class HUDPanel extends VBox {
         scoreText = createText("Score: 0");
         livesText = createText("Lives: 3");
 
-        getChildren().addAll(title, levelText, scoreText, livesText);
+        // ===== BUTTONS =====
+        Button saveBtn = createButton("💾 Save");
+        saveBtn.setOnAction(e -> {
+            if (onSave != null) onSave.run();
+        });
+
+        Button exitBtn = createButton("🏠 Exit");
+        exitBtn.setOnAction(e -> {
+            if (onExit != null) onExit.run();
+        });
+
+        VBox buttonBox = new VBox(15, saveBtn, exitBtn);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(60, 0, 0, 0));
+
+        getChildren().addAll(title, levelText, scoreText, livesText, buttonBox);
     }
 
     private Text createText(String s) {
         Text t = new Text(s);
         t.setFont(Font.font("Consolas", FontWeight.BOLD, 18));
-        t.setFill(Color.web("#FFF5E6")); // trắng vàng ấm
+        t.setFill(Color.web("#FFF5E6"));
         t.setEffect(new DropShadow(5, Color.web("#FF6600")));
         return t;
+    }
+
+    private Button createButton(String label) {
+        Button btn = new Button(label);
+        btn.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
+        btn.setTextFill(Color.WHITE);
+        btn.setStyle("""
+            -fx-background-color: linear-gradient(to right, #FF8000, #FF3300);
+            -fx-background-radius: 20;
+            -fx-cursor: hand;
+        """);
+        btn.setPrefWidth(150);
+        btn.setEffect(new DropShadow(8, Color.web("#FF5500")));
+        btn.setOnMouseEntered(e -> btn.setOpacity(0.8));
+        btn.setOnMouseExited(e -> btn.setOpacity(1));
+        return btn;
     }
 
     public void updateHUD(int level, int score, int lives) {
@@ -68,5 +102,13 @@ public class HUDPanel extends VBox {
         setTranslateX(panelWidth);
         tt.setToX(0);
         tt.play();
+    }
+
+    public void setOnSave(Runnable action) {
+        this.onSave = action;
+    }
+
+    public void setOnExit(Runnable action) {
+        this.onExit = action;
     }
 }

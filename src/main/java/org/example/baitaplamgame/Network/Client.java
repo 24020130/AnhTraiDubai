@@ -8,13 +8,14 @@ import org.example.baitaplamgame.Model.GameManager;
 import org.example.baitaplamgame.Utlis.Config;
 
 import java.io.*;
-import java.net.*;
+import java.net.Socket;
 
 public class Client {
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private BufferedReader reader;
+    private BufferedWriter writer;
     private OnMessageListener listener;
+    private GameManager gameManager;
 
     public interface OnMessageListener {
         void onMessage(String msg);
@@ -24,57 +25,117 @@ public class Client {
         this.listener = listener;
     }
 
+    /**
+     * Kết nối đến server
+     */
     public void connect(String serverIp, int port) {
         new Thread(() -> {
             try {
                 socket = new Socket(serverIp, port);
-                System.out.println("Đã kết nối đến server!");
-                if (listener != null)
-                    listener.onMessage("Đã kết nối đến server!");
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out = new PrintWriter(socket.getOutputStream(), true);
+                sendMessageToUI("✅ Đã kết nối đến server!");
 
                 String line;
-                while ((line = in.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     System.out.println("Server: " + line);
-                    if (listener != null) listener.onMessage("Server: " + line);
+                    sendMessageToUI("Server: " + line);
 
-                    if (line.equals("START_GAME")) {
-                        // Khi server gửi tín hiệu START_GAME → mở game
-                        Platform.runLater(() -> {
-                            Pane pane = new Pane();
-                            GameManager gm = new GameManager(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
-                            gm.startGame();
+                    switch (line) {
+                        case "START_GAME":
+                            startGameUI();
+                            break;
 
-                            Stage stage = new Stage();
-                            stage.setTitle("🎮 Client - Multiplayer Game");
-                            Scene scene = new Scene(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
-                            stage.setScene(scene);
+                        case "PLAYER_DEAD":
+                            Platform.runLater(() -> {
+                                if (gameManager != null) gameManager.showGameOver("Bạn thua!");
+                            });
+                            break;
 
-                            gm.setupInput(scene);
-                            stage.show();
-                        });
+                        case "ENEMY_DEAD":
+                        case "PLAYER_SCORE_WIN":
+                            Platform.runLater(() -> {
+                                if (gameManager != null) gameManager.showWinnerEffect();
+                            });
+                            break;
+
+                        default:
+                            // Có thể thêm xử lý message khác ở đây
+                            break;
                     }
                 }
 
             } catch (IOException e) {
-                if (listener != null)
-                    listener.onMessage("Không thể kết nối đến server!");
+                sendMessageToUI("❌ Không thể kết nối đến server!");
+                e.printStackTrace();
+            } finally {
+                closeConnection();
+            }
+        }).start();
+    }
+
+    /**
+     * Hàm gọi giao diện khởi động game
+     */
+    private void startGameUI() {
+        Platform.runLater(() -> {
+            try {
+                Pane pane = new Pane();
+                gameManager = new GameManager(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+                gameManager.setWriter(writer);
+                gameManager.startGame();
+
+                Stage stage = new Stage();
+                stage.setTitle("🎮 Client - Multiplayer Game");
+
+                Scene scene = new Scene(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+                stage.setScene(scene);
+                gameManager.setupInput(scene);
+
+                stage.setOnCloseRequest(event -> closeConnection());
+                stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Gửi tin nhắn đến server
+     */
+    public void send(String msg) {
+        new Thread(() -> {
+            try {
+                if (writer != null) {
+                    writer.write(msg + "\n");
+                    writer.flush();
+                }
+            } catch (IOException e) {
+                sendMessageToUI("⚠️ Lỗi khi gửi tin nhắn!");
                 e.printStackTrace();
             }
         }).start();
     }
 
-    public void send(String msg) {
-        if (out != null) out.println(msg);
+    /**
+     * Gửi thông điệp ra UI thread
+     */
+    private void sendMessageToUI(String message) {
+        if (listener != null) {
+            Platform.runLater(() -> listener.onMessage(message));
+        }
     }
 
-    public void disconnect() {
+    /**
+     * Đóng kết nối an toàn
+     */
+    public void closeConnection() {
         try {
-            if (in != null) in.close();
-            if (out != null) out.close();
-            if (socket != null) socket.close();
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
+            if (socket != null && !socket.isClosed()) socket.close();
+            sendMessageToUI("🔌 Đã ngắt kết nối khỏi server!");
         } catch (IOException e) {
             e.printStackTrace();
         }
