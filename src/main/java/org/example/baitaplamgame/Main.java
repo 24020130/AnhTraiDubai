@@ -12,6 +12,19 @@ import javafx.util.Duration;
 import org.example.baitaplamgame.Model.GameManager;
 import org.example.baitaplamgame.Ui.GamePanel;
 import org.example.baitaplamgame.Utlis.Config;
+import org.example.baitaplamgame.Utlis.ImageLoader;
+import org.example.baitaplamgame.Utlis.SoundManager; // 👉 thêm dòng này
+
+
+import java.util.*;
+
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import org.example.baitaplamgame.Model.*;
+import org.example.baitaplamgame.Utlis.ImageLoader;
 
 public class Main extends Application {
 

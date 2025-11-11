@@ -3,6 +3,7 @@ package org.example.baitaplamgame.Model;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
 import org.example.baitaplamgame.Level.Level;
 import org.example.baitaplamgame.Level.Level1;
 import org.example.baitaplamgame.Level.Level2;
@@ -14,6 +15,9 @@ import org.example.baitaplamgame.Utlis.InputKeys;
 import org.example.baitaplamgame.PowerUp.BossBullet;
 
 import javafx.scene.image.ImageView;
+import org.example.baitaplamgame.Utlis.SoundManager;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +36,12 @@ public class GameManager {
     private int currentLevel = 1;
     private int playerScore = 0;
     private int playerLives = 4;
+    private Image bgImage;
+    private ImageView bg1, bg2;
+    private double bgSpeed = 0.2;
+    private final List<Meteor> meteors = new ArrayList<>();
+    private long lastMeteorSpawn = 0;
+
     private boolean gameOver = false;
     private Runnable onExitToMenu;
     private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
@@ -44,6 +54,7 @@ public class GameManager {
 //        this.currentLevel = level; // nếu bạn có biến currentLevel
 //        startGame(); // gọi lại hàm gốc
 //    }
+
 
 
 
@@ -95,13 +106,23 @@ public class GameManager {
             default -> ImageLoader.BACKGROUND_LEVEL1;
         };
 
-        var bgView = new ImageView(bgImage);
-        bgView.setFitWidth(Config.WINDOW_WIDTH - 220);
-        bgView.setFitHeight(Config.WINDOW_HEIGHT);
-        bgView.setPreserveRatio(false);
-        root.getChildren().add(bgView);
+        bg1 = new ImageView(bgImage);
+        bg2 = new ImageView(bgImage);
 
-        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED);
+        bg1.setFitWidth(Config.WINDOW_WIDTH - 220);
+        bg1.setFitHeight(Config.WINDOW_HEIGHT);
+        bg1.setPreserveRatio(false);
+
+        bg2.setFitWidth(Config.WINDOW_WIDTH - 220);
+        bg2.setFitHeight(Config.WINDOW_HEIGHT);
+        bg2.setPreserveRatio(false);
+
+// đặt bg2 ngay sau bg1
+        bg2.setLayoutX(bg1.getFitWidth());
+
+        root.getChildren().addAll(bg1, bg2);
+
+        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED, this);
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
         paddle.setBall(ball);
         this.level = levelObj;
@@ -210,11 +231,19 @@ public class GameManager {
         for (Ball b : allBalls) {
             b.update();
             b.checkCollisionWithWalls(Config.WINDOW_WIDTH - 220, Config.WINDOW_HEIGHT);
-            CollisionHandler.handleBallPaddleCollision(b, paddle);
+            if (!b.hasCollidedWithPaddle() && CollisionHandler.checkCollision(b, paddle)) {
+                CollisionHandler.handleBallPaddleCollision(b, paddle);
+                SoundManager.playEffect("collision2.mp3");
+                b.setHasCollidedWithPaddle(true);
+            } else if (!CollisionHandler.checkCollision(b, paddle)) {
+                // reset cờ khi ball không còn chạm paddle
+                b.setHasCollidedWithPaddle(false);
+            }
             Iterator<Brick> iterator = level.getBricks().iterator();
             while (iterator.hasNext()) {
                 Brick brick = iterator.next();
                 if (CollisionHandler.handleBallBrickCollision(b, brick, newPowerUps, root)) {
+                    SoundManager.playEffect("collision.mp3");
                     if (brick.isDestroyed()) {
                         iterator.remove();
                         playerScore += 10;
@@ -321,6 +350,48 @@ public class GameManager {
 
 
         hudPanel.updateHUD(currentLevel, playerScore, playerLives);
+        // Background scrolling effect
+        bg1.setLayoutX(bg1.getLayoutX() - bgSpeed);
+        bg2.setLayoutX(bg2.getLayoutX() - bgSpeed);
+
+        if (bg1.getLayoutX() + bg1.getFitWidth() <= 0) {
+            bg1.setLayoutX(bg2.getLayoutX() + bg2.getFitWidth());
+        }
+        if (bg2.getLayoutX() + bg2.getFitWidth() <= 0) {
+            bg2.setLayoutX(bg1.getLayoutX() + bg1.getFitWidth());
+        }
+        // === Meteor logic ===
+        long currentTime = System.nanoTime();
+        if (currentTime - lastMeteorSpawn > 5_000_000_000L) { // mỗi 5s spawn 1 viên
+            double x = Math.random() * (Config.WINDOW_WIDTH - 260);
+            Meteor m = new Meteor(x, -50);
+            meteors.add(m);
+            root.getChildren().add(m);
+            lastMeteorSpawn = currentTime;
+        }
+
+// update và check va chạm
+        Iterator<Meteor> mIter = meteors.iterator();
+        while (mIter.hasNext()) {
+            Meteor m = mIter.next();
+            m.update(root);
+
+            if (!m.isActive()) {
+                mIter.remove();
+                continue;
+            }
+
+            // va chạm với paddle
+            if (m.getBoundsInParent().intersects(paddle.getView().getBoundsInParent())) {
+                m.destroy(root);
+                playerLives--;
+                mIter.remove();
+                continue;
+            }
+
+
+        }
+
     }
 
     private void handleGameOver() {

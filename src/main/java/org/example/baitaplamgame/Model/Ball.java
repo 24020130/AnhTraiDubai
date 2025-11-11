@@ -176,6 +176,14 @@ public class Ball extends MovableObject {
     public void reverseY() {
         this.velocityY = -this.velocityY;
     }
+    private boolean hasCollidedWithPaddle = false;
 
+    public boolean hasCollidedWithPaddle() {
+        return hasCollidedWithPaddle;
+    }
+
+    public void setHasCollidedWithPaddle(boolean value) {
+        this.hasCollidedWithPaddle = value;
+    }
 
 }

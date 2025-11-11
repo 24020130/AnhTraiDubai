@@ -12,6 +12,9 @@ import javafx.util.Duration;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 
 public abstract class Brick extends GameObject {
+    private ImageView imgCrack1;
+    private ImageView imgCrack2;
+
     protected int hitPoints;
     protected String type;
     private long lastHitTime = 0;
@@ -98,6 +101,21 @@ public abstract class Brick extends GameObject {
         fade.setOnFinished(e -> view.setVisible(false));
 
         shake.play();
+    }
+    private void updateCrackImage() {
+        if (hitPoints == 2 && imgCrack1 != null) {
+            setBrickImage(imgCrack1);
+        } else if (hitPoints == 1 && imgCrack2 != null) {
+            setBrickImage(imgCrack2);
+        }
+    }
+
+    private void setBrickImage(ImageView newImage) {
+        newImage.setFitWidth(view.getFitWidth());
+        newImage.setFitHeight(view.getFitHeight());
+        newImage.setX(view.getX());
+        newImage.setY(view.getY());
+        view.setImage(newImage.getImage());
     }
 
     /** 🌠 Làm viên gạch rơi xuống (được gọi từ BrickGroup) */
