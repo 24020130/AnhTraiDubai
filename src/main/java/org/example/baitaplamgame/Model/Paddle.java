@@ -19,8 +19,6 @@ public class Paddle extends MovableObject {
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height);
         this.speed = speed;
-
-
         view = new ImageView(ImageLoader.PADDLE_IMAGE);
         view.setFitWidth(width);
         view.setFitHeight(height);

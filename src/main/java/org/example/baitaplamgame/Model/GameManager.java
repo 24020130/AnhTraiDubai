@@ -7,6 +7,7 @@ import org.example.baitaplamgame.Level.Level;
 import org.example.baitaplamgame.Level.Level1;
 import org.example.baitaplamgame.Level.Level2;
 import org.example.baitaplamgame.Level.Level5;
+import org.example.baitaplamgame.PowerUp.BossFireBall;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
@@ -24,12 +25,26 @@ public class GameManager {
     private List<Ball> balls = new ArrayList<>();
     private Level level;
     private final List<PowerUp> powerUps = new ArrayList<>();
+    private final List<BossFireBall> bossFireBalls = new ArrayList<>();
+    private long lastFireballTime = 0;
     private AnimationTimer timer;
     private int currentLevel = 1;
     private int playerScore = 0;
     private int playerLives = 4;
     private boolean gameOver = false;
+    private Runnable onExitToMenu;
     private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
+    private java.io.BufferedWriter writer;
+    public void setWriter(java.io.BufferedWriter w) { this.writer = w; }
+    public void setOnExitToMenu(Runnable callback) {
+        this.onExitToMenu = callback;
+    }
+//    public void startGame(int level) {
+//        this.currentLevel = level; // nếu bạn có biến currentLevel
+//        startGame(); // gọi lại hàm gốc
+//    }
+
+
 
     public GameManager(Pane root, double width, double height) {
         this.root = root;
@@ -39,7 +54,13 @@ public class GameManager {
         playerLives = 4;
         playerScore = 0;
         gameOver = false;
-        startLevel1();
+
+        switch (currentLevel) {
+            case 1 -> startLevel1();
+            case 2 -> startLevel2();
+            case 3, 4, 5 -> startLevel5();
+            default -> startLevel1();
+        }
     }
 
     private void startLevel1() {
@@ -83,8 +104,23 @@ public class GameManager {
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+
+        hudPanel.setOnSave(() -> {
+            org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
+                    Config.PLAYER_NAME, playerScore, currentLevel
+            );
+        });
+
+        hudPanel.setOnExit(() -> {
+            if (timer != null) timer.stop();
+            if (onExitToMenu != null) {
+                onExitToMenu.run();
+            }
+        });
+
         root.getChildren().add(hudPanel);
         hudPanel.slideIn();
+
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
@@ -141,15 +177,32 @@ public class GameManager {
             var boss = lvl5.getBoss();
             if (boss != null) {
                 boss.update();
+                long nowTime = System.currentTimeMillis();
+                if ((nowTime - lastFireballTime > 3000) || boss.getHealth() <= boss.getMaxHealth() / 2) {
+                    lastFireballTime = nowTime;
+                    double bx = boss.getView().getLayoutX() + boss.getView().getFitWidth() / 2;
+                    double by = boss.getView().getLayoutY() + boss.getView().getFitHeight();
+                    BossFireBall left = new BossFireBall(bx, by, 60, root);
+                    BossFireBall mid = new BossFireBall(bx, by, 90, root);
+                    BossFireBall right = new BossFireBall(bx, by, 120, root);
+                    left.setOnHitListener(() -> handlePlayerHit());
+                    mid.setOnHitListener(() -> handlePlayerHit());
+                    right.setOnHitListener(() -> handlePlayerHit());
+                    bossFireBalls.add(left);
+                    bossFireBalls.add(mid);
+                    bossFireBalls.add(right);
+                }
+
 
                 for (Ball b : allBalls) {
                     if (b.getView().getBoundsInParent().intersects(boss.getView().getBoundsInParent())) {
                         if (!boss.isDestroyed()) {
                             boss.takeDamage();
-                            b.reverseY();
+                            b.bounceOff(boss);
                             playerScore += 5;
                         }
                     }
+
                 }
 
                 var bullets = boss.getBullets();
@@ -171,6 +224,15 @@ public class GameManager {
                     }
 
                 }
+                Iterator<BossFireBall> fireBallIterator = bossFireBalls.iterator();
+                while (fireBallIterator.hasNext()) {
+                    BossFireBall fb = fireBallIterator.next();
+                    fb.update();
+                    if (fb.collidesWith(paddle)) {
+                        fireBallIterator.remove();
+                    }
+                }
+
 
                 if (boss.isDestroyed()) {
                     nextLevel();
@@ -201,6 +263,14 @@ public class GameManager {
         playerLives = 0;
         if (gameOver) return;
         gameOver = true;
+
+        if (writer != null) {
+            try {
+                writer.write("PLAYER_DEAD\n");
+                writer.flush();
+            } catch (Exception ignored) {}
+        }
+
 
         System.out.println("💀 GAME OVER!");
         org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
@@ -258,7 +328,16 @@ public class GameManager {
             switch (currentLevel) {
                 case 2 -> startLevel2();
                 case 3, 4, 5 -> startLevel5();
-                default -> System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
+                default -> {
+                    System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
+                    if (writer != null) {
+                        try {
+                            writer.write("PLAYER_SCORE_WIN\n");
+                            writer.flush();
+                        } catch (Exception ignored) {}
+                    }
+                }
+
             }
         });
 
@@ -287,4 +366,56 @@ public class GameManager {
             root.getChildren().add(powerUp.getView());
         }
     }
+    public void showGameOver(String msg) {
+        System.out.println("=== GAME OVER EFFECT ===");
+
+        javafx.scene.control.Label l = new javafx.scene.control.Label(msg);
+        l.setStyle("-fx-font-size: 48px; -fx-text-fill: red; -fx-font-weight: bold;");
+        l.setLayoutX((Config.WINDOW_WIDTH - 220)/2 - 150);
+        l.setLayoutY(Config.WINDOW_HEIGHT/2 - 100);
+
+        root.getChildren().add(l);
+    }
+
+    public void showWinnerEffect() {
+        System.out.println("=== WINNER EFFECT ===");
+
+        javafx.scene.control.Label l = new javafx.scene.control.Label("YOU WIN!");
+        l.setStyle("-fx-font-size: 48px; -fx-text-fill: yellow; -fx-font-weight: bold;");
+        l.setLayoutX((Config.WINDOW_WIDTH - 220)/2 - 150);
+        l.setLayoutY(Config.WINDOW_HEIGHT/2 - 100);
+
+        root.getChildren().add(l);
+    }
+
+    public void handlePlayerHit() {
+        if (gameOver) return;
+
+        playerLives--;
+        System.out.println("🔥 Paddle bị Boss tấn công! Máu còn lại: " + playerLives);
+
+        // Hiển thị hiệu ứng trúng đạn
+        javafx.scene.shape.Circle hitEffect = new javafx.scene.shape.Circle(
+                paddle.getX() + paddle.getWidth() / 2,
+                paddle.getY() + paddle.getHeight() / 2,
+                40,
+                javafx.scene.paint.Color.RED
+        );
+        hitEffect.setOpacity(0.5);
+        root.getChildren().add(hitEffect);
+
+        var fade = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(0.5), hitEffect);
+        fade.setFromValue(0.7);
+        fade.setToValue(0.0);
+        fade.setOnFinished(e -> root.getChildren().remove(hitEffect));
+        fade.play();
+
+        hudPanel.updateHUD(currentLevel, playerScore, playerLives);
+
+        if (playerLives <= 0) {
+            handleGameOver();
+        }
+    }
+
+
 }

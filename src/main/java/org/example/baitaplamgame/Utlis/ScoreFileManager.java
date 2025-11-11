@@ -23,4 +23,14 @@ public class ScoreFileManager {
             System.err.println("Lỗi khi lưu điểm: " + e.getMessage());
         }
     }
+    public static int getUnlockedLevel() {
+        // Nếu bạn chưa làm lưu file thì tạm trả về 1 (chỉ mở Level 1)
+        return 1;
+    }
+
+    public static void unlockNextLevel(int currentLevel) {
+        // Tạm chưa lưu ra file, chỉ để tránh lỗi
+        System.out.println("Unlocked level " + (currentLevel + 1));
+    }
+
 }
