@@ -1,5 +1,9 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;

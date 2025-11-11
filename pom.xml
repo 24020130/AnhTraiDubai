@@ -17,6 +17,12 @@
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>23.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>23.0.1</version>
         </dependency>
@@ -85,6 +91,7 @@
         </plugins>
     </build>
 </project>
+
 
 
 

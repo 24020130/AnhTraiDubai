@@ -28,6 +28,7 @@ public class GameManager {
     private final List<BossFireBall> bossFireBalls = new ArrayList<>();
     private long lastFireballTime = 0;
     private AnimationTimer timer;
+    private SupportPaddle supportPaddle;
     private int currentLevel = 1;
     private int playerScore = 0;
     private int playerLives = 4;
@@ -78,6 +79,10 @@ public class GameManager {
     private void startLevel(Level levelObj, String filePath) {
         gameOver = false;
 
+        if (supportPaddle != null) {
+            root.getChildren().remove(supportPaddle.getView());
+            supportPaddle = null;
+        }
         root.getChildren().clear();
         powerUps.clear();
         balls.clear();
@@ -103,6 +108,11 @@ public class GameManager {
         level.generateLevelFromFile(filePath, root);
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
+        if (currentLevel == 2) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20);
+            root.getChildren().add(supportPaddle.getView());
+
+        }
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
 
         hudPanel.setOnSave(() -> {
@@ -124,9 +134,15 @@ public class GameManager {
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+            private static final long FRAME_INTERVAL = 10_000_000; // ~100 FPS
+
             @Override
             public void handle(long now) {
-                update();
+                if (now - lastUpdate >= FRAME_INTERVAL) {
+                    update();
+                    lastUpdate = now;
+                }
             }
         };
         timer.start();
@@ -142,6 +158,54 @@ public class GameManager {
         allBalls.add(ball);
         allBalls.addAll(balls);
 
+        if (supportPaddle != null) {
+            supportPaddle.update();
+            // cập nhật Laze
+            for (Laze l : supportPaddle.getLazeList()) {
+                if (!root.getChildren().contains(l.getView())) {
+                    root.getChildren().add(l.getView());
+                }
+            }
+
+            // xử lý va chạm và xóa Laze khi ra khỏi màn hình
+            Iterator<Laze> lazeIterator = supportPaddle.getLazeList().iterator();
+            while (lazeIterator.hasNext()) {
+                Laze l = lazeIterator.next();
+                Iterator<Brick> brickIterator = level.getBricks().iterator();
+                while (brickIterator.hasNext()) {
+                    Brick brick = brickIterator.next();
+                    if (!brick.isDestroyed() && CollisionHandler.checkCollision(l, brick)) {
+                        playerScore += 5;
+                        brick.takeHit();
+
+                        // Xóa brick ra khỏi danh sách và khỏi màn hình
+                        // Hiệu ứng nhấp nháy trước khi biến mất
+                        javafx.animation.Timeline flash = new javafx.animation.Timeline(
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(50),
+                                        e -> brick.getView().setOpacity(0.3)),
+                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),
+                                        e -> brick.getView().setOpacity(1.0))
+                        );
+                        flash.setCycleCount(4); // nhấp nháy 4 lần
+                        flash.setAutoReverse(true);
+
+                        flash.setOnFinished(e -> {
+                            root.getChildren().remove(brick.getView());
+                        });
+
+
+                        brickIterator.remove();
+                        flash.play();
+
+                        // Xóa Laze
+                        lazeIterator.remove();
+                        root.getChildren().remove(l.getView());
+                        break;
+                    }
+                }
+            }
+
+        }
         List<PowerUp> newPowerUps = new ArrayList<>();
         for (Ball b : allBalls) {
             b.update();

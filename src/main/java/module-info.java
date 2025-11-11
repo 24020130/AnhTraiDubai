@@ -5,6 +5,7 @@ module org.example.baitaplamgame {
     requires java.desktop;
     requires javafx.graphics;
     requires javafx.base;
+    requires javafx.media;
     opens org.example.baitaplamgame to javafx.fxml;
     exports org.example.baitaplamgame;
 }

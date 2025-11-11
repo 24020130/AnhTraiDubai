@@ -40,4 +40,6 @@ public class ImageLoader {
     public static final Image SKIN_DEFAULT = loadImage("/skins/default.png");
     public static final Image SKIN_BLUE = loadImage("/skins/blue.png");
     public static final Image SKIN_GREEN = loadImage("/skins/green.png");
+    public static final Image SUPPORT_RIGHT = loadImage("/images/Laser_sp.png");
+    public static final Image LAZE_SP = loadImage("/images/laze.png");
 }

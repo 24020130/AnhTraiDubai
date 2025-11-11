@@ -13,6 +13,7 @@ import org.example.baitaplamgame.Utlis.Config;
 
 public class Paddle extends MovableObject {
     private double speed;
+    private PowerUp currentPowerUp;
     private final ImageView view;
     private Ball ball;
     private GameManager gameManager;
@@ -24,6 +25,9 @@ public class Paddle extends MovableObject {
     private long lastTrailTime = 0;
     private double lastX = 0;
 
+    // ===============================
+    // 🔧 CONSTRUCTORS
+    // ===============================
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height);
         this.speed = speed;
@@ -49,7 +53,7 @@ public class Paddle extends MovableObject {
         glow.setInput(motionBlur);
         view.setEffect(glow);
 
-        // Hiệu ứng đổi màu ánh sáng
+        // Hiệu ứng đổi màu ánh sáng liên tục
         Timeline hueTimeline = new Timeline(
                 new KeyFrame(Duration.millis(50), e -> updateNeonColor())
         );
@@ -57,12 +61,23 @@ public class Paddle extends MovableObject {
         hueTimeline.play();
     }
 
+    public Paddle(double x, double y, double width, double height, double speed, GameManager gameManager) {
+        this(x, y, width, height, speed);
+        this.gameManager = gameManager;
+    }
+
+    // ===============================
+    // 🌈 NEON COLOR ANIMATION
+    // ===============================
     private void updateNeonColor() {
         hueShift += 0.6;
         if (hueShift > 360) hueShift = 0;
         glow.setColor(Color.hsb(hueShift, 1.0, 1.0));
     }
 
+    // ===============================
+    // 🕹️ MOVEMENT
+    // ===============================
     public void moveLeft() {
         double delta = -speed;
         x = Math.max(0, x + delta);
@@ -87,7 +102,6 @@ public class Paddle extends MovableObject {
         motionBlur.setAngle(delta > 0 ? 0 : 180);
         motionBlur.setRadius(10 * intensity);
 
-        // Làm hiệu ứng giảm dần blur sau khi dừng
         Timeline resetBlur = new Timeline(
                 new KeyFrame(Duration.millis(200),
                         new KeyValue(motionBlur.radiusProperty(), 0, Interpolator.EASE_OUT))
@@ -98,9 +112,13 @@ public class Paddle extends MovableObject {
     private void updateView() {
         view.setX(x);
         view.setY(y);
+        view.setFitWidth(width);
+        view.setFitHeight(height);
     }
 
-    /** 🌠 Vệt sáng năng lượng sau lưng paddle */
+    // ===============================
+    // 🌠 VỆT SÁNG NĂNG LƯỢNG
+    // ===============================
     private void spawnEnergyTrail(double delta) {
         if (Math.abs(delta) < 1.5) return;
 
@@ -111,7 +129,6 @@ public class Paddle extends MovableObject {
         if (now - lastTrailTime < 40) return;
         lastTrailTime = now;
 
-        // Dải sáng động
         Rectangle trail = new Rectangle(x, y, width, height);
         trail.setArcWidth(40);
         trail.setArcHeight(40);
@@ -128,7 +145,6 @@ public class Paddle extends MovableObject {
 
         parent.getChildren().add(trail);
 
-        // Hiệu ứng tan biến mượt
         FadeTransition fade = new FadeTransition(Duration.millis(400), trail);
         fade.setFromValue(0.7);
         fade.setToValue(0.0);
@@ -145,7 +161,9 @@ public class Paddle extends MovableObject {
         effect.play();
     }
 
-    /** ✨ Hiệu ứng va chạm bóng */
+    // ===============================
+    // 💥 HIỆU ỨNG VA CHẠM BÓNG
+    // ===============================
     public void hitEffect() {
         Pane parent = (Pane) view.getParent();
         if (parent == null) return;
@@ -170,14 +188,19 @@ public class Paddle extends MovableObject {
         fx.play();
     }
 
+    // ===============================
+    // ⚙️ CẬP NHẬT & GETTERS/SETTERS
+    // ===============================
     @Override
     public void update() {
         updateView();
     }
 
     public double getX() { return x; }
+    @Override
     public double getY() { return y; }
     public double getWidth() { return width; }
+    public double getHeight() { return height; }
 
     public void setWidth(double newWidth) {
         double center = x + width / 2.0;
@@ -188,18 +211,32 @@ public class Paddle extends MovableObject {
         updateView();
     }
 
-    public double getHeight() { return height; }
     public void setHeight(double newHeight) {
         this.height = newHeight;
         updateView();
     }
 
-    public ImageView getView() { return view; }
-    public Bounds getBounds() { return view.getBoundsInParent(); }
+    public ImageView getView() {
+        return view;
+    }
 
-    public Ball getBall() { return ball; }
-    public void setBall(Ball ball) { this.ball = ball; }
+    public Bounds getBounds() {
+        return view.getBoundsInParent();
+    }
 
-    public GameManager getGameManager() { return gameManager; }
-    public void setGameManager(GameManager gm) { this.gameManager = gm; }
+    public Ball getBall() {
+        return ball;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 }

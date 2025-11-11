@@ -42,10 +42,13 @@ public class Server {
 
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                // Khi client đã kết nối -> mở game
                 Platform.runLater(() -> {
                     Pane pane = new Pane();
                     gm = new GameManager(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT); // <-- gán vào field
                     gm.startGame();
+
                     Stage stage = new Stage();
                     stage.setTitle("🏠 Host - Multiplayer Game");
                     Scene scene = new Scene(pane, Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
@@ -55,6 +58,7 @@ public class Server {
                     send("START_GAME");
                 });
 
+                // Lắng nghe tin nhắn từ client
                 String line;
                 while ((line = in.readLine()) != null) {
                     System.out.println("Client: " + line);

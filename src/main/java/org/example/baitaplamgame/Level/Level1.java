@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level1 extends Level {
+public class Level1 extends Level{
     public List<Brick> bricks = new ArrayList<>();
 
     public Level1(int levelNumber) {
@@ -52,6 +52,31 @@ public class Level1 extends Level {
                         bricks.add(brick);
                         root.getChildren().add(brick.getView());
                     }
+//                    } else if (c == '6') { // mau xanh la
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"green1");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    } else if (c == '7') { // mau xanh bien
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Blue");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    } else if (c == '8') { // mau vang
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Yellow");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    } else if (c == '9') { // mau xanh chuoi
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Jade");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    } else if (c == 'P') { //Purple nha ki hieu thoi
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Purple");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    }else if (c == 'C') { //Orange nha
+//                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Orange");
+//                        bricks.add(brick);
+//                        root.getChildren().add(brick.getView());
+//                    }
                 }
                 row++;
             }
