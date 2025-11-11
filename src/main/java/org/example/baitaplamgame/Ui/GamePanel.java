@@ -18,6 +18,9 @@ import javafx.util.Duration;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ScoreFileManager;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -70,6 +73,7 @@ public class GamePanel extends Pane {
         Button btnExit = createButton("EXIT");
         Button btnTable = createButton("BẢNG XẾP HẠNG");
         Button btnMultiplayer = createButton("MULTIPLAYER");
+        Button btnGuide = createButton("HƯỚNG DẪN");
 
         container.getChildren().addAll(titleText, btnStart, btnSettings, btnExit, btnTable, btnMultiplayer);
         getChildren().add(container);
@@ -211,7 +215,34 @@ public class GamePanel extends Pane {
             fadeIn.setToValue(1);
             fadeIn.play();
         });
+        btnGuide.setOnAction(e -> showGuide());
     }
+    private void showGuide() {
+        // Ảnh hướng dẫn
+        Image image = new Image(getClass().getResource("/images/huongdan.png").toExternalForm());
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(Config.WINDOW_WIDTH);
+        imageView.setFitHeight(Config.WINDOW_HEIGHT);
+
+        // Lớp phủ (full màn hình)
+        AnchorPane overlay = new AnchorPane();
+        overlay.setPrefSize(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        overlay.getChildren().add(imageView);
+
+        // Nút back
+        Button backButton = createButton("BACK");
+        backButton.setLayoutX(50);
+        backButton.setLayoutY(50);
+        overlay.getChildren().add(backButton);
+
+        // Khi nhấn back → quay lại menu
+        backButton.setOnAction(e -> getChildren().remove(overlay));
+
+        // Thêm overlay lên giao diện
+        getChildren().add(overlay);
+    }
+
     private void openMultiplayerMenu(VBox container) {
         BoxBlur blur = new BoxBlur(10, 10, 3);
         container.setEffect(blur);
@@ -326,6 +357,7 @@ public class GamePanel extends Pane {
 
         return button;
     }
+
 
     private static class RectanglePane extends Pane {}
 }

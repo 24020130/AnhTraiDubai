@@ -4,97 +4,121 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d699015-4561-470b-ac9b-d0880f31c1d7" name="Changes" comment="Merge remote-tracking branch 'origin/xanhtran2' into hieuphan&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/misc.xml&#10;#&#9;pom.xml&#10;#&#9;scores.txt&#10;#&#9;src/main/java/module-info.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Level/Level1.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Main.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/Boss.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/Brick.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/GameManager.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/Paddle.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Network/Client.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Network/Server.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Ui/GamePanel.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Ui/HUDPanel.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Utlis/Config.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Utlis/ImageLoader.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Utlis/ScoreFileManager.java">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_22_2025_9_23_AM_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_22_2025_9_23_AM__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/Laze.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/SupportPaddle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/Laser_sp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/intro2.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/laze.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="6d699015-4561-470b-ac9b-d0880f31c1d7" name="Changes" comment="Merge remote-tracking branch 'origin/qanhh3' into hieuphan&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;scores.txt&#10;#&#9;src/main/java/org/example/baitaplamgame/Main.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/Boss.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/GameManager.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Model/Paddle.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Ui/GamePanel.java&#10;#&#9;src/main/java/org/example/baitaplamgame/Utlis/Config.java&#10;#&#9;src/main/resources/skins/default.png&#10;#&#9;target/classes/module-info.class&#10;#&#9;target/classes/org/example/baitaplamgame/Main.class&#10;#&#9;target/classes/org/example/baitaplamgame/Model/Boss.class&#10;#&#9;target/classes/org/example/baitaplamgame/Model/Brick.class&#10;#&#9;target/classes/org/example/baitaplamgame/Model/GameManager$1.class&#10;#&#9;target/classes/org/example/baitaplamgame/Model/GameManager.class&#10;#&#9;target/classes/org/example/baitaplamgame/Model/Paddle.class&#10;#&#9;target/classes/org/example/baitaplamgame/Network/Client.class&#10;#&#9;target/classes/org/example/baitaplamgame/Network/Server.class&#10;#&#9;target/classes/org/example/baitaplamgame/PowerUp/BossFireBall.class&#10;#&#9;target/classes/org/example/baitaplamgame/Ui/GamePanel.class&#10;#&#9;target/classes/org/example/baitaplamgame/Ui/HUDPanel.class&#10;#&#9;target/classes/org/example/baitaplamgame/Utlis/Config.class&#10;#&#9;target/classes/org/example/baitaplamgame/Utlis/ScoreFileManager.class">
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_11_2025_10_25_AM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_11_2025_10_25_AM_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_11_2025_10_25_AM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/huongdan.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scores.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scores.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Level/Level1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Level/Level1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/Brick.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Model/Paddle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Network/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Ui/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Ui/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Utlis/ImageLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/baitaplamgame/Utlis/ImageLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/level11 - Copy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/levels/level11 - Copy.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/level23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/levels/level23.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/levels/level5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/levels/level5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/levels/level11 - Copy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/levels/level11 - Copy.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/levels/level23.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/levels/level23.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/levels/level5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/levels/level5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Blue_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/FastBrick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/FastBrick1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Green_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/ItemShirk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/ItemShirk1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Item_star.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Item_star1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Jade_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Multiballbrick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Multiballbrick1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Orange_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Purple_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/ShirkPaddle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/ShirkPaddle1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/Yellow_Brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/ball.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/be.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/be1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/bg1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/bg2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/bg3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/bg4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/boss.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/boss_bullet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/brick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/brick2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/brickGreen.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/brickGreen1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/fireball_big.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/img1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/item.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/item1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/item16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/next.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/images/player.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level11 (2).txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level11 - Copy.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level23.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/levels/level5.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/org/example/baitaplamgame/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/skins/blue.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/skins/default.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/resources/skins/green.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Brick.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Brick.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Paddle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Paddle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel$RectanglePane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel$RectanglePane.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ImageLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ImageLoader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Blue_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/FastBrick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/FastBrick1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Green_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ItemShirk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ItemShirk1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Item_star.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Item_star1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Jade_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Laser_sp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Multiballbrick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Multiballbrick1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Orange_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Purple_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ShirkPaddle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ShirkPaddle1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/Yellow_Brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/ball.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/be.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/be1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/bg4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/boss.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/boss_bullet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brick2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brickGreen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/brickGreen1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/fireball_big.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/img1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/intro2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/item.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/item1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/item16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/laze.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/next.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/images/player.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level11 (2).txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level11 - Copy.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/levels/level5.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/java/org/example/baitaplamgame/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Level/Level5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Ball.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Boss.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Brick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/BrickGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/CollisionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/DummyBrick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/FastBrick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GameObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/GreenBrick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Laze.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/MovableObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/MultiBrick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/NormalBrick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/Paddle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/PowerUp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/ShrinkPaddle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Model/SupportPaddle.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Client$OnMessageListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Server$OnMessageListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Network/Server.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/BossBullet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/BossFireBall$OnHitListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/BossFireBall.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/ExpandPaddlePowerUp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/FastBallPower.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/MultiBallPower.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/PowerUp/ShirkPaddlePowerUp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GameFrame.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel$RectanglePane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/GamePanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/HUDPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Ui/MenuPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/Config.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ImageLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/InputKeys.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/ScoreFileManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/Utlis/SoundManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/baitaplamgame/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/skins/blue.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/skins/default.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/skins/green.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/Main.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +133,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="hieuphan" />
@@ -128,13 +165,6 @@
     &quot;accountId&quot;: &quot;9bc8ac61-cb63-4400-b6d5-e35850aebf69&quot;
   }
 }</component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -149,7 +179,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.Game1.executor": "Run",
+    "Application.Game1.executor": "Debug",
     "Application.Main.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -187,6 +217,82 @@
       <updated>1759677837034</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="7490ba92-0e72-4c94-b745-06554896a051" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="7490ba92-0e72-4c94-b745-06554896a051">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
