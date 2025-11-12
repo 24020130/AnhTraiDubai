@@ -102,9 +102,9 @@ public class Ball extends MovableObject {
             createRainbowExplosion(x + width / 2, y + height / 2);
         }
         if (x + width > sceneWidth) {
-           x = sceneWidth - width;
-           velocityX *= -1;
-           createRainbowExplosion(x + width / 2, y + height / 2);
+            x = sceneWidth - width;
+            velocityX *= -1;
+            createRainbowExplosion(x + width / 2, y + height / 2);
         }
         if (y <= 0) {
             y = 0;
@@ -175,6 +175,22 @@ public class Ball extends MovableObject {
     }
     public void reverseY() {
         this.velocityY = -this.velocityY;
+    }
+    private boolean hasCollidedWithPaddle = false;
+
+    public boolean hasCollidedWithPaddle() {
+        return hasCollidedWithPaddle;
+    }
+
+    public void setHasCollidedWithPaddle(boolean value) {
+        this.hasCollidedWithPaddle = value;
+    }
+
+    public void resetPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+        view.setX(x);
+        view.setY(y);
     }
 
 
