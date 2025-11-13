@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Level {
-    private int levelNumber;
-    private List<Brick> bricks = new ArrayList<>();
+    protected int levelNumber;
+    protected List<Brick> bricks = new ArrayList<>();
 
     public Level(int levelNumber) {
         this.levelNumber = levelNumber;

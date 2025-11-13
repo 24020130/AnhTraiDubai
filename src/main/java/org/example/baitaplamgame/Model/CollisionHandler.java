@@ -1,5 +1,6 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
 import org.example.baitaplamgame.PowerUp.ExpandPaddlePowerUp;
 import org.example.baitaplamgame.PowerUp.FastBallPower;
@@ -101,5 +102,46 @@ public class CollisionHandler {
             }
         }
     }
+    /**
+     * Check va chạm Meteor với Paddle
+     * @param meteors danh sách Meteor
+     * @param paddle Paddle của người chơi
+     * @param root Pane chính
+     * @return số mạng mất đi
+     */
+    public static int handleMeteorPaddleCollision(List<Meteor> meteors, Paddle paddle, Pane root) {
+        int lostLives = 0;
+        Iterator<Meteor> iterator = meteors.iterator();
 
+        while (iterator.hasNext()) {
+            Meteor m = iterator.next();
+            m.update(root);
+
+            if (!m.isActive()) {
+                iterator.remove();
+                continue;
+            }
+
+            Bounds meteorHitbox = m.getHitbox(); // Dùng hitbox chính xác
+            Bounds paddleBounds = paddle.getView().getBoundsInParent();
+
+            // Va chạm + Meteor đã rơi đủ sâu để chạm paddle
+            boolean collision = meteorHitbox.intersects(paddleBounds);
+            boolean deepEnough = m.getLayoutY() + m.getBoundsInLocal().getHeight() * 0.8 >= paddle.getY();
+
+            if (collision && deepEnough) {
+                lostLives++;
+                m.destroy(root);
+                iterator.remove();
+            }
+            else if (m.getLayoutY() > root.getHeight()) {
+                m.destroy(root);
+                iterator.remove();
+            }
+        }
+
+        return lostLives;
+    }
 }
+
+

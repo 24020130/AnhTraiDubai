@@ -32,7 +32,6 @@ public class MenuPanel extends VBox {
         getChildren().addAll(title, playButton, exitButton);
     }
 
-    // Cho phép GameFrame đăng ký sự kiện
     public Button getPlayButton() {
         return playButton;
     }

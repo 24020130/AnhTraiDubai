@@ -13,7 +13,6 @@ import org.example.baitaplamgame.Utlis.ImageLoader;
 
 public abstract class Brick extends GameObject {
     private ImageView imgCrack1;
-    private ImageView imgCrack2;
 
     protected int hitPoints;
     protected String type;
@@ -31,7 +30,10 @@ public abstract class Brick extends GameObject {
         }
 
         switch (type.toLowerCase()) {
-            case "red" -> view = new ImageView(ImageLoader.BRICK_IMAGE);
+            case "red" -> {
+                view = new ImageView(ImageLoader.BRICK_IMAGE);
+                imgCrack1 = new ImageView(ImageLoader.BRICK_RED_CRACK1);
+            }
             case "green" -> view = new ImageView(ImageLoader.BRICK_GREEN_IMAGE);
             case "fast" -> view = new ImageView(ImageLoader.BRICK_FAST_IMAGE);
             case "multibrick" -> view = new ImageView(ImageLoader.MULTI_BALL_BRICK);
@@ -76,8 +78,8 @@ public abstract class Brick extends GameObject {
         long now = System.currentTimeMillis();
         if (now - lastHitTime < 100) return;
         lastHitTime = now;
-
         hitPoints--;
+        updateCrackImage();
         if (hitPoints <= 0) playDestroyEffect();
     }
 
@@ -103,10 +105,8 @@ public abstract class Brick extends GameObject {
         shake.play();
     }
     private void updateCrackImage() {
-        if (hitPoints == 2 && imgCrack1 != null) {
+        if (hitPoints == 1 && imgCrack1 != null) {
             setBrickImage(imgCrack1);
-        } else if (hitPoints == 1 && imgCrack2 != null) {
-            setBrickImage(imgCrack2);
         }
     }
 

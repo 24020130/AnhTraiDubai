@@ -31,6 +31,8 @@ public class ImageLoader {
     public static final Image BACKGROUND_LEVEL2 = loadImage("/images/background2.png");
     public static final Image BACKGROUND_LEVEL3 = loadImage("/images/bg3.png");
     public static final Image BACKGROUND_LEVEL4 = loadImage("/images/bg4.png");
+    public static final Image BACKGROUND_LEVEL5 = loadImage("/images/bg5.png");
+    public static final Image BACKGROUND_LEVEL6 = loadImage("/images/bg6.png");
     public static final Image BRICK_RED_CRACK1 = loadImage("/images/breakbrick1.png");
     public static final Image BRICK_RED_CRACK2 = loadImage("/images/breakbrick1.png");
     public static final Image BOSS_IMAGE = loadImage("/images/boss.png");
@@ -39,4 +41,6 @@ public class ImageLoader {
     public static final Image SKIN_GREEN = loadImage("/skins/green.png");
     public static final Image SUPPORT_RIGHT = loadImage("/images/Laser_sp.png");
     public static final Image LAZE_SP = loadImage("/images/laze.png");
+    public static final Image SUPPORT1_RIGHT = loadImage("/images/support2.png");
+    public static final Image SUPPORT2_RIGHT = loadImage("/images/support3.png");
 }

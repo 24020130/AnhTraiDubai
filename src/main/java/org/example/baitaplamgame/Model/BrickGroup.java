@@ -34,7 +34,6 @@ public class BrickGroup {
         patternMotion.setCycleCount(Animation.INDEFINITE);
         patternMotion.play();
 
-        // Thỉnh thoảng cho rơi 1 viên
         Timeline dropTimer = new Timeline(
                 new KeyFrame(Duration.seconds(3 + random.nextDouble() * 2), e -> dropRandomBrick())
         );

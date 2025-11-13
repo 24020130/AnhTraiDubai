@@ -17,6 +17,7 @@ public class HUDPanel extends VBox {
     private final Text levelText;
     private final Text scoreText;
     private final Text livesText;
+    private final Text bossHpText; // thêm dòng này
     private final double panelWidth = 220;
 
     private Runnable onSave, onExit;
@@ -27,7 +28,7 @@ public class HUDPanel extends VBox {
         setLayoutX(windowWidth - panelWidth);
         setLayoutY(0);
 
-        setSpacing(35);
+        setSpacing(20);
         setAlignment(Pos.TOP_CENTER);
         setPadding(new Insets(100, 0, 0, 0));
 
@@ -48,6 +49,8 @@ public class HUDPanel extends VBox {
         levelText = createText("Level: 1");
         scoreText = createText("Score: 0");
         livesText = createText("Lives: 3");
+        bossHpText = createText("Boss HP: 0 / 0"); // dòng Boss HP
+        bossHpText.setVisible(false); // ẩn lúc đầu
 
         // ===== BUTTONS =====
         Button saveBtn = createButton("💾 Save");
@@ -64,7 +67,7 @@ public class HUDPanel extends VBox {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setPadding(new Insets(60, 0, 0, 0));
 
-        getChildren().addAll(title, levelText, scoreText, livesText, buttonBox);
+        getChildren().addAll(title, levelText, scoreText, livesText, bossHpText, buttonBox);
     }
 
     private Text createText(String s) {
@@ -80,7 +83,7 @@ public class HUDPanel extends VBox {
         btn.setFont(Font.font("Consolas", FontWeight.BOLD, 16));
         btn.setTextFill(Color.WHITE);
         btn.setStyle("""
-            -fx-background-color: linear-gradient(to right, #FF8000, #FF3300);
+-fx-background-color: linear-gradient(to right, #FF8000, #FF3300);
             -fx-background-radius: 20;
             -fx-cursor: hand;
         """);
@@ -104,11 +107,16 @@ public class HUDPanel extends VBox {
         tt.play();
     }
 
-    public void setOnSave(Runnable action) {
-        this.onSave = action;
+    public void setOnSave(Runnable action) { this.onSave = action; }
+    public void setOnExit(Runnable action) { this.onExit = action; }
+
+    public void showBossHP(boolean visible) {
+        bossHpText.setVisible(visible);
     }
 
-    public void setOnExit(Runnable action) {
-        this.onExit = action;
+    public void updateBossHP(int currentHP, int maxHP) {
+        if (!bossHpText.isVisible()) return;
+        if (currentHP < 0) currentHP = 0;
+        bossHpText.setText("Boss HP: " + currentHP + " / " + maxHP);
     }
 }

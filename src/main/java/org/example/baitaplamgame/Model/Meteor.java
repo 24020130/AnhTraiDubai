@@ -1,6 +1,8 @@
 package org.example.baitaplamgame.Model;
 
 import javafx.animation.FadeTransition;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,16 +57,43 @@ public class Meteor extends ImageView {
             gamePane.getChildren().remove(this);
         }
     }
+    /**
+     * Trả về hitbox chính xác của thiên thạch (không tính viền trong suốt)
+     */
+    public Bounds getHitbox() {
+        double imgWidth = getFitWidth();
+        double imgHeight = getBoundsInLocal().getHeight(); // chiều cao thực tế
+
+        // Tỉ lệ hitbox thực tế (có thể điều chỉnh)
+        double hitboxRatioW = 0.65;  // 65% chiều rộng
+        double hitboxRatioH = 0.70;  // 70% chiều cao
+        double offsetRatioX = (1 - hitboxRatioW) / 2; // căn giữa
+        double offsetRatioY = (1 - hitboxRatioH) / 2;
+
+        double hitboxWidth = imgWidth * hitboxRatioW;
+        double hitboxHeight = imgHeight * hitboxRatioH;
+
+        double hitboxX = getLayoutX() + imgWidth * offsetRatioX;
+        double hitboxY = getLayoutY() + imgHeight * offsetRatioY;
+
+        return new javafx.geometry.BoundingBox(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
+    }
 
     public boolean isActive() {
         return active;
     }
 
     public void destroy(Pane gamePane) {
+        if (!active) return;
         active = false;
         playExplosion(gamePane);
-        gamePane.getChildren().remove(this);
+
+        // ✅ Xóa meteor sau animation 0.5s
+        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(Duration.seconds(0.5));
+        delay.setOnFinished(e -> gamePane.getChildren().remove(this));
+        delay.play();
     }
+
 
     private void playExplosion(Pane gamePane) {
         AudioClip explosionSound = new AudioClip(getClass().getResource("/sounds/explosion.mp3").toExternalForm());

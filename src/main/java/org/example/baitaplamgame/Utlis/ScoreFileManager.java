@@ -24,7 +24,6 @@ public class ScoreFileManager {
         }
     }
     public static int getUnlockedLevel() {
-        // Nếu bạn chưa làm lưu file thì tạm trả về 1 (chỉ mở Level 1)
         return 1;
     }
 

@@ -19,13 +19,19 @@ public class SupportPaddle extends MovableObject {
     private long lastTurnTime = 0;
     private long nextTurnDelay = getRandomDelay();
 
-    public SupportPaddle(double startX, double startY, double width, double height) {
+    public SupportPaddle(double startX, double startY, double width, double height,String select) {
         super(startX, startY, width, height);
-        view = new ImageView(ImageLoader.SUPPORT_RIGHT);
+        switch (select) {
+            case "lv4" -> view = new ImageView(ImageLoader.SUPPORT_RIGHT);
+            case "lv5" -> view = new ImageView(ImageLoader.SUPPORT1_RIGHT);
+            case "lv6" -> view = new ImageView(ImageLoader.SUPPORT2_RIGHT);
+            default -> view = new ImageView(ImageLoader.SUPPORT_RIGHT);
+        }
         view.setFitWidth(width);
         view.setFitHeight(height);
         view.setX(x);
         view.setY(y);
+
     }
 
     private long getRandomDelay() {

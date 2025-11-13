@@ -1,32 +1,42 @@
 package org.example.baitaplamgame.Model;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.*;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
-import org.example.baitaplamgame.Level.Level;
-import org.example.baitaplamgame.Level.Level1;
-import org.example.baitaplamgame.Level.Level2;
-import org.example.baitaplamgame.Level.Level5;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Color;
+import javafx.scene.effect.DropShadow;
+
+
+import javafx.util.Duration;
+import org.example.baitaplamgame.Level.*;
 import org.example.baitaplamgame.PowerUp.BossFireBall;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.Utlis.InputKeys;
 import org.example.baitaplamgame.PowerUp.BossBullet;
-
 import javafx.scene.image.ImageView;
 import org.example.baitaplamgame.Utlis.SoundManager;
 
-import java.awt.*;
+import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GameManager {
     private final Pane root;
     private Paddle paddle;
     private Ball ball;
     private List<Ball> balls = new ArrayList<>();
+    private java.util.function.Consumer<Boolean> onGameEnd;
     private Level level;
     private final List<PowerUp> powerUps = new ArrayList<>();
     private final List<BossFireBall> bossFireBalls = new ArrayList<>();
@@ -35,27 +45,35 @@ public class GameManager {
     private SupportPaddle supportPaddle;
     private int currentLevel = 1;
     private int playerScore = 0;
-    private int playerLives = 4;
+    private int playerLives = 10;
     private Image bgImage;
     private ImageView bg1, bg2;
     private double bgSpeed = 0.2;
     private final List<Meteor> meteors = new ArrayList<>();
     private long lastMeteorSpawn = 0;
-
-    private boolean gameOver = false;
+    private boolean levelCleared = false;
     private Runnable onExitToMenu;
+    private java.util.function.IntConsumer onLevelComplete;
+    private boolean gameOver = false;
     private org.example.baitaplamgame.Ui.HUDPanel hudPanel;
     private java.io.BufferedWriter writer;
+    private Runnable onGameOver;
+    private Consumer<Double> onPaddleMove;
+    private Runnable onGameEndToMenu;
+
+    public void setOnGameEndToMenu(Runnable callback) {
+        this.onGameEndToMenu = callback;
+    }
+
+    private Paddle enemyPaddle;
+    public void setOnGameOver(Runnable onGameOver) { this.onGameOver = onGameOver; }
     public void setWriter(java.io.BufferedWriter w) { this.writer = w; }
     public void setOnExitToMenu(Runnable callback) {
         this.onExitToMenu = callback;
     }
-//    public void startGame(int level) {
-//        this.currentLevel = level; // nếu bạn có biến currentLevel
-//        startGame(); // gọi lại hàm gốc
-//    }
-
-
+    public void setOnLevelComplete(java.util.function.IntConsumer onLevelComplete) {
+        this.onLevelComplete = onLevelComplete;
+    }
 
 
     public GameManager(Pane root, double width, double height) {
@@ -63,15 +81,26 @@ public class GameManager {
     }
     public void startGame() {
         currentLevel = 1;
-        playerLives = 4;
+        playerLives = 10;
         playerScore = 0;
         gameOver = false;
 
         switch (currentLevel) {
             case 1 -> startLevel1();
             case 2 -> startLevel2();
-            case 3, 4, 5 -> startLevel5();
-            default -> startLevel1();
+            case 3 -> startLevel3();
+            case 4 -> startLevel4();
+            case 5 -> startLevel5();
+            case 6 -> startLevel6();
+            default -> {
+                System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
+                if (writer != null) {
+                    try {
+                        writer.write("PLAYER_SCORE_WIN\n");
+                        writer.flush();
+                    } catch (Exception ignored) {}
+                }
+            }
         }
     }
 
@@ -82,9 +111,20 @@ public class GameManager {
     private void startLevel2() {
         startLevel(new Level2(2), "/levels/level2.txt");
     }
+    private void startLevel3() {
+        startLevel(new Level3(3), "/levels/level3.txt");
+    }
+    private void startLevel4() {
+        startLevel(new Level4(4), "/levels/level4.txt");
+    }
 
     private void startLevel5() {
         startLevel(new Level5(5), "/levels/level5.txt");
+    }
+    private void startLevel6() {
+
+        startLevel(new Level6(6), "/levels/level6.txt");
+        SoundManager.playEffect("boss_sound.mp3");
     }
 
     private void startLevel(Level levelObj, String filePath) {
@@ -103,7 +143,8 @@ public class GameManager {
             case 2 -> ImageLoader.BACKGROUND_LEVEL2;
             case 3 -> ImageLoader.BACKGROUND_LEVEL3;
             case 4 -> ImageLoader.BACKGROUND_LEVEL4;
-            default -> ImageLoader.BACKGROUND_LEVEL1;
+            case 5 -> ImageLoader.BACKGROUND_LEVEL5;
+            default -> ImageLoader.BACKGROUND_LEVEL6;
         };
 
         bg1 = new ImageView(bgImage);
@@ -117,25 +158,42 @@ public class GameManager {
         bg2.setFitHeight(Config.WINDOW_HEIGHT);
         bg2.setPreserveRatio(false);
 
-// đặt bg2 ngay sau bg1
         bg2.setLayoutX(bg1.getFitWidth());
 
         root.getChildren().addAll(bg1, bg2);
 
-        paddle = new Paddle(350, 650, 100, 20, Config.PADDLE_SPEED, this);
+        paddle = new Paddle(
+                350,
+                625,
+                100,
+                20,
+                Config.PADDLE_SPEED,
+                this,
+                Config.CURRENT_PLAYER_SKIN
+        );
+
         ball = new Ball(390, 500, 20, Config.BALL_SPEED);
         paddle.setBall(ball);
         this.level = levelObj;
         level.generateLevelFromFile(filePath, root);
 
         root.getChildren().addAll(paddle.getView(), ball.getView());
-        if (currentLevel == 2) {
-            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20);
+        if (currentLevel == 4) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20, "lv4");
+            root.getChildren().add(supportPaddle.getView());
+        }
+        if (currentLevel == 5) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20, "lv5");
+            root.getChildren().add(supportPaddle.getView());
+
+        }
+        if (currentLevel == 6) {
+            supportPaddle = new SupportPaddle(paddle.getX(),paddle.getY()+20, 80, 20, "lv6");
             root.getChildren().add(supportPaddle.getView());
 
         }
         hudPanel = new org.example.baitaplamgame.Ui.HUDPanel(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
-
+        hudPanel.updateHUD(currentLevel, playerScore, playerLives);
         hudPanel.setOnSave(() -> {
             org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
                     Config.PLAYER_NAME, playerScore, currentLevel
@@ -152,11 +210,21 @@ public class GameManager {
         root.getChildren().add(hudPanel);
         hudPanel.slideIn();
 
+        if (levelObj instanceof Level6) {
+            hudPanel.showBossHP(true);
+            Boss boss = ((Level6) levelObj).getBoss();
+            if (boss != null) {
+                hudPanel.updateBossHP(boss.getHealth(), boss.getMaxHealth());
+            }
+        } else {
+            hudPanel.showBossHP(false);
+        }
+
 
         if (timer != null) timer.stop();
         timer = new AnimationTimer() {
             private long lastUpdate = 0;
-            private static final long FRAME_INTERVAL = 10_000_000; // ~100 FPS
+            private static final long FRAME_INTERVAL = 10_000_000;
 
             @Override
             public void handle(long now) {
@@ -171,81 +239,75 @@ public class GameManager {
 
     public void update() {
         if (gameOver) return;
-
-        if (InputKeys.isPressed("LEFT")) paddle.moveLeft();
-        if (InputKeys.isPressed("RIGHT")) paddle.moveRight();
-
+        paddle.update();
         List<Ball> allBalls = new ArrayList<>();
         allBalls.add(ball);
         allBalls.addAll(balls);
-
         if (supportPaddle != null) {
             supportPaddle.update();
-            // cập nhật Laze
-            for (Laze l : supportPaddle.getLazeList()) {
+            Iterator<Laze> lazeIterator = supportPaddle.getLazeList().iterator();
+            Boss boss = null;
+            if (level instanceof Level6 lvl6) {
+                boss = lvl6.getBoss();
+            }
+
+            while (lazeIterator.hasNext()) {
+                Laze l = lazeIterator.next();
                 if (!root.getChildren().contains(l.getView())) {
                     root.getChildren().add(l.getView());
                 }
-            }
 
-            // xử lý va chạm và xóa Laze khi ra khỏi màn hình
-            Iterator<Laze> lazeIterator = supportPaddle.getLazeList().iterator();
-            while (lazeIterator.hasNext()) {
-                Laze l = lazeIterator.next();
-                Iterator<Brick> brickIterator = level.getBricks().iterator();
-                while (brickIterator.hasNext()) {
-                    Brick brick = brickIterator.next();
-                    if (!brick.isDestroyed() && CollisionHandler.checkCollision(l, brick)) {
-                        playerScore += 5;
-                        brick.takeHit();
+                boolean lazeRemoved = false;
+                if (boss != null && !boss.isDestroyed() && CollisionHandler.checkCollision(l, boss)) {
+                    boss.takeDamage();
+                    playerScore += 20;
+                    SoundManager.playEffect("laze_sound.mp3");
+                    if (boss.getHealth() >= 0) {
+                        hudPanel.updateBossHP(boss.getHealth(), boss.getMaxHealth());
+                    }
+                    root.getChildren().remove(l.getView());
+                    lazeIterator.remove();
+                    lazeRemoved = true;
+                }
+                if (!lazeRemoved) {
+                    Iterator<Brick> brickIterator = level.getBricks().iterator();
+                    while (brickIterator.hasNext()) {
+                        Brick brick = brickIterator.next();
+                        if (!brick.isDestroyed() && CollisionHandler.checkCollision(l, brick)) {
+                            playerScore += 5;
+                            brick.takeHit();
 
-                        // Xóa brick ra khỏi danh sách và khỏi màn hình
-                        // Hiệu ứng nhấp nháy trước khi biến mất
-                        javafx.animation.Timeline flash = new javafx.animation.Timeline(
-                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(50),
-                                        e -> brick.getView().setOpacity(0.3)),
-                                new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),
-                                        e -> brick.getView().setOpacity(1.0))
-                        );
-                        flash.setCycleCount(4); // nhấp nháy 4 lần
-                        flash.setAutoReverse(true);
-
-                        flash.setOnFinished(e -> {
-                            root.getChildren().remove(brick.getView());
-                        });
-
-
-                        brickIterator.remove();
-                        flash.play();
-
-                        // Xóa Laze
-                        lazeIterator.remove();
-                        root.getChildren().remove(l.getView());
-                        break;
+                            root.getChildren().remove(l.getView());
+                            lazeIterator.remove();
+                            lazeRemoved = true;
+                            break;
+                        }
                     }
                 }
             }
-
         }
+
+        // Ball + Brick collision
         List<PowerUp> newPowerUps = new ArrayList<>();
+        List<Brick> bricksToRemove = new ArrayList<>();
+
         for (Ball b : allBalls) {
             b.update();
             b.checkCollisionWithWalls(Config.WINDOW_WIDTH - 220, Config.WINDOW_HEIGHT);
+
             if (!b.hasCollidedWithPaddle() && CollisionHandler.checkCollision(b, paddle)) {
                 CollisionHandler.handleBallPaddleCollision(b, paddle);
                 SoundManager.playEffect("collision2.mp3");
                 b.setHasCollidedWithPaddle(true);
             } else if (!CollisionHandler.checkCollision(b, paddle)) {
-                // reset cờ khi ball không còn chạm paddle
                 b.setHasCollidedWithPaddle(false);
             }
-            Iterator<Brick> iterator = level.getBricks().iterator();
-            while (iterator.hasNext()) {
-                Brick brick = iterator.next();
+
+            for (Brick brick : new ArrayList<>(level.getBricks())) {
                 if (CollisionHandler.handleBallBrickCollision(b, brick, newPowerUps, root)) {
                     SoundManager.playEffect("collision.mp3");
                     if (brick.isDestroyed()) {
-                        iterator.remove();
+                        bricksToRemove.add(brick);
                         playerScore += 10;
                     }
                     break;
@@ -253,9 +315,9 @@ public class GameManager {
             }
         }
 
-        for (PowerUp p : newPowerUps) {
-            addPowerUp(p);
-        }
+        level.getBricks().removeAll(bricksToRemove);
+
+        for (PowerUp p : newPowerUps) addPowerUp(p);
         CollisionHandler.handlePowerUpCollision(powerUps, paddle, root);
 
         balls.removeIf(b -> {
@@ -266,103 +328,99 @@ public class GameManager {
             return false;
         });
 
-        if (level instanceof Level5 lvl5) {
-            var boss = lvl5.getBoss();
+        if (level instanceof Level6 lvl6) {
+            var boss = lvl6.getBoss();
             if (boss != null) {
                 boss.update();
+
+
                 long nowTime = System.currentTimeMillis();
-                if ((nowTime - lastFireballTime > 3000) || boss.getHealth() <= boss.getMaxHealth() / 2) {
+                long cooldown = boss.getHealth() <= boss.getMaxHealth() / 2 ? 5000 : 7000;
+                int maxTotalFireballs = 30;
+                if (nowTime - lastFireballTime > cooldown && bossFireBalls.size() < maxTotalFireballs) {
                     lastFireballTime = nowTime;
+                    SoundManager.playEffect("boss_fire.mp3");
                     double bx = boss.getView().getLayoutX() + boss.getView().getFitWidth() / 2;
                     double by = boss.getView().getLayoutY() + boss.getView().getFitHeight();
+
                     BossFireBall left = new BossFireBall(bx, by, 60, root);
                     BossFireBall mid = new BossFireBall(bx, by, 90, root);
                     BossFireBall right = new BossFireBall(bx, by, 120, root);
-                    left.setOnHitListener(() -> handlePlayerHit());
-                    mid.setOnHitListener(() -> handlePlayerHit());
-                    right.setOnHitListener(() -> handlePlayerHit());
+
+                    left.setOnHitListener(this::handlePlayerHit);
+                    mid.setOnHitListener(this::handlePlayerHit);
+                    right.setOnHitListener(this::handlePlayerHit);
+
                     bossFireBalls.add(left);
                     bossFireBalls.add(mid);
                     bossFireBalls.add(right);
                 }
-
-
                 for (Ball b : allBalls) {
                     if (b.getView().getBoundsInParent().intersects(boss.getView().getBoundsInParent())) {
                         if (!boss.isDestroyed()) {
                             boss.takeDamage();
+                            hudPanel.updateBossHP(boss.getHealth(), boss.getMaxHealth());
                             b.bounceOff(boss);
                             playerScore += 5;
                         }
                     }
-
                 }
-
-                var bullets = boss.getBullets();
-                Iterator<BossBullet> bulletIter = bullets.iterator();
-                while (bulletIter.hasNext()) {
-                    var bullet = bulletIter.next();
-                    bullet.update();
-                    if (bullet.collidesWith(paddle)) {
-                        root.getChildren().remove(bullet.getView());
-                        bulletIter.remove();
-
-                        if (!gameOver && playerLives > 0) {
-                            playerLives--;
-                            if (playerLives <= 0) {
-                                handleGameOver();
-                                return;
-                            }
-                        }
-                    }
-
-                }
-                Iterator<BossFireBall> fireBallIterator = bossFireBalls.iterator();
-                while (fireBallIterator.hasNext()) {
-                    BossFireBall fb = fireBallIterator.next();
-                    fb.update();
-                    if (fb.collidesWith(paddle)) {
-                        fireBallIterator.remove();
-                    }
-                }
-
-
                 if (boss.isDestroyed()) {
-                    nextLevel();
-                    return;
+                    if (onGameEnd != null && !gameOver) {
+                        endGame(true);
+                        return;
+                    } else if (onGameEnd == null && !gameOver) {
+                        showWinScreen();
+                        return;
+                    }
                 }
+
+                // Boss bullets
+                Iterator<BossBullet> it = boss.getBullets().iterator();
+                while (it.hasNext()) {
+                    BossBullet b = it.next();
+                    b.update();
+
+                    if (b.collidesWith(paddle) || b.getView().getLayoutY() > Config.WINDOW_HEIGHT) {
+                        root.getChildren().remove(b.getView());
+                        handlePlayerHit();
+                        it.remove();
+                    }
+                }
+
+
+                // Boss fireballs
+                List<BossFireBall> toRemove = new ArrayList<>();
+
+                for (BossFireBall fb : new ArrayList<>(bossFireBalls)) {
+                    fb.update();
+
+                    if (fb.collidesWith(paddle)) {
+                        root.getChildren().remove(fb.getView());
+                        toRemove.add(fb);
+                    }
+                }
+
+                bossFireBalls.removeAll(toRemove);
+
             }
         }
 
         if (level.getBricks().isEmpty()) nextLevel();
 
         if (ball.getY() > Config.WINDOW_HEIGHT && balls.isEmpty()) {
-            if (!gameOver && playerLives > 0) { // ✅ thêm điều kiện kiểm tra
-                playerLives--;
-                if (playerLives <= 0) {
-                    handleGameOver();
-                    return;
-                } else {
-                    restartLevel();
-                }
-            }
+            handleBallLost();
         }
-
 
         hudPanel.updateHUD(currentLevel, playerScore, playerLives);
-        // Background scrolling effect
+
         bg1.setLayoutX(bg1.getLayoutX() - bgSpeed);
         bg2.setLayoutX(bg2.getLayoutX() - bgSpeed);
+        if (bg1.getLayoutX() + bg1.getFitWidth() <= 0) bg1.setLayoutX(bg2.getLayoutX() + bg2.getFitWidth());
+        if (bg2.getLayoutX() + bg2.getFitWidth() <= 0) bg2.setLayoutX(bg1.getLayoutX() + bg1.getFitWidth());
 
-        if (bg1.getLayoutX() + bg1.getFitWidth() <= 0) {
-            bg1.setLayoutX(bg2.getLayoutX() + bg2.getFitWidth());
-        }
-        if (bg2.getLayoutX() + bg2.getFitWidth() <= 0) {
-            bg2.setLayoutX(bg1.getLayoutX() + bg1.getFitWidth());
-        }
-        // === Meteor logic ===
         long currentTime = System.nanoTime();
-        if (currentTime - lastMeteorSpawn > 5_000_000_000L) { // mỗi 5s spawn 1 viên
+        if (!gameOver && currentTime - lastMeteorSpawn > 5_000_000_000L) {
             double x = Math.random() * (Config.WINDOW_WIDTH - 260);
             Meteor m = new Meteor(x, -50);
             meteors.add(m);
@@ -370,36 +428,40 @@ public class GameManager {
             lastMeteorSpawn = currentTime;
         }
 
-// update và check va chạm
-        Iterator<Meteor> mIter = meteors.iterator();
-        while (mIter.hasNext()) {
-            Meteor m = mIter.next();
-            m.update(root);
 
-            if (!m.isActive()) {
-                mIter.remove();
-                continue;
-            }
-
-            // va chạm với paddle
-            if (m.getBoundsInParent().intersects(paddle.getView().getBoundsInParent())) {
-                m.destroy(root);
-                playerLives--;
-                mIter.remove();
-                continue;
-            }
-
-
+        int lostLives = CollisionHandler.handleMeteorPaddleCollision(meteors, paddle, root);
+        playerLives -= lostLives;
+        if (playerLives <= 0) {
+            handleGameOver();
         }
-
     }
 
+
+
     private void handleGameOver() {
-        playerLives = 0;
         if (gameOver) return;
         gameOver = true;
 
-        // Ghi trạng thái vào writer nếu có
+
+        showGameOver("GAME OVER");
+        SoundManager.stopBackground();
+        SoundManager.stopAllEffects();
+
+        if (timer != null) timer.stop();
+
+        meteors.forEach(m -> root.getChildren().remove(m));
+        meteors.clear();
+        bossFireBalls.forEach(fb -> root.getChildren().remove(fb.getView()));
+        bossFireBalls.clear();
+        balls.forEach(b -> root.getChildren().remove(b.getView()));
+        balls.clear();
+        if (supportPaddle != null) {
+            supportPaddle.getLazeList().forEach(l -> root.getChildren().remove(l.getView()));
+            supportPaddle.getLazeList().clear();
+        }
+
+        InputKeys.clearAll();
+
         if (writer != null) {
             try {
                 writer.write("PLAYER_DEAD\n");
@@ -407,26 +469,14 @@ public class GameManager {
             } catch (Exception ignored) {}
         }
 
-        System.out.println("💀 GAME OVER!");
-
-        // Lưu điểm số
-        org.example.baitaplamgame.Utlis.ScoreFileManager.saveScore(
-                Config.PLAYER_NAME,
-                playerScore,
-                currentLevel
-        );
-
-        // Dừng timer game
-        if (timer != null) timer.stop();
-
-        // Hiển thị hiệu ứng Game Over
-        showGameOver("GAME OVER");
-
-        // Trì hoãn reset level để người chơi nhìn thấy hiệu ứng
-        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2.5));
-        pause.setOnFinished(e -> restartLevel());
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(3));
+        pause.setOnFinished(e -> {
+            if (onGameEndToMenu != null) onGameEndToMenu.run();
+        });
         pause.play();
     }
+
+
 
 
     public void spawnExtraBalls(Ball sourceBall, int count) {
@@ -446,7 +496,14 @@ public class GameManager {
     }
 
     private void nextLevel() {
-        timer.stop();
+        if (levelCleared) return;
+        levelCleared = true;
+
+        final int completedLevel = currentLevel;
+        if (timer != null) {
+            timer.stop();
+        }
+
         currentLevel++;
 
         var nextLevelImageSource = new javafx.scene.image.Image(getClass().getResourceAsStream("/images/next.png"));
@@ -467,28 +524,18 @@ public class GameManager {
         var fadeOut = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.2), nextLevelImage);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
-
         var seq = new javafx.animation.SequentialTransition(fadeIn, pause, fadeOut);
+
         seq.setOnFinished(e -> {
             root.getChildren().remove(nextLevelImage);
-            switch (currentLevel) {
-                case 2 -> startLevel2();
-                case 3, 4, 5 -> startLevel5();
-                default -> {
-                    System.out.println("🎉 Hoàn thành toàn bộ trò chơi!");
-                    if (writer != null) {
-                        try {
-                            writer.write("PLAYER_SCORE_WIN\n");
-                            writer.flush();
-                        } catch (Exception ignored) {}
-                    }
-                }
+            levelCleared = false;
 
-            }
+            handleLevelComplete(completedLevel);
         });
 
         seq.play();
     }
+
 
     private void restartLevel() {
         System.out.println("🔄 Reset lại level " + currentLevel);
@@ -497,14 +544,37 @@ public class GameManager {
             startLevel1();
         else if (currentLevel == 2)
             startLevel2();
-        else
+        else if(currentLevel == 3) {
+            startLevel3();
+        }
+        else if(currentLevel == 4) {
+            startLevel4();
+        } else if (currentLevel == 5) {
             startLevel5();
+        }
+        else {
+            startLevel6();
+        }
     }
 
     public void setupInput(Scene scene) {
-        scene.setOnKeyPressed(e -> InputKeys.setKeyPressed(e.getCode().toString()));
-        scene.setOnKeyReleased(e -> InputKeys.setKeyReleased(e.getCode().toString()));
+        scene.setOnKeyPressed(e -> {
+            System.out.println("Key pressed: " + e.getCode());
+            switch (e.getCode()) {
+                case LEFT -> paddle.moveLeft();
+                case RIGHT -> paddle.moveRight();
+            }
+        });
+
+        scene.setOnKeyReleased(e -> {
+            System.out.println("Key released: " + e.getCode());
+            switch (e.getCode()) {
+                case LEFT, RIGHT -> paddle.stop();
+            }
+        });
     }
+
+
 
     public void addPowerUp(PowerUp powerUp) {
         powerUps.add(powerUp);
@@ -513,84 +583,88 @@ public class GameManager {
         }
     }
     public void showGameOver(String msg) {
-        javafx.scene.text.Text text = new javafx.scene.text.Text(msg);
-        text.setStyle("-fx-font-size: 80px; -fx-font-weight: bold;");
-        text.setFill(javafx.scene.paint.Color.RED);
-        text.setStroke(javafx.scene.paint.Color.BLACK);
-        text.setStrokeWidth(3);
+        SoundManager.stopBackground();
+        SoundManager.stopAllEffects();
+        SoundManager.playEffect("game_over.mp3");
+        StackPane overlay = new StackPane();
+        overlay.setPrefSize(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.98);");
+        root.getChildren().add(overlay);
 
-        text.setX((Config.WINDOW_WIDTH - 220) / 2 - 200);
-        text.setY(Config.WINDOW_HEIGHT / 2);
+        javafx.scene.text.Text text = new javafx.scene.text.Text("--- SYSTEM FAILURE ---");
+        text.setFont(Font.font("Consolas", FontWeight.EXTRA_BOLD, 85));
 
-        root.getChildren().add(text);
+        Color neonRed = Color.web("#FF4444");
+        Color neonPink = Color.web("#FF0066");
 
-        // Gradient chuyển động
-        javafx.scene.paint.LinearGradient gradient = new javafx.scene.paint.LinearGradient(
-                0, 0, 1, 0, true, javafx.scene.paint.CycleMethod.REPEAT,
-                new javafx.scene.paint.Stop[]{
-                        new javafx.scene.paint.Stop(0, javafx.scene.paint.Color.RED),
-                        new javafx.scene.paint.Stop(0.5, javafx.scene.paint.Color.ORANGE),
-                        new javafx.scene.paint.Stop(1, javafx.scene.paint.Color.YELLOW)
-                });
-        text.setFill(gradient);
+        DropShadow glow = new DropShadow(50, neonPink);
+        glow.setInput(new DropShadow(25, neonRed));
+        text.setEffect(glow);
+        text.setFill(neonRed);
+        text.setOpacity(0);
 
-        // Scale + Fade
-        javafx.animation.ScaleTransition scale = new javafx.animation.ScaleTransition(javafx.util.Duration.seconds(1.5), text);
-        scale.setFromX(0.5); scale.setFromY(0.5);
-        scale.setToX(1.5); scale.setToY(1.5);
+        overlay.getChildren().add(text);
 
-        javafx.animation.FadeTransition fade = new javafx.animation.FadeTransition(javafx.util.Duration.seconds(1.5), text);
-        fade.setFromValue(0); fade.setToValue(1);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.8), text);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+        fadeIn.play();
 
-        javafx.animation.ParallelTransition pt = new javafx.animation.ParallelTransition(scale, fade);
-        pt.play();
+        TranslateTransition textShake = new TranslateTransition(Duration.millis(50), text);
+        textShake.setByX(8);
+        textShake.setCycleCount(10);
+        textShake.setAutoReverse(true);
+        textShake.play();
 
-        // Particle explosion nhiều màu
-        for (int i = 0; i < 60; i++) {
-            javafx.scene.shape.Circle p = new javafx.scene.shape.Circle(4 + Math.random() * 6,
-                    javafx.scene.paint.Color.color(Math.random(), Math.random(), Math.random()));
-            p.setLayoutX(text.getX() + 200);
-            p.setLayoutY(text.getY() - 50);
-            root.getChildren().add(p);
+        Timeline glitchTimeline = new Timeline(
+                new KeyFrame(Duration.millis(50), new KeyValue(text.translateXProperty(), Math.random() * 5 - 2.5)),
+                new KeyFrame(Duration.millis(100), new KeyValue(text.translateXProperty(), 0))
+        );
+        glitchTimeline.setCycleCount(Animation.INDEFINITE);
+        glitchTimeline.play();
+
+        for (int i = 0; i < 80; i++) {
+            javafx.scene.shape.Circle p = new javafx.scene.shape.Circle(
+                    2 + Math.random() * 4,
+                    (Math.random() < 0.7) ? neonRed : Color.WHITE
+            );
+
+            p.setTranslateX(Math.random() * 100 - 50);
+            p.setTranslateY(Math.random() * 50 - 25);
+            overlay.getChildren().add(p);
+            DropShadow shadow = new DropShadow(45.0, (Color) Color.web("#FF1177"));
 
             double angle = Math.random() * 2 * Math.PI;
-            double distance = 100 + Math.random() * 100;
+            double distance = 150 + Math.random() * 150;
 
-            javafx.animation.TranslateTransition tt = new javafx.animation.TranslateTransition(javafx.util.Duration.seconds(1 + Math.random()), p);
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(1.5 + Math.random()), p);
             tt.setByX(Math.cos(angle) * distance);
-            tt.setByY(Math.sin(angle) * distance + Math.random() * 50);
-            tt.setOnFinished(e -> root.getChildren().remove(p));
-            tt.play();
+            tt.setByY(Math.sin(angle) * distance + Math.random() * 80);
+
+            FadeTransition ft = new FadeTransition(Duration.seconds(2.0), p);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+
+            ParallelTransition pt = new ParallelTransition(p, tt, ft);
+            pt.setOnFinished(e -> overlay.getChildren().remove(p));
+            pt.play();
         }
 
-        // Shake effect toàn màn hình
-        javafx.animation.TranslateTransition shake = new javafx.animation.TranslateTransition(javafx.util.Duration.seconds(0.05), root);
-        shake.setByX(10);
-        shake.setCycleCount(6);
-        shake.setAutoReverse(true);
-        shake.play();
+        Rectangle scanline = new Rectangle(Config.WINDOW_WIDTH, 5, Color.web("#FFFFFF20"));
+        overlay.getChildren().add(scanline);
+        scanline.setTranslateY(-Config.WINDOW_HEIGHT / 2);
 
-        // Trì hoãn và quay về màn hình chính
-        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(3));
-        pause.setOnFinished(e -> {
-            if (onExitToMenu != null) {
-                onExitToMenu.run();  // quay về menu chính
-            }
+        TranslateTransition scan = new TranslateTransition(Duration.seconds(0.05), scanline);
+        scan.setByY(Config.WINDOW_HEIGHT + 10);
+        scan.setCycleCount(Animation.INDEFINITE);
+        scan.setAutoReverse(true);
+        scan.play();
+
+        PauseTransition finalPause = new PauseTransition(Duration.seconds(4.0));
+        finalPause.setOnFinished(e -> {
+            if (onGameOver != null) onGameOver.run();
         });
-        pause.play();
-    }
-
-
-
-    public void showWinnerEffect() {
-        System.out.println("=== WINNER EFFECT ===");
-
-        javafx.scene.control.Label l = new javafx.scene.control.Label("YOU WIN!");
-        l.setStyle("-fx-font-size: 48px; -fx-text-fill: yellow; -fx-font-weight: bold;");
-        l.setLayoutX((Config.WINDOW_WIDTH - 220)/2 - 150);
-        l.setLayoutY(Config.WINDOW_HEIGHT/2 - 100);
-
-        root.getChildren().add(l);
+        finalPause.play();
     }
 
     public void handlePlayerHit() {
@@ -599,7 +673,6 @@ public class GameManager {
         playerLives--;
         System.out.println("🔥 Paddle bị Boss tấn công! Máu còn lại: " + playerLives);
 
-        // Hiển thị hiệu ứng trúng đạn
         javafx.scene.shape.Circle hitEffect = new javafx.scene.shape.Circle(
                 paddle.getX() + paddle.getWidth() / 2,
                 paddle.getY() + paddle.getHeight() / 2,
@@ -614,12 +687,340 @@ public class GameManager {
         fade.setToValue(0.0);
         fade.setOnFinished(e -> root.getChildren().remove(hitEffect));
         fade.play();
-
         hudPanel.updateHUD(currentLevel, playerScore, playerLives);
 
         if (playerLives <= 0) {
-            handleGameOver();
+            if (onGameEnd != null) {
+                endGame(false);
+            } else {
+                handleGameOver();
+            }
         }
+    }
+    public void handleBallLost() {
+        if (gameOver) return;
+
+        playerLives--;
+        System.out.println("💥 Mất bóng! Mạng còn lại: " + playerLives);
+        hudPanel.updateHUD(currentLevel, playerScore, playerLives);
+
+        if (playerLives > 0) {
+            resetBallPosition();
+        } else {
+            if (onGameEnd != null) {
+                endGame(false);
+            } else {
+                handleGameOver();
+            }
+        }
+    }
+
+    public void startLevelNumber(int level) {
+        if (timer != null) timer.stop();
+
+        this.currentLevel = Math.max(1, Math.min(level, 6));
+        levelCleared = false;
+        gameOver = false;
+        this.playerLives = 10;
+        switch (this.currentLevel) {
+            case 1 -> startLevel1();
+            case 2 -> startLevel2();
+            case 3 -> startLevel3();
+            case 4 -> startLevel4();
+            case 5 -> startLevel5();
+            case 6 -> startLevel6();
+            default -> startLevel1();
+        }
+    }
+    private void handleLevelComplete(int completedLevel) {
+        System.out.println("✅ Level " + completedLevel + " hoàn thành!");
+
+        if (onLevelComplete != null) {
+            onLevelComplete.accept(completedLevel);
+        }
+    }
+    public void stopGame() {
+        if (timer != null) timer.stop();
+    }
+    private void resetBallPosition() {
+        ball.resetPosition(paddle.getX() + paddle.getWidth() / 2, paddle.getY() - 30);
+        ball.setVelocity(0, -Math.abs(ball.getSpeed()));
+
+        if (!root.getChildren().contains(ball.getView())) {
+            root.getChildren().add(ball.getView());
+        }
+
+        ball.getView().toFront();
+        ball.getView().setOpacity(1);
+
+        javafx.animation.FadeTransition ft = new javafx.animation.FadeTransition(javafx.util.Duration.millis(400), ball.getView());
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
+    }
+
+
+    public void movePlayerUp() {
+        paddle.setY(Math.max(0, paddle.getY() - Config.PADDLE_SPEED));
+        sendPaddlePosition();
+    }
+
+    public void movePlayerDown() {
+        paddle.setY(Math.min(Config.WINDOW_HEIGHT - paddle.getHeight(), paddle.getY() + Config.PADDLE_SPEED));
+        sendPaddlePosition();
+    }
+
+    private void sendPaddlePosition() {
+        if (onPaddleMove != null) {
+            onPaddleMove.accept(paddle.getY());
+        }
+    }
+    public void setPaddleY(double y) {
+        paddle.setY(y);
+    }
+    public void setOnPaddleMove(Consumer<Double> callback) {
+        this.onPaddleMove = callback;
+    }
+
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+    public void setOnGameEnd(java.util.function.Consumer<Boolean> onGameEnd) {
+        this.onGameEnd = onGameEnd;
+    }
+
+    public void endGame(boolean isPlayerWin) {
+        if (gameOver) return;
+        gameOver = true;
+
+        stopGame();
+
+        if (onGameEnd != null) {
+            onGameEnd.accept(isPlayerWin);
+        }
+    }
+    public void showGameResult(String result) {
+        if (gameOver) return;
+        gameOver = true;
+        stopGame();
+
+        SoundManager.stopBackground();
+        SoundManager.stopAllEffects();
+
+        root.getChildren().removeIf(node -> node != bg1 && node != bg2 && node != hudPanel);
+
+        meteors.clear();
+        bossFireBalls.clear();
+        balls.clear();
+        powerUps.clear();
+        if (supportPaddle != null) supportPaddle.getLazeList().clear();
+        InputKeys.clearAll();
+
+        String message = result.equalsIgnoreCase("WIN") ? "🏆 YOU WIN! 🏆" : "💀 YOU LOSE 💀";
+
+        Text text = new Text(message);
+        text.setFont(Font.font("Consolas", FontWeight.EXTRA_BOLD, 80));
+        Color neonColor = result.equalsIgnoreCase("WIN") ? Color.LIME : Color.RED;
+        text.setFill(neonColor);
+
+        DropShadow glow = new DropShadow(50, neonColor);
+        glow.setInput(new DropShadow(25, Color.BLACK));
+        text.setEffect(glow);
+
+        double textWidth = text.getLayoutBounds().getWidth();
+        text.setX((Config.WINDOW_WIDTH - 220 - textWidth) / 2);
+        text.setY(Config.WINDOW_HEIGHT / 2);
+        text.setOpacity(0);
+
+        root.getChildren().add(text);
+        text.toFront();
+
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.2), text);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.play();
+
+        Timeline flicker = new Timeline(
+                new KeyFrame(Duration.seconds(0.0), new KeyValue(text.opacityProperty(), 1)),
+                new KeyFrame(Duration.seconds(0.1), new KeyValue(text.opacityProperty(), 0.6)),
+                new KeyFrame(Duration.seconds(0.15), new KeyValue(text.opacityProperty(), 1))
+        );
+        flicker.setCycleCount(Animation.INDEFINITE);
+        flicker.setAutoReverse(true);
+        flicker.play();
+
+        StackPane overlay = new StackPane();
+        overlay.setPrefSize(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        root.getChildren().add(overlay);
+        overlay.toBack();
+
+        Color[] neonColors = { Color.web("#FF1177"), Color.web("#FF44AA"), Color.web("#44FFFF"), Color.web("#FFDD00") };
+
+        Timeline particleLoop = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> {
+            for (int i = 0; i < 20; i++) {
+                Circle p = new Circle(1 + Math.random() * 2, neonColors[(int) (Math.random() * neonColors.length)]);
+                p.setTranslateX(0);
+                p.setTranslateY(0);
+                overlay.getChildren().add(p);
+                p.toBack();
+
+                double angle = Math.random() * 2 * Math.PI;
+                double distance = 200 + Math.random() * 200;
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(2 + Math.random()), p);
+                tt.setByX(Math.cos(angle) * distance);
+                tt.setByY(Math.sin(angle) * distance + Math.random() * 50);
+
+                FadeTransition ft = new FadeTransition(Duration.seconds(2 + Math.random()), p);
+                ft.setFromValue(1);
+                ft.setToValue(0);
+
+                ParallelTransition pt = new ParallelTransition(p, tt, ft);
+                pt.setOnFinished(ev -> overlay.getChildren().remove(p));
+                pt.play();
+            }
+        }));
+        particleLoop.setCycleCount(Animation.INDEFINITE);
+        particleLoop.play();
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(6));
+        delay.setOnFinished(e -> {
+            if (onGameEndToMenu != null) onGameEndToMenu.run();
+        });
+        delay.play();
+    }
+
+    private void showWinScreen() {
+        if (gameOver) return;
+        gameOver = true;
+
+        stopGame();
+        SoundManager.stopBackground();
+        SoundManager.stopAllEffects();
+        SoundManager.playEffect("win_sound.mp3");
+
+        root.getChildren().removeIf(node ->
+                node != bg1 &&
+                        node != bg2 &&
+                        node != hudPanel
+        );
+
+        StackPane overlay = new StackPane();
+        overlay.setPrefSize(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT);
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.92);");
+        root.getChildren().add(overlay);
+
+        Text winText = new Text(">>> VICTORY UNLOCKED <<<");
+        winText.setFont(Font.font("Consolas", FontWeight.EXTRA_BOLD, 78));
+        winText.setFill(Color.web("#FF0066"));
+        winText.setEffect(new DropShadow(45, Color.web("#FF1177")));
+        winText.setOpacity(0);
+        overlay.getChildren().add(winText);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.2), winText);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        Timeline flicker = new Timeline(
+                new KeyFrame(Duration.seconds(0.0), new KeyValue(winText.opacityProperty(), 1)),
+                new KeyFrame(Duration.seconds(0.1), new KeyValue(winText.opacityProperty(), 0.6)),
+                new KeyFrame(Duration.seconds(0.15), new KeyValue(winText.opacityProperty(), 1))
+        );
+        flicker.setCycleCount(Animation.INDEFINITE);
+        flicker.setAutoReverse(true);
+
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(1.4), winText);
+        pulse.setFromX(1.0);
+        pulse.setFromY(1.0);
+        pulse.setToX(1.15);
+        pulse.setToY(1.15);
+        pulse.setAutoReverse(true);
+        pulse.setCycleCount(Animation.INDEFINITE);
+
+        Timeline glitch = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), e -> winText.setTranslateX(Math.random() * 6 - 3)),
+                new KeyFrame(Duration.seconds(0.12), e -> winText.setTranslateX(0))
+        );
+        glitch.setCycleCount(Animation.INDEFINITE);
+
+        Color[] neonColors = {
+                Color.web("#FF1177"),
+                Color.web("#FF44AA"),
+                Color.web("#44FFFF"),
+                Color.web("#FFDD00")
+        };
+        Runnable spawnParticle = () -> {
+            for (int i = 0; i < 25; i++) {
+                Circle p = new Circle(1 + Math.random() * 2, neonColors[(int) (Math.random() * neonColors.length)]);
+                p.setTranslateX(0);
+                p.setTranslateY(0);
+                overlay.getChildren().add(p);
+                p.toBack();
+
+                double angle = Math.random() * 2 * Math.PI;
+                double distance = 250 + Math.random() * 200;
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(2.5 + Math.random()), p);
+                tt.setByX(Math.cos(angle) * distance);
+                tt.setByY(Math.sin(angle) * distance + Math.random() * 80);
+
+                FadeTransition ft = new FadeTransition(Duration.seconds(2.5), p);
+                ft.setFromValue(1);
+                ft.setToValue(0);
+                Color neonColor = Color.web("#FF1177");
+                DropShadow shadow = new DropShadow(45.0, neonColor);
+                winText.setEffect(shadow);
+                ParallelTransition pt = new ParallelTransition(p, tt, ft);
+                pt.setOnFinished(ev -> overlay.getChildren().remove(p));
+                pt.play();
+            }
+        };
+
+        Timeline particleLoop = new Timeline(
+                new KeyFrame(Duration.seconds(0.0), e -> spawnParticle.run()),
+                new KeyFrame(Duration.seconds(1.0), e -> spawnParticle.run()),
+                new KeyFrame(Duration.seconds(2.0), e -> spawnParticle.run())
+        );
+        particleLoop.setCycleCount(Animation.INDEFINITE);
+        particleLoop.play();
+
+        Pane rainPane = new Pane();
+        overlay.getChildren().add(rainPane);
+        rainPane.toBack();
+
+        Timeline rain = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+            Rectangle line = new Rectangle(2, 20, Color.web("#00FFFF80"));
+            line.setTranslateX(Math.random() * Config.WINDOW_WIDTH);
+            line.setTranslateY(-20);
+            rainPane.getChildren().add(line);
+            TranslateTransition fall = new TranslateTransition(Duration.seconds(1.5 + Math.random()), line);
+            fall.setToY(Config.WINDOW_HEIGHT + 20);
+            fall.setOnFinished(ev -> rainPane.getChildren().remove(line));
+            fall.play();
+        }));
+        rain.setCycleCount(Animation.INDEFINITE);
+        rain.play();
+
+        Rectangle scanline = new Rectangle(Config.WINDOW_WIDTH, 10, Color.web("#FFFFFF10"));
+        overlay.getChildren().add(scanline);
+        scanline.toFront();
+        TranslateTransition scan = new TranslateTransition(Duration.seconds(1.5), scanline);
+        scan.setFromY(-10);
+        scan.setToY(Config.WINDOW_HEIGHT + 10);
+        scan.setCycleCount(Animation.INDEFINITE);
+        scan.play();
+
+        fadeIn.play();
+        flicker.play();
+        pulse.play();
+        glitch.play();
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(8));
+        delay.setOnFinished(e -> {
+            if (onGameEndToMenu != null) onGameEndToMenu.run();
+        });
+        delay.play();
     }
 
 }

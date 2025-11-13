@@ -2,6 +2,7 @@ package org.example.baitaplamgame;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -13,42 +14,34 @@ import org.example.baitaplamgame.Model.GameManager;
 import org.example.baitaplamgame.Ui.GamePanel;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
-import org.example.baitaplamgame.Utlis.SoundManager; // 👉 thêm dòng này
-
+import org.example.baitaplamgame.Utlis.SoundManager;
 
 import java.util.*;
 
-
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import org.example.baitaplamgame.Model.*;
-import org.example.baitaplamgame.Utlis.ImageLoader;
+import javafx.scene.layout.StackPane;
+// 💡 Thêm import cho Client và Server
+import org.example.baitaplamgame.Network.Client;
+import org.example.baitaplamgame.Network.Server;
 
 public class Main extends Application {
 
-    private Stage stage; // để dùng lại khi quay về menu
+    private Stage stage;
     private final double width = Config.WINDOW_WIDTH;
     private final double height = Config.WINDOW_HEIGHT;
 
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-
-        // =========================
-        // 🎬 SCENE INTRO VIDEO
-        // =========================
-        String videoPath = getClass().getResource("/images/intro2.mp4").toExternalForm();
+        String videoPath = getClass().getResource("/images/intro11.mp4").toExternalForm();
         Media media = new Media(videoPath);
         MediaPlayer player = new MediaPlayer(media);
         MediaView mediaView = new MediaView(player);
 
-        // ✅ Dùng kích thước theo Config
         mediaView.setFitWidth(width);
         mediaView.setFitHeight(height);
+        mediaView.setPreserveRatio(false);
 
-        Pane introRoot = new Pane(mediaView);
+        StackPane introRoot = new StackPane(mediaView);
         Scene introScene = new Scene(introRoot, width, height);
 
         stage.setScene(introScene);
@@ -58,10 +51,8 @@ public class Main extends Application {
         stage.centerOnScreen();
         stage.show();
 
-        // 🔊 Phát video intro
         player.play();
 
-        // Khi video kết thúc -> chuyển sang menu
         player.setOnEndOfMedia(() -> {
             FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), introRoot);
             fadeOut.setFromValue(1);
@@ -70,23 +61,25 @@ public class Main extends Application {
             fadeOut.play();
         });
     }
-
-    // =========================
-    // 🎮 MENU GAME
-    // =========================
     private void showMainMenu() {
         GamePanel menu = new GamePanel();
         menu.setPrefSize(width, height);
-        Scene menuScene = new Scene(menu, width, height);
 
+        // 🔥🔥🔥 BỔ SUNG QUAN TRỌNG: Gán callback Multiplayer 🔥🔥🔥
+        menu.setOnStartServer(port -> startServerGame(port));
+        menu.setOnStartClient(ip -> startClientGame(ip, 5000));
+
+        Scene menuScene = new Scene(menu, width, height);
+        SoundManager.playBackground("background.mp3");
         stage.setScene(menuScene);
         stage.setTitle("Brick Breaker - Menu");
         stage.setWidth(width);
         stage.setHeight(height);
         stage.centerOnScreen();
-        stage.show();
 
-        // Khi người chơi nhấn Start trong menu
+        if (!stage.isShowing()) stage.show();
+
+        // Khi người chơi nhấn Start trong menu (Singleplayer)
         menu.setOnStart(() -> {
             FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), menu);
             fadeOut.setFromValue(1);
@@ -96,17 +89,13 @@ public class Main extends Application {
         });
     }
 
-    // =========================
-    // 🕹️ SCENE GAME
-    // =========================
     private void startGame() {
         Pane gameRoot = new Pane();
         GameManager gameManager = new GameManager(gameRoot, width, height);
         gameManager.setOnExitToMenu(this::showMainMenu);
-
+        gameManager.setOnGameOver(this::showMainMenu);
+        gameManager.setOnGameEndToMenu(this::showMainMenu);
         Scene gameScene = new Scene(gameRoot, width, height);
-
-        // GỌI INPUT TRƯỚC
         gameManager.setupInput(gameScene);
 
         stage.setScene(gameScene);
@@ -115,10 +104,29 @@ public class Main extends Application {
         stage.setHeight(height);
         stage.centerOnScreen();
 
-        // ✅ Focus và khởi động game
         gameRoot.requestFocus();
         gameManager.startGame();
     }
+    public void startClientGame(String serverIp, int port) {
+        Client client = new Client();
+        client.setOnGameStart(() -> Platform.runLater(() -> stage.hide()));
+
+        client.setOnGameEndToMenu(() -> {
+            Platform.runLater(this::showMainMenu);
+        });
+
+        client.connect(serverIp, port);
+    }
+    public void startServerGame(int port) {
+        Server server = new Server();
+        server.setOnGameStart(() -> Platform.runLater(() -> stage.hide()));
+
+        server.setOnGameEndToMenu(() -> {
+            Platform.runLater(this::showMainMenu);
+        });
+        server.startServer(port);
+    }
+
 
     public static void main(String[] args) {
         launch();
