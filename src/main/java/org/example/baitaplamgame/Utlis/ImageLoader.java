@@ -38,5 +38,7 @@ public class ImageLoader {
     public static final Image SKIN_BLUE = loadImage("/skins/blue.png");
     public static final Image SKIN_GREEN = loadImage("/skins/green.png");
     public static final Image SUPPORT_RIGHT = loadImage("/images/Laser_sp.png");
+    public static final Image SUPPORT1_RIGHT = loadImage("/images/support2.png");
+    public static final Image SUPPORT2_RIGHT = loadImage("/images/support3.png");
     public static final Image LAZE_SP = loadImage("/images/laze.png");
 }

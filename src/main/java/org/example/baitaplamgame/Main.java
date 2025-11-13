@@ -13,7 +13,7 @@ import org.example.baitaplamgame.Model.GameManager;
 import org.example.baitaplamgame.Ui.GamePanel;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
-import org.example.baitaplamgame.Utlis.SoundManager; // 👉 thêm dòng này
+import org.example.baitaplamgame.Utlis.SoundManager;
 
 
 import java.util.*;
@@ -39,12 +39,19 @@ public class Main extends Application {
         // =========================
         // 🎬 SCENE INTRO VIDEO
         // =========================
-        String videoPath = getClass().getResource("/images/intro2.mp4").toExternalForm();
+        String videoPath = getClass().getResource("/images/intro11.mp4").toExternalForm();
         Media media = new Media(videoPath);
         MediaPlayer player = new MediaPlayer(media);
         MediaView mediaView = new MediaView(player);
+        mediaView.setPreserveRatio(true);
 
-        // ✅ Dùng kích thước theo Config
+        double cropX = 140;
+        double cropY = 0;
+
+        mediaView.setViewport(new javafx.geometry.Rectangle2D(cropX, cropY,
+                Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT));
+
+
         mediaView.setFitWidth(width);
         mediaView.setFitHeight(height);
 

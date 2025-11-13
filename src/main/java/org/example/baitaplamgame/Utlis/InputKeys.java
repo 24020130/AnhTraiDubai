@@ -17,5 +17,8 @@ public class InputKeys {
     public static boolean isPressed(String key) {
         return pressedKeys.contains(key);
     }
+    public static void clearAll() {
+        pressedKeys.clear();
+    }
 }
 

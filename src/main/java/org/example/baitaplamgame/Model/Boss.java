@@ -1,9 +1,12 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.PowerUp.BossBullet;
@@ -13,16 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Boss extends Brick {
-    private double velocityX = 2.5;
+    private double velocityX = 1.5;
     private long lastShotTime = 0;
     private long lastHitTime = 0;
+    // ở đầu class Boss (fields)
+    private javafx.animation.TranslateTransition shakeAnim; // giữ animation để tạo 1 lần
+    private boolean halfHealthTriggered = false; // đánh dấu đã vào giai đoạn half-health
     private final List<BossBullet> bullets = new ArrayList<>();
     private final Pane root;
     private boolean enraged = false;
     private ColorAdjust bossEffect = new ColorAdjust();
 
     public Boss(double x, double y, Pane root) {
-        super(x, y, 250, 200, 30, "boss");
+        super(x, y, 250, 200, 14, "boss");
         this.root = root;
         this.hitPoints = 30;
 
@@ -39,44 +45,48 @@ public class Boss extends Brick {
     }
 
     public void update() {
+        // di chuyển Boss như cũ ...
         x += velocityX;
         if (x <= 0 || x + width >= Config.WINDOW_WIDTH - 220) {
             velocityX *= -1;
         }
-
         view.setLayoutX(x);
         view.setLayoutY(y);
 
+        // bắn đạn
         long now = System.currentTimeMillis();
         if (now - lastShotTime > 1500) {
             shoot();
             lastShotTime = now;
         }
 
-        // 💥 Khi máu còn 50% thì boss nổi giận
-        if (!enraged && hitPoints <= 15) {
+        if (!enraged && hitPoints <= getMaxHealth() / 2) {
             enraged = true;
-            velocityX *= 1.5;            // Tăng tốc độ di chuyển
-            bossEffect.setHue(-0.3);     // Đổi tông màu hơi đỏ
-            System.out.println("🔥 Boss nổi giận! Tăng tốc độ và tấn công nhanh hơn!");
-        }
+            velocityX *= 1.5;
+            bossEffect.setHue(-0.3);
+            System.out.println("🔥 Boss nổi giận!");
 
-        // 💢 Rung nhẹ khi nổi giận
-        if (enraged) {
-            double shake = Math.random() * 4 - 2;
-            view.setLayoutX(x + shake);
-        }
-
-        // Cập nhật đạn của boss
-        bullets.removeIf(b -> {
-            b.update();
-            if (b.getY() > Config.WINDOW_HEIGHT) {
-                root.getChildren().remove(b.getView());
-                return true;
+            if (shakeAnim == null) {
+                shakeAnim = new TranslateTransition(Duration.millis(8000), view);
+                shakeAnim.setFromX(-3);
+                shakeAnim.setToX(3);
+                shakeAnim.setAutoReverse(true);
+                shakeAnim.setCycleCount(Animation.INDEFINITE);
+                shakeAnim.play();
             }
-            return false;
-        });
+
+            halfHealthTriggered = true;
+        }
+
+        // ✅ chỉ update đạn, không xóa
+        for (BossBullet b : bullets) {
+            b.update();
+        }
     }
+
+
+
+
 
     @Override
     public void render(Graphics g) {}
@@ -126,4 +136,12 @@ public class Boss extends Brick {
     public int getMaxHealth() {
         return 30;
     }
+    public boolean hasTriggeredHalfHealthPhase() {
+        return halfHealthTriggered;
+    }
+
+    public void setTriggeredHalfHealthPhase(boolean v) {
+        this.halfHealthTriggered = v;
+    }
+
 }

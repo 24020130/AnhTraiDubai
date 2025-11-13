@@ -67,4 +67,7 @@ public class SoundManager {
             clip.setVolume(volume);
         }
     }
+    public static double getVolume() {
+        return volume;
+    }
 }

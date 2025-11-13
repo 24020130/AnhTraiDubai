@@ -24,16 +24,29 @@ public class Paddle extends MovableObject {
     private double hueShift = 0;
     private long lastTrailTime = 0;
     private double lastX = 0;
+    private double velocityX = 0;
+
 
     // ===============================
-    // 🔧 CONSTRUCTORS
+    // 🔧 CONSTRUCTORS (ĐÃ SỬA ĐỔI)
     // ===============================
-    public Paddle(double x, double y, double width, double height, double speed) {
+
+    // 💥 CONSTRUCTOR CHÍNH (NHẬN TÊN FILE SKIN)
+    public Paddle(double x, double y, double width, double height, double speed, String skinFileName) {
         super(x, y, width, height);
         this.speed = speed;
 
-        // Hình ảnh paddle
-        view = new ImageView(ImageLoader.PADDLE_IMAGE);
+        // 🔥 FIX: Hình ảnh paddle - Load skin theo tên file
+        var resource = getClass().getResourceAsStream("/skins/" + skinFileName);
+        if (resource != null) {
+            view = new ImageView(new javafx.scene.image.Image(resource));
+        } else {
+            // Fallback nếu không tìm thấy skin (có thể dùng SKIN_DEFAULT ở đây)
+            System.err.println("Không tìm thấy skin: " + skinFileName + ". Dùng ảnh mặc định.");
+            // Dùng ảnh mặc định của ImageLoader
+            view = new ImageView(ImageLoader.PADDLE_IMAGE);
+        }
+
         view.setFitWidth(width);
         view.setFitHeight(height);
         view.setX(x);
@@ -61,10 +74,19 @@ public class Paddle extends MovableObject {
         hueTimeline.play();
     }
 
+
+
+    // 🕹️ CONSTRUCTOR CHO GAME MANAGER (DÙNG SKIN MẶC ĐỊNH)
     public Paddle(double x, double y, double width, double height, double speed, GameManager gameManager) {
-        this(x, y, width, height, speed);
+        this(x, y, width, height, speed, gameManager, "default.png");
+    }
+
+    // ✨ CONSTRUCTOR ĐẦY ĐỦ (NHẬN GAMEMANAGER VÀ SKIN FILE NAME)
+    public Paddle(double x, double y, double width, double height, double speed, GameManager gameManager, String skinFileName) {
+        this(x, y, width, height, speed, skinFileName);
         this.gameManager = gameManager;
     }
+
 
     // ===============================
     // 🌈 NEON COLOR ANIMATION
@@ -192,9 +214,9 @@ public class Paddle extends MovableObject {
     // ⚙️ CẬP NHẬT & GETTERS/SETTERS
     // ===============================
     @Override
-    public void update() {
-        updateView();
+    public void update() {updateView();
     }
+
 
     public double getX() { return x; }
     @Override
@@ -207,7 +229,7 @@ public class Paddle extends MovableObject {
         this.width = newWidth;
         this.x = center - newWidth / 2.0;
         if (x < 0) x = 0;
-        if (x + width > Config.WINDOW_WIDTH) x = Config.WINDOW_WIDTH - width;
+        if (x + width > Config.WINDOW_WIDTH - 220) x = Config.WINDOW_WIDTH - width - 220; // Đảm bảo không vượt quá biên chơi
         updateView();
     }
 
@@ -239,4 +261,10 @@ public class Paddle extends MovableObject {
     public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
     }
+
+    public void stop() {
+        velocityX = 0;
+    }
+
+
 }

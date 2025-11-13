@@ -186,4 +186,12 @@ public class Ball extends MovableObject {
         this.hasCollidedWithPaddle = value;
     }
 
+    public void resetPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+        view.setX(x);
+        view.setY(y);
+    }
+
+
 }

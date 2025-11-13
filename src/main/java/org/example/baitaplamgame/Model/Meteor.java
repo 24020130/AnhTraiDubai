@@ -61,10 +61,16 @@ public class Meteor extends ImageView {
     }
 
     public void destroy(Pane gamePane) {
+        if (!active) return;
         active = false;
         playExplosion(gamePane);
-        gamePane.getChildren().remove(this);
+
+        // ✅ Xóa meteor sau animation 0.5s
+        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(Duration.seconds(0.5));
+        delay.setOnFinished(e -> gamePane.getChildren().remove(this));
+        delay.play();
     }
+
 
     private void playExplosion(Pane gamePane) {
         AudioClip explosionSound = new AudioClip(getClass().getResource("/sounds/explosion.mp3").toExternalForm());
