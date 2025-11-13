@@ -44,7 +44,6 @@ public class HUDPanel extends VBox {
         title.setFont(Font.font("Consolas", FontWeight.BOLD, 22));
         title.setFill(Color.web("#FFA500"));
         title.setEffect(new DropShadow(15, Color.web("#FF3300")));
-
         levelText = createText("Level: 1");
         scoreText = createText("Score: 0");
         livesText = createText("Lives: 3");
