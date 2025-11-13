@@ -36,6 +36,13 @@ public class SoundManager {
             backgroundPlayer = null;
         }
     }
+    public static void stopAllEffects() {
+        for (AudioClip clip : effectMap.values()) {
+            if (clip.isPlaying()) {
+                clip.stop();
+            }
+        }
+    }
 
     // 🔹 Phát hiệu ứng âm thanh
     public static void playEffect(String fileName) {
@@ -54,10 +61,8 @@ public class SoundManager {
 
         clip.play();
     }
-
-    // 🔹 Điều chỉnh âm lượng (cả background và effect)
     public static void setVolume(double vol) {
-        volume = Math.max(0, Math.min(1, vol)); // đảm bảo 0.0 - 1.0
+        volume = Math.max(0, Math.min(1, vol));
 
         if (backgroundPlayer != null) {
             backgroundPlayer.setVolume(volume);
@@ -66,5 +71,8 @@ public class SoundManager {
         for (AudioClip clip : effectMap.values()) {
             clip.setVolume(volume);
         }
+    }
+    public static double getVolume() {
+        return volume;
     }
 }

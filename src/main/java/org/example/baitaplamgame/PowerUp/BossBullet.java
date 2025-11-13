@@ -14,7 +14,7 @@ import java.nio.FloatBuffer;
 
 public class BossBullet {
     private double x, y;
-    private double speed = 6;
+    private double speed = 1.5;
     private ImageView view;
     private Pane root;
     private static Image loadImage(String path) {

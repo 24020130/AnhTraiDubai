@@ -100,16 +100,19 @@ public class Ball extends MovableObject {
             x = 0;
             velocityX *= -1;
             createRainbowExplosion(x + width / 2, y + height / 2);
+            org.example.baitaplamgame.Utlis.SoundManager.playEffect("bounce.mp3");
         }
         if (x + width > sceneWidth) {
            x = sceneWidth - width;
            velocityX *= -1;
            createRainbowExplosion(x + width / 2, y + height / 2);
+            org.example.baitaplamgame.Utlis.SoundManager.playEffect("bounce.mp3");
         }
         if (y <= 0) {
             y = 0;
             velocityY *= -1;
             createRainbowExplosion(x + width / 2, y + height / 2);
+            org.example.baitaplamgame.Utlis.SoundManager.playEffect("bounce.mp3");
         }
     }
 
@@ -185,5 +188,13 @@ public class Ball extends MovableObject {
     public void setHasCollidedWithPaddle(boolean value) {
         this.hasCollidedWithPaddle = value;
     }
+
+    public void resetPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+        view.setX(x);
+        view.setY(y);
+    }
+
 
 }

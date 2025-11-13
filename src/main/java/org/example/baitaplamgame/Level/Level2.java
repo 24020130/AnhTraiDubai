@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Level2 extends Level{
-    public List<Brick> bricks = new ArrayList<>();
+
     public Level2(int levelNumber) {
         super(levelNumber);
     }
 
     @Override
     public void generateLevelFromFile(String resourcePath, Pane root) {
+        // Xóa gạch cũ trước khi tạo mới
         for (Brick brick : bricks) {
             root.getChildren().remove(brick.getView());
         }
@@ -25,6 +26,7 @@ public class Level2 extends Level{
         try {
             InputStream inputStream = getClass().getResourceAsStream(resourcePath);
             if (inputStream == null) {
+                System.out.println("Không tìm thấy file level: " + resourcePath);
                 return;
             }
 
@@ -35,53 +37,20 @@ public class Level2 extends Level{
             while ((line = reader.readLine()) != null) {
                 for (int col = 0; col < line.length(); col++) {
                     char c = line.charAt(col);
-                    if (c == '1') {
-                        Brick brick = new NormalBrick(60 + col * 70, 50 + row * 35, 60, 25, "red");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == '2') {
-                        Brick brick = new GreenBrick(60 + col * 70, 50 + row * 35, 60, 25);
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    }
-                    else if(c == '3'){
-                        Brick brick = new FastBrick(60 + col * 70, 50 + row * 35, 60, 25);
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if ( c == '4') {
-                        Brick bricke = new MultiBrick(60 + col * 70, 50 + row * 35, 60, 25);
-                        bricks.add(bricke); //4 là MultiBrick thêm 3 Ball
-                        root.getChildren().add(bricke.getView());
-                    } else if (c =='5') {
-                        Brick brick = new ShrinkPaddle(60 +col * 70, 50 + row * 35,60,25);
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == '6') { // mau xanh la
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"green1");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == '7') { // mau xanh bien
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Blue");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == '8') { // mau vang
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Yellow");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == '9') { // mau xanh chuoi
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Jade");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    } else if (c == 'P') { //Purple nha ki hieu thoi
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Purple");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
-                    }else if (c == 'C') { //Orange nha
-                        Brick brick = new NormalBrick(60 +col * 70, 50 + row * 35,60,25,"Orange");
-                        bricks.add(brick);
-                        root.getChildren().add(brick.getView());
+                    Brick brick = null;
+
+                    switch (c) {
+                        case '1' -> brick = new NormalBrick(60 + col * 70, 50 + row * 35, 60, 25, "red");
+                        case '2' -> brick = new GreenBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        case '3' -> brick = new FastBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        case '4' -> brick = new MultiBrick(60 + col * 70, 50 + row * 35, 60, 25);
+                        case '5' -> brick = new ShrinkPaddle(60 + col * 70, 50 + row * 35, 60, 25);
                     }
 
+                    if (brick != null) {
+                        bricks.add(brick);
+                        root.getChildren().add(brick.getView());
+                    }
                 }
                 row++;
             }
@@ -90,13 +59,7 @@ public class Level2 extends Level{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("✅ Level " + levelNumber + " có " + bricks.size() + " viên gạch sau khi load từ " + resourcePath);
     }
 
-    public List<Brick> getBricks() {
-        return bricks;
-    }
-
-    public void setBricks(List<Brick> bricks) {
-        this.bricks = bricks;
-    }
 }

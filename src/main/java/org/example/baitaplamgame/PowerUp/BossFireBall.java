@@ -18,7 +18,7 @@ import java.util.Random;
 public class BossFireBall {
     private double x, y;
     private double dx, dy;
-    private double speed = 1;
+    private double speed = 0.5;
     private ImageView view;
     private Pane root;
     private Timeline particleEffect;

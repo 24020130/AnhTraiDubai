@@ -1,38 +1,43 @@
 package org.example.baitaplamgame.Model;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import org.example.baitaplamgame.Utlis.Config;
 import org.example.baitaplamgame.Utlis.ImageLoader;
 import org.example.baitaplamgame.PowerUp.BossBullet;
+import org.example.baitaplamgame.Utlis.SoundManager;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Boss extends Brick {
-    private double velocityX = 2.5;
+    private double velocityX = 1.5;
     private long lastShotTime = 0;
     private long lastHitTime = 0;
+    private long lastMoveSoundTime = 0;
+    private javafx.animation.TranslateTransition shakeAnim;
+    private boolean halfHealthTriggered = false;
     private final List<BossBullet> bullets = new ArrayList<>();
     private final Pane root;
     private boolean enraged = false;
     private ColorAdjust bossEffect = new ColorAdjust();
 
     public Boss(double x, double y, Pane root) {
-        super(x, y, 250, 200, 30, "boss");
+        super(x, y, 250, 200, 2, "boss");
         this.root = root;
-        this.hitPoints = 30;
+        this.hitPoints = 2;
 
         this.view = new ImageView(ImageLoader.BOSS_IMAGE);
         this.view.setFitWidth(250);
         this.view.setFitHeight(200);
         this.view.setLayoutX(x);
         this.view.setLayoutY(y);
-
-        // Gắn hiệu ứng màu cho boss
         view.setEffect(bossEffect);
 
         root.getChildren().add(this.view);
@@ -40,52 +45,58 @@ public class Boss extends Brick {
 
     public void update() {
         x += velocityX;
+        long now = System.currentTimeMillis();
+        if (now - lastMoveSoundTime > 800) { // Phát mỗi 800ms
+            SoundManager.playEffect("boss_move.mp3");
+            lastMoveSoundTime = now;
+        }
+
         if (x <= 0 || x + width >= Config.WINDOW_WIDTH - 220) {
             velocityX *= -1;
         }
-
         view.setLayoutX(x);
         view.setLayoutY(y);
 
-        long now = System.currentTimeMillis();
         if (now - lastShotTime > 1500) {
             shoot();
             lastShotTime = now;
         }
 
-        // 💥 Khi máu còn 50% thì boss nổi giận
-        if (!enraged && hitPoints <= 15) {
+        if (!enraged && hitPoints <= getMaxHealth() / 2) {
             enraged = true;
-            velocityX *= 1.5;            // Tăng tốc độ di chuyển
-            bossEffect.setHue(-0.3);     // Đổi tông màu hơi đỏ
-            System.out.println("🔥 Boss nổi giận! Tăng tốc độ và tấn công nhanh hơn!");
-        }
+            velocityX *= 1.5;
+            bossEffect.setHue(-0.3);
 
-        // 💢 Rung nhẹ khi nổi giận
-        if (enraged) {
-            double shake = Math.random() * 4 - 2;
-            view.setLayoutX(x + shake);
-        }
+            SoundManager.playEffect("boss_sound.mp3");
 
-        // Cập nhật đạn của boss
-        bullets.removeIf(b -> {
-            b.update();
-            if (b.getY() > Config.WINDOW_HEIGHT) {
-                root.getChildren().remove(b.getView());
-                return true;
+            System.out.println("🔥 Boss nổi giận!");
+            if (shakeAnim == null) {
+                shakeAnim = new TranslateTransition(Duration.millis(8000), view);
+                shakeAnim.setFromX(-3);
+                shakeAnim.setToX(3);
+                shakeAnim.setAutoReverse(true);
+                shakeAnim.setCycleCount(Animation.INDEFINITE);
+                shakeAnim.play();
             }
-            return false;
-        });
+
+            halfHealthTriggered = true;
+        }
+        for (BossBullet b : bullets) {
+            b.update();
+        }
     }
+
+
+
+
 
     @Override
     public void render(Graphics g) {}
 
     private void shoot() {
-        // Bắn nhanh hơn khi nổi giận
         int maxBullets = enraged ? 8 : 5;
         if (bullets.size() > maxBullets) return;
-
+        SoundManager.playEffect("boss_bullet.mp3");
         BossBullet bullet = new BossBullet(x + width / 2 - 5, y + height, root);
         bullets.add(bullet);
     }
@@ -106,8 +117,6 @@ public class Boss extends Brick {
 
         hitPoints--;
         System.out.println("Boss HP: " + hitPoints);
-
-        // Khi chết thì xoá khỏi màn hình
         if (hitPoints <= 0) {
             root.getChildren().remove(view);
             System.out.println("💀 Boss bị tiêu diệt!");
@@ -126,4 +135,12 @@ public class Boss extends Brick {
     public int getMaxHealth() {
         return 30;
     }
+    public boolean hasTriggeredHalfHealthPhase() {
+        return halfHealthTriggered;
+    }
+
+    public void setTriggeredHalfHealthPhase(boolean v) {
+        this.halfHealthTriggered = v;
+    }
+
 }
